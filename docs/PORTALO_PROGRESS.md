@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [████████████████████] 37/38  (97%)
+Sprint 1: [████████████████████] 38/38  (100%) ✓
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████                ] 37/160 (23%)
+TOTAL:    [████                ] 38/160 (24%)
 ```
 
 ---
@@ -30,7 +30,7 @@ TOTAL:    [████                ] 37/160 (23%)
 | **M2: Design System** | 1 | 6-13 | [x] Complete | All UI primitives working |
 | **M3: Database Ready** | 1 | 14-22 | [x] Complete | All migrations applied, RLS working |
 | **M4: Auth Working** | 1 | 23-31 | [x] Complete | Can sign in/out with Google + Magic Link |
-| **M5: Dashboard Shell** | 1 | 32-38 | [ ] Not Started | Empty dashboard renders, deploys to CF |
+| **M5: Dashboard Shell** | 1 | 32-38 | [x] Complete | Empty dashboard renders, deploys to CF |
 | **M6: Pages CRUD** | 2 | 39-52 | [ ] Not Started | Can create/edit/delete pages |
 | **M7: Links CRUD** | 2 | 53-69 | [ ] Not Started | Can add/edit/reorder/delete links |
 | **M8: Live Preview** | 2 | 70-72 | [ ] Not Started | Preview updates as you edit |
@@ -102,13 +102,13 @@ TOTAL:    [████                ] 37/160 (23%)
 
 ### Phase 1G: Deployment (Commits 37-38)
 - [x] **Commit 37**: Cloudflare Pages deploy
-- [ ] **Commit 38**: Env validation
+- [x] **Commit 38**: Env validation
 
 **Sprint 1 Completion Criteria**:
-- [ ] Can sign up with Google OAuth
-- [ ] Can sign in with magic link
-- [ ] Dashboard renders with sidebar
-- [ ] Deployed to Cloudflare Pages
+- [x] Can sign up with Google OAuth
+- [x] Can sign in with magic link
+- [x] Dashboard renders with sidebar
+- [x] Deployed to Cloudflare Pages
 
 ---
 
@@ -358,6 +358,7 @@ TOTAL:    [████                ] 37/160 (23%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
+| 2026-02-18 | - | Add env validation — Sprint 1 complete | Complete |
 | 2026-02-18 | - | Add Cloudflare Pages deploy config | Complete |
 | 2026-02-18 | - | Add sign out to user nav | Complete |
 | 2026-02-18 | - | Add user nav in sidebar | Complete |
