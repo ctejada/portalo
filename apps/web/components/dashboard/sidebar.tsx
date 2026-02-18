@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { UserNav } from "./user-nav";
 
 const navGroups = [
   {
@@ -72,7 +73,9 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div id="sidebar-user-nav" className="border-t border-border-primary p-4" />
+      <div className="border-t border-border-primary p-4">
+        <UserNav />
+      </div>
     </aside>
   );
 }

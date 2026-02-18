@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [██████████████████  ] 34/38  (89%)
+Sprint 1: [██████████████████  ] 35/38  (92%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████                ] 34/160 (21%)
+TOTAL:    [████                ] 35/160 (22%)
 ```
 
 ---
@@ -97,7 +97,7 @@ TOTAL:    [████                ] 34/160 (21%)
 - [x] **Commit 32**: Dashboard layout + sidebar
 - [x] **Commit 33**: Dashboard home (empty state)
 - [x] **Commit 34**: use-user hook (SWR)
-- [ ] **Commit 35**: User nav in sidebar
+- [x] **Commit 35**: User nav in sidebar
 - [ ] **Commit 36**: Sign out
 
 ### Phase 1G: Deployment (Commits 37-38)
@@ -358,6 +358,7 @@ TOTAL:    [████                ] 34/160 (21%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
+| 2026-02-18 | - | Add user nav in sidebar | Complete |
 | 2026-02-18 | - | Add use-user hook with SWR | Complete |
 | 2026-02-18 | - | Add dashboard home empty state | Complete |
 | 2026-02-18 | - | Add dashboard layout and sidebar | Complete |
