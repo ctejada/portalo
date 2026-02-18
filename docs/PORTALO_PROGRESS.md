@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [███████████         ] 21/38  (55%)
+Sprint 1: [███████████         ] 22/38  (58%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██                  ] 21/160 (13%)
+TOTAL:    [██                  ] 22/160 (14%)
 ```
 
 ---
@@ -28,7 +28,7 @@ TOTAL:    [██                  ] 21/160 (13%)
 |-----------|--------|---------|--------|---------------------|
 | **M1: Project Setup** | 1 | 1-5 | [x] Complete | Monorepo builds, tests run |
 | **M2: Design System** | 1 | 6-13 | [x] Complete | All UI primitives working |
-| **M3: Database Ready** | 1 | 14-22 | [ ] Not Started | All migrations applied, RLS working |
+| **M3: Database Ready** | 1 | 14-22 | [x] Complete | All migrations applied, RLS working |
 | **M4: Auth Working** | 1 | 23-31 | [ ] Not Started | Can sign in/out with Google + Magic Link |
 | **M5: Dashboard Shell** | 1 | 32-38 | [ ] Not Started | Empty dashboard renders, deploys to CF |
 | **M6: Pages CRUD** | 2 | 39-52 | [ ] Not Started | Can create/edit/delete pages |
@@ -78,7 +78,7 @@ TOTAL:    [██                  ] 21/160 (13%)
 - [x] **Commit 19**: Migration: analytics (partitioned)
 - [x] **Commit 20**: Migration: contacts
 - [x] **Commit 21**: Migration: RLS policies
-- [ ] **Commit 22**: Create seed data
+- [x] **Commit 22**: Create seed data
 
 ### Phase 1D: Supabase Clients (Commits 23-25)
 - [ ] **Commit 23**: Browser client
@@ -358,7 +358,8 @@ TOTAL:    [██                  ] 21/160 (13%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | - | Add RLS policies migration | Complete |
+| 2026-02-18 | - | Create seed data | Complete |
+| 2026-02-18 | d33b1d5 | Add RLS policies for all tables | Complete |
 | 2026-02-18 | 0cb8171 | Add contacts migration | Complete |
 | 2026-02-18 | e352b9f | Add analytics events partitioned migration | Complete |
 | 2026-02-18 | 769bdc9 | Add domains migration | Complete |
