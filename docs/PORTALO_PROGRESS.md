@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [███                 ] 5/38  (13%)
+Sprint 1: [████                ] 7/38  (18%)
 Sprint 2: [                    ] 0/34  (0%)
 Sprint 3: [                    ] 0/16  (0%)
 Sprint 4: [                    ] 0/22  (0%)
 Sprint 5: [                    ] 0/29  (0%)
 Sprint 6: [                    ] 0/21  (0%)
 ─────────────────────────────────────────
-TOTAL:    [                    ] 5/160 (3%)
+TOTAL:    [█                   ] 7/160 (4%)
 ```
 
 ---
@@ -27,7 +27,7 @@ TOTAL:    [                    ] 5/160 (3%)
 | Milestone | Sprint | Commits | Status | Completion Criteria |
 |-----------|--------|---------|--------|---------------------|
 | **M1: Project Setup** | 1 | 1-5 | [x] Complete | Monorepo builds, tests run |
-| **M2: Design System** | 1 | 6-13 | [ ] Not Started | All UI primitives working |
+| **M2: Design System** | 1 | 6-13 | [~] In Progress | All UI primitives working |
 | **M3: Database Ready** | 1 | 14-22 | [ ] Not Started | All migrations applied, RLS working |
 | **M4: Auth Working** | 1 | 23-31 | [ ] Not Started | Can sign in/out with Google + Magic Link |
 | **M5: Dashboard Shell** | 1 | 32-38 | [ ] Not Started | Empty dashboard renders, deploys to CF |
@@ -61,8 +61,7 @@ TOTAL:    [                    ] 5/160 (3%)
 - [x] **Commit 5**: Set up Vitest
 
 ### Phase 1B: Design System (Commits 6-13)
-- [ ] **Commit 6**: Implement CSS design system (colors, typography)
-- [ ] **Commit 7**: Configure Tailwind CSS 4
+- [x] **Commit 6-7**: Design system + Tailwind CSS 4 (combined)
 - [ ] **Commit 8**: Create Button component
 - [ ] **Commit 9**: Create Input + Textarea components
 - [ ] **Commit 10**: Create Toggle + Badge components
@@ -359,8 +358,9 @@ TOTAL:    [                    ] 5/160 (3%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | 159ab87 | Set up Vitest | Complete |
-| 2026-02-18 | ab32a11 | Configure ESLint + Prettier | Complete |
+| 2026-02-18 | b20e5d4 | Add Tailwind CSS 4 design system | Complete |
+| 2026-02-17 | 159ab87 | Set up Vitest | Complete |
+| 2026-02-17 | ab32a11 | Configure ESLint + Prettier | Complete |
 | 2026-02-17 | 956df52 | Create shared types package | Complete |
 | 2026-02-17 | 5ef3d95 | Create Next.js 15 app scaffold | Complete |
 | 2026-02-17 | e9ff958 | Initialize Turborepo monorepo with pnpm | Complete |
