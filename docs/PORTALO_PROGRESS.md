@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [████                ] 7/38  (18%)
-Sprint 2: [                    ] 0/34  (0%)
-Sprint 3: [                    ] 0/16  (0%)
-Sprint 4: [                    ] 0/22  (0%)
-Sprint 5: [                    ] 0/29  (0%)
-Sprint 6: [                    ] 0/21  (0%)
+Sprint 1: [█████               ] 10/38  (26%)
+Sprint 2: [                    ] 0/34   (0%)
+Sprint 3: [                    ] 0/16   (0%)
+Sprint 4: [                    ] 0/22   (0%)
+Sprint 5: [                    ] 0/29   (0%)
+Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [█                   ] 7/160 (4%)
+TOTAL:    [█                   ] 10/160 (6%)
 ```
 
 ---
@@ -62,9 +62,9 @@ TOTAL:    [█                   ] 7/160 (4%)
 
 ### Phase 1B: Design System (Commits 6-13)
 - [x] **Commit 6-7**: Design system + Tailwind CSS 4 (combined)
-- [ ] **Commit 8**: Create Button component
-- [ ] **Commit 9**: Create Input + Textarea components
-- [ ] **Commit 10**: Create Toggle + Badge components
+- [x] **Commit 8**: Create Button component
+- [x] **Commit 9**: Create Input + Textarea components
+- [x] **Commit 10**: Create Toggle + Badge components
 - [ ] **Commit 11**: Create Skeleton loader
 - [ ] **Commit 12**: Create Toast (Sonner)
 - [ ] **Commit 13**: Create UI barrel export
@@ -358,7 +358,10 @@ TOTAL:    [█                   ] 7/160 (4%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | b20e5d4 | Add Tailwind CSS 4 design system | Complete |
+| 2026-02-18 | b51f41e | Add Toggle and Badge components | Complete |
+| 2026-02-18 | 8e83ee0 | Add Input and Textarea components | Complete |
+| 2026-02-18 | 2e15d1c | Add Button component | Complete |
+| 2026-02-17 | b20e5d4 | Add Tailwind CSS 4 design system | Complete |
 | 2026-02-17 | 159ab87 | Set up Vitest | Complete |
 | 2026-02-17 | ab32a11 | Configure ESLint + Prettier | Complete |
 | 2026-02-17 | 956df52 | Create shared types package | Complete |
