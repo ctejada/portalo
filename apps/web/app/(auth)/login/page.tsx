@@ -1,0 +1,84 @@
+"use client";
+
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui";
+import Link from "next/link";
+
+export default function LoginPage() {
+  const supabase = createClient();
+
+  async function handleGoogleLogin() {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  }
+
+  return (
+    <div className="space-y-6">
+      <Button
+        variant="secondary"
+        size="lg"
+        className="w-full"
+        onClick={handleGoogleLogin}
+      >
+        Sign in with Google
+      </Button>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-border-primary" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-bg-primary px-2 text-small text-text-tertiary">
+            or
+          </span>
+        </div>
+      </div>
+
+      <MagicLinkForm />
+
+      <p className="text-center text-small text-text-secondary">
+        Don&apos;t have an account?{" "}
+        <Link href="/signup" className="text-accent hover:underline">
+          Sign up
+        </Link>
+      </p>
+    </div>
+  );
+}
+
+function MagicLinkForm() {
+  const supabase = createClient();
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    if (!email) return;
+
+    await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <input
+        name="email"
+        type="email"
+        placeholder="you@example.com"
+        required
+        className="w-full px-3 py-2 bg-bg-tertiary border border-border-primary rounded-md text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-accent"
+      />
+      <Button variant="ghost" size="md" className="w-full" type="submit">
+        Send magic link
+      </Button>
+    </form>
+  );
+}

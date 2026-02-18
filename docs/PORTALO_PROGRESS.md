@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [██████████████      ] 27/38  (71%)
+Sprint 1: [██████████████      ] 28/38  (74%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [███                 ] 27/160 (17%)
+TOTAL:    [███                 ] 28/160 (18%)
 ```
 
 ---
@@ -88,7 +88,7 @@ TOTAL:    [███                 ] 27/160 (17%)
 ### Phase 1E: Authentication (Commits 26-31)
 - [x] **Commit 26**: Auth callback route
 - [x] **Commit 27**: Auth layout (centered)
-- [ ] **Commit 28**: Login + Google OAuth
+- [x] **Commit 28**: Login + Google OAuth
 - [ ] **Commit 29**: Magic link auth
 - [ ] **Commit 30**: Signup page
 - [ ] **Commit 31**: Auth middleware
@@ -358,7 +358,8 @@ TOTAL:    [███                 ] 27/160 (17%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | - | Add centered auth layout | Complete |
+| 2026-02-18 | - | Add login page with Google OAuth | Complete |
+| 2026-02-18 | 7953737 | Add centered auth layout | Complete |
 | 2026-02-18 | 9d97a0c | Add auth callback route | Complete |
 | 2026-02-18 | 289c9a4 | Add Supabase admin client | Complete |
 | 2026-02-18 | 4d49e53 | Add Supabase server client | Complete |
