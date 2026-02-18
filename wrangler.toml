@@ -1,0 +1,8 @@
+name = "portalo"
+compatibility_date = "2024-12-01"
+
+# Cloudflare Pages project
+pages_build_output_dir = "apps/web/.next"
+
+[vars]
+NEXT_PUBLIC_APP_DOMAIN = "portalo.so"
