@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [███████             ] 14/38  (37%)
+Sprint 1: [███████             ] 15/38  (39%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [█                   ] 14/160 (9%)
+TOTAL:    [█                   ] 15/160 (9%)
 ```
 
 ---
@@ -71,7 +71,7 @@ TOTAL:    [█                   ] 14/160 (9%)
 
 ### Phase 1C: Database (Commits 14-22)
 - [x] **Commit 14**: Initialize Supabase config
-- [ ] **Commit 15**: Migration: profiles + trigger
+- [x] **Commit 15**: Migration: profiles + trigger
 - [ ] **Commit 16**: Migration: pages
 - [ ] **Commit 17**: Migration: links
 - [ ] **Commit 18**: Migration: domains
@@ -358,7 +358,8 @@ TOTAL:    [█                   ] 14/160 (9%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | - | Initialize Supabase config | Complete |
+| 2026-02-18 | - | Add profiles migration with triggers | Complete |
+| 2026-02-18 | 012003e | Initialize Supabase config | Complete |
 | 2026-02-18 | 617f968 | Add UI components barrel export | Complete |
 | 2026-02-18 | afb2e1e | Add Toast component with Sonner | Complete |
 | 2026-02-18 | d60c910 | Add Skeleton loader components | Complete |
