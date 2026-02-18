@@ -3,21 +3,21 @@
 **Project**: Portalo Link-in-Bio Platform
 **Timeline**: 12 Weeks (6 Sprints)
 **Total Commits**: 160
-**Status**: Not Started
+**Status**: In Progress
 
 ---
 
 ## Overall Progress
 
 ```
-Sprint 1: [                    ] 0/38  (0%)
+Sprint 1: [█                   ] 1/38  (3%)
 Sprint 2: [                    ] 0/34  (0%)
 Sprint 3: [                    ] 0/16  (0%)
 Sprint 4: [                    ] 0/22  (0%)
 Sprint 5: [                    ] 0/29  (0%)
 Sprint 6: [                    ] 0/21  (0%)
 ─────────────────────────────────────────
-TOTAL:    [                    ] 0/160 (0%)
+TOTAL:    [                    ] 1/160 (1%)
 ```
 
 ---
@@ -26,7 +26,7 @@ TOTAL:    [                    ] 0/160 (0%)
 
 | Milestone | Sprint | Commits | Status | Completion Criteria |
 |-----------|--------|---------|--------|---------------------|
-| **M1: Project Setup** | 1 | 1-5 | [ ] Not Started | Monorepo builds, tests run |
+| **M1: Project Setup** | 1 | 1-5 | [~] In Progress | Monorepo builds, tests run |
 | **M2: Design System** | 1 | 6-13 | [ ] Not Started | All UI primitives working |
 | **M3: Database Ready** | 1 | 14-22 | [ ] Not Started | All migrations applied, RLS working |
 | **M4: Auth Working** | 1 | 23-31 | [ ] Not Started | Can sign in/out with Google + Magic Link |
@@ -54,7 +54,7 @@ TOTAL:    [                    ] 0/160 (0%)
 **Goal**: Working auth, empty dashboard shell, deploy pipeline
 
 ### Phase 1A: Monorepo & Tooling (Commits 1-5)
-- [ ] **Commit 1**: Initialize Turborepo monorepo with pnpm
+- [x] **Commit 1**: Initialize Turborepo monorepo with pnpm
 - [ ] **Commit 2**: Create Next.js 15 app scaffold
 - [ ] **Commit 3**: Create shared types package
 - [ ] **Commit 4**: Configure ESLint + Prettier
@@ -359,7 +359,7 @@ TOTAL:    [                    ] 0/160 (0%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| - | - | No commits yet | - |
+| 2026-02-17 | e9ff958 | Initialize Turborepo monorepo with pnpm | Complete |
 
 ---
 
