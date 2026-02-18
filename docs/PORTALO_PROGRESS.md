@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [█████████████       ] 25/38  (66%)
+Sprint 1: [█████████████       ] 26/38  (68%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [███                 ] 25/160 (16%)
+TOTAL:    [███                 ] 26/160 (16%)
 ```
 
 ---
@@ -86,7 +86,7 @@ TOTAL:    [███                 ] 25/160 (16%)
 - [x] **Commit 25**: Admin client (service role)
 
 ### Phase 1E: Authentication (Commits 26-31)
-- [ ] **Commit 26**: Auth callback route
+- [x] **Commit 26**: Auth callback route
 - [ ] **Commit 27**: Auth layout (centered)
 - [ ] **Commit 28**: Login + Google OAuth
 - [ ] **Commit 29**: Magic link auth
@@ -358,7 +358,8 @@ TOTAL:    [███                 ] 25/160 (16%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | - | Add Supabase admin client | Complete |
+| 2026-02-18 | - | Add auth callback route | Complete |
+| 2026-02-18 | 289c9a4 | Add Supabase admin client | Complete |
 | 2026-02-18 | 4d49e53 | Add Supabase server client | Complete |
 | 2026-02-18 | 4570e70 | Add Supabase browser client | Complete |
 | 2026-02-18 | 025fc53 | Create seed data | Complete |
