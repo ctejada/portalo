@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui";
 import Link from "next/link";
@@ -52,6 +53,9 @@ export default function LoginPage() {
 
 function MagicLinkForm() {
   const supabase = createClient();
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,12 +63,31 @@ function MagicLinkForm() {
     const email = formData.get("email") as string;
     if (!email) return;
 
-    await supabase.auth.signInWithOtp({
+    setLoading(true);
+    setError(null);
+
+    const { error: authError } = await supabase.auth.signInWithOtp({
       email,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
+
+    setLoading(false);
+
+    if (authError) {
+      setError(authError.message);
+    } else {
+      setSent(true);
+    }
+  }
+
+  if (sent) {
+    return (
+      <p className="text-center text-body text-text-secondary">
+        Check your email for the magic link.
+      </p>
+    );
   }
 
   return (
@@ -76,7 +99,14 @@ function MagicLinkForm() {
         required
         className="w-full px-3 py-2 bg-bg-tertiary border border-border-primary rounded-md text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-accent"
       />
-      <Button variant="ghost" size="md" className="w-full" type="submit">
+      {error && <p className="text-small text-error">{error}</p>}
+      <Button
+        variant="ghost"
+        size="md"
+        className="w-full"
+        type="submit"
+        loading={loading}
+      >
         Send magic link
       </Button>
     </form>
