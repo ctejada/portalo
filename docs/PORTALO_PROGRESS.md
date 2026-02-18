@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [██████████          ] 20/38  (53%)
+Sprint 1: [███████████         ] 21/38  (55%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██                  ] 20/160 (13%)
+TOTAL:    [██                  ] 21/160 (13%)
 ```
 
 ---
@@ -77,7 +77,7 @@ TOTAL:    [██                  ] 20/160 (13%)
 - [x] **Commit 18**: Migration: domains
 - [x] **Commit 19**: Migration: analytics (partitioned)
 - [x] **Commit 20**: Migration: contacts
-- [ ] **Commit 21**: Migration: RLS policies
+- [x] **Commit 21**: Migration: RLS policies
 - [ ] **Commit 22**: Create seed data
 
 ### Phase 1D: Supabase Clients (Commits 23-25)
@@ -358,7 +358,8 @@ TOTAL:    [██                  ] 20/160 (13%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | - | Add contacts migration | Complete |
+| 2026-02-18 | - | Add RLS policies migration | Complete |
+| 2026-02-18 | 0cb8171 | Add contacts migration | Complete |
 | 2026-02-18 | e352b9f | Add analytics events partitioned migration | Complete |
 | 2026-02-18 | 769bdc9 | Add domains migration | Complete |
 | 2026-02-18 | 05dc480 | Add links migration | Complete |
