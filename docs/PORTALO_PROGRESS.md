@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [████████            ] 16/38  (42%)
+Sprint 1: [████████            ] 17/38  (45%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██                  ] 16/160 (10%)
+TOTAL:    [██                  ] 17/160 (11%)
 ```
 
 ---
@@ -73,7 +73,7 @@ TOTAL:    [██                  ] 16/160 (10%)
 - [x] **Commit 14**: Initialize Supabase config
 - [x] **Commit 15**: Migration: profiles + trigger
 - [x] **Commit 16**: Migration: pages
-- [ ] **Commit 17**: Migration: links
+- [x] **Commit 17**: Migration: links
 - [ ] **Commit 18**: Migration: domains
 - [ ] **Commit 19**: Migration: analytics (partitioned)
 - [ ] **Commit 20**: Migration: contacts
@@ -358,7 +358,8 @@ TOTAL:    [██                  ] 16/160 (10%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | - | Add pages migration | Complete |
+| 2026-02-18 | - | Add links migration | Complete |
+| 2026-02-18 | e4aaffc | Add pages migration | Complete |
 | 2026-02-18 | 4f2cd8d | Add profiles migration with triggers | Complete |
 | 2026-02-18 | 012003e | Initialize Supabase config | Complete |
 | 2026-02-18 | 617f968 | Add UI components barrel export | Complete |
