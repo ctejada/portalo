@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [████████            ] 17/38  (45%)
+Sprint 1: [█████████           ] 18/38  (47%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██                  ] 17/160 (11%)
+TOTAL:    [██                  ] 18/160 (11%)
 ```
 
 ---
@@ -74,7 +74,7 @@ TOTAL:    [██                  ] 17/160 (11%)
 - [x] **Commit 15**: Migration: profiles + trigger
 - [x] **Commit 16**: Migration: pages
 - [x] **Commit 17**: Migration: links
-- [ ] **Commit 18**: Migration: domains
+- [x] **Commit 18**: Migration: domains
 - [ ] **Commit 19**: Migration: analytics (partitioned)
 - [ ] **Commit 20**: Migration: contacts
 - [ ] **Commit 21**: Migration: RLS policies
@@ -358,7 +358,8 @@ TOTAL:    [██                  ] 17/160 (11%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | - | Add links migration | Complete |
+| 2026-02-18 | - | Add domains migration | Complete |
+| 2026-02-18 | 05dc480 | Add links migration | Complete |
 | 2026-02-18 | e4aaffc | Add pages migration | Complete |
 | 2026-02-18 | 4f2cd8d | Add profiles migration with triggers | Complete |
 | 2026-02-18 | 012003e | Initialize Supabase config | Complete |
