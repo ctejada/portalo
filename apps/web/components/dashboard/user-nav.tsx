@@ -1,11 +1,20 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/use-user";
+import { createClient } from "@/lib/supabase/client";
 import { Badge } from "@/components/ui";
 import { Skeleton, SkeletonAvatar } from "@/components/ui/skeleton";
 
 export function UserNav() {
   const { user, isLoading } = useUser();
+  const router = useRouter();
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
 
   if (isLoading) {
     return (
@@ -50,6 +59,27 @@ export function UserNav() {
           {user.plan.charAt(0).toUpperCase() + user.plan.slice(1)}
         </Badge>
       </div>
+      <button
+        onClick={handleSignOut}
+        className="shrink-0 p-1.5 rounded-md text-text-tertiary hover:text-text-primary hover:bg-bg-hover transition-colors duration-150"
+        title="Sign out"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+      </button>
     </div>
   );
 }

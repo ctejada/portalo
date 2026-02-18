@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [██████████████████  ] 35/38  (92%)
+Sprint 1: [███████████████████ ] 36/38  (95%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████                ] 35/160 (22%)
+TOTAL:    [████                ] 36/160 (23%)
 ```
 
 ---
@@ -98,7 +98,7 @@ TOTAL:    [████                ] 35/160 (22%)
 - [x] **Commit 33**: Dashboard home (empty state)
 - [x] **Commit 34**: use-user hook (SWR)
 - [x] **Commit 35**: User nav in sidebar
-- [ ] **Commit 36**: Sign out
+- [x] **Commit 36**: Sign out
 
 ### Phase 1G: Deployment (Commits 37-38)
 - [ ] **Commit 37**: Cloudflare Pages deploy
@@ -358,6 +358,7 @@ TOTAL:    [████                ] 35/160 (22%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
+| 2026-02-18 | - | Add sign out to user nav | Complete |
 | 2026-02-18 | - | Add user nav in sidebar | Complete |
 | 2026-02-18 | - | Add use-user hook with SWR | Complete |
 | 2026-02-18 | - | Add dashboard home empty state | Complete |
