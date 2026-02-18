@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [███████████████     ] 30/38  (79%)
+Sprint 1: [████████████████    ] 31/38  (82%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [███                 ] 30/160 (19%)
+TOTAL:    [███                 ] 31/160 (19%)
 ```
 
 ---
@@ -29,7 +29,7 @@ TOTAL:    [███                 ] 30/160 (19%)
 | **M1: Project Setup** | 1 | 1-5 | [x] Complete | Monorepo builds, tests run |
 | **M2: Design System** | 1 | 6-13 | [x] Complete | All UI primitives working |
 | **M3: Database Ready** | 1 | 14-22 | [x] Complete | All migrations applied, RLS working |
-| **M4: Auth Working** | 1 | 23-31 | [ ] Not Started | Can sign in/out with Google + Magic Link |
+| **M4: Auth Working** | 1 | 23-31 | [x] Complete | Can sign in/out with Google + Magic Link |
 | **M5: Dashboard Shell** | 1 | 32-38 | [ ] Not Started | Empty dashboard renders, deploys to CF |
 | **M6: Pages CRUD** | 2 | 39-52 | [ ] Not Started | Can create/edit/delete pages |
 | **M7: Links CRUD** | 2 | 53-69 | [ ] Not Started | Can add/edit/reorder/delete links |
@@ -91,7 +91,7 @@ TOTAL:    [███                 ] 30/160 (19%)
 - [x] **Commit 28**: Login + Google OAuth
 - [x] **Commit 29**: Magic link auth
 - [x] **Commit 30**: Signup page
-- [ ] **Commit 31**: Auth middleware
+- [x] **Commit 31**: Auth middleware
 
 ### Phase 1F: Dashboard Shell (Commits 32-36)
 - [ ] **Commit 32**: Dashboard layout + sidebar
@@ -358,7 +358,8 @@ TOTAL:    [███                 ] 30/160 (19%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
-| 2026-02-18 | - | Add signup page | Complete |
+| 2026-02-18 | - | Add auth middleware | Complete |
+| 2026-02-18 | bed92d9 | Add signup page | Complete |
 | 2026-02-18 | 19b154b | Add magic link auth with state handling | Complete |
 | 2026-02-18 | f451fd0 | Add login page with Google OAuth | Complete |
 | 2026-02-18 | 7953737 | Add centered auth layout | Complete |

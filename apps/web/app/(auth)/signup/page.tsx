@@ -6,9 +6,8 @@ import { Button } from "@/components/ui";
 import Link from "next/link";
 
 export default function SignupPage() {
-  const supabase = createClient();
-
   async function handleGoogleSignup() {
+    const supabase = createClient();
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -52,7 +51,6 @@ export default function SignupPage() {
 }
 
 function MagicLinkForm() {
-  const supabase = createClient();
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +64,7 @@ function MagicLinkForm() {
     setLoading(true);
     setError(null);
 
+    const supabase = createClient();
     const { error: authError } = await supabase.auth.signInWithOtp({
       email,
       options: {
