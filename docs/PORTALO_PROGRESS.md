@@ -10,14 +10,14 @@
 ## Overall Progress
 
 ```
-Sprint 1: [█████████████████   ] 32/38  (84%)
+Sprint 1: [█████████████████   ] 33/38  (87%)
 Sprint 2: [                    ] 0/34   (0%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████                ] 32/160 (20%)
+TOTAL:    [████                ] 33/160 (21%)
 ```
 
 ---
@@ -95,7 +95,7 @@ TOTAL:    [████                ] 32/160 (20%)
 
 ### Phase 1F: Dashboard Shell (Commits 32-36)
 - [x] **Commit 32**: Dashboard layout + sidebar
-- [ ] **Commit 33**: Dashboard home (empty state)
+- [x] **Commit 33**: Dashboard home (empty state)
 - [ ] **Commit 34**: use-user hook (SWR)
 - [ ] **Commit 35**: User nav in sidebar
 - [ ] **Commit 36**: Sign out
@@ -358,6 +358,7 @@ TOTAL:    [████                ] 32/160 (20%)
 
 | Date | Commit | Description | Status |
 |------|--------|-------------|--------|
+| 2026-02-18 | - | Add dashboard home empty state | Complete |
 | 2026-02-18 | - | Add dashboard layout and sidebar | Complete |
 | 2026-02-18 | - | Add auth middleware | Complete |
 | 2026-02-18 | bed92d9 | Add signup page | Complete |
