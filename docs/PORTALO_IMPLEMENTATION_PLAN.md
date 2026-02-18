@@ -41,8 +41,7 @@ A step-by-step implementation plan for the Portalo link-in-bio MVP with **160 sm
 
 | # | Commit | Files | Tests |
 |---|--------|-------|-------|
-| 6 | Implement CSS design system | `app/globals.css` (colors, typography, shadows) | Visual |
-| 7 | Configure Tailwind CSS 4 | `tailwind.config.ts`, `postcss.config.js` | Classes compile |
+| 6-7 | Implement design system with Tailwind CSS 4 | `app/globals.css`, `tailwind.config.ts`, `postcss.config.js` | Build passes, classes compile |
 | 8 | Create Button component | `components/ui/button.tsx` | Variants, sizes |
 | 9 | Create Input + Textarea | `components/ui/input.tsx`, `textarea.tsx` | Focus, disabled |
 | 10 | Create Toggle + Badge | `components/ui/toggle.tsx`, `badge.tsx` | States |
