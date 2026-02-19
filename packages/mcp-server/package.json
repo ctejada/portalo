@@ -29,5 +29,16 @@
     "portalo",
     "link-in-bio"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ctejada/portalo",
+    "directory": "packages/mcp-server"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }
