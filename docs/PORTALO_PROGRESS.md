@@ -217,7 +217,7 @@ TOTAL:    [███████████         ] 88/160 (55%)
 - [x] **Commit 90**: GET /analytics/timeseries
 
 ### Phase 4B: Analytics Dashboard (Commits 91-96)
-- [ ] **Commit 91**: Analytics page route
+- [x] **Commit 91**: Analytics page route
 - [ ] **Commit 92**: Metrics row component
 - [ ] **Commit 93**: use-analytics hook
 - [ ] **Commit 94**: Recharts chart
