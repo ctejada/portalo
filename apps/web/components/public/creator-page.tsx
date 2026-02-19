@@ -1,5 +1,6 @@
 import type { Page, Link } from "@portalo/shared";
 import { LinkItem } from "@/components/public/link-item";
+import { PoweredBy } from "@/components/public/powered-by";
 
 interface CreatorPageProps {
   page: Page;
@@ -80,21 +81,10 @@ export function CreatorPage({ page, links }: CreatorPageProps) {
           )}
         </div>
 
-        {/* Powered by footer */}
-        {page.settings?.show_powered_by !== false && (
-          <div className="mt-12 text-center">
-            <a
-              href="https://portalo.so"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`text-xs ${
-                isDark ? "text-[#4B5563]" : "text-text-tertiary"
-              } hover:underline`}
-            >
-              Powered by Portalo
-            </a>
-          </div>
-        )}
+        <PoweredBy
+          show={page.settings?.show_powered_by !== false}
+          isDark={isDark}
+        />
       </div>
     </div>
   );
