@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { showToast } from "@/components/ui/toast";
 import { LinkList } from "@/components/dashboard/link-list";
 import { LinkForm } from "@/components/dashboard/link-form";
+import { PhonePreview } from "@/components/dashboard/phone-preview";
 import type { Link as LinkType } from "@portalo/shared";
 
 interface PageEditorProps {
@@ -133,11 +134,11 @@ export function PageEditor({ pageId }: PageEditorProps) {
 
         {/* Preview panel (40%) */}
         <div className="w-2/5 bg-bg-secondary flex items-start justify-center p-8 overflow-y-auto">
-          <div className="w-[375px] h-[667px] bg-bg-primary rounded-[2.5rem] border border-border-primary shadow-sm flex items-center justify-center">
-            <p className="text-small text-text-tertiary">
+          <PhonePreview>
+            <p className="text-small text-text-tertiary p-6">
               Preview will render here.
             </p>
-          </div>
+          </PhonePreview>
         </div>
       </div>
     </div>

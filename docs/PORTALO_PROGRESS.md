@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [██████████████      ] 31/34  (91%)
+Sprint 2: [███████████████     ] 32/34  (94%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████████            ] 69/160 (43%)
+TOTAL:    [████████            ] 70/160 (44%)
 ```
 
 ---
@@ -158,7 +158,7 @@ TOTAL:    [████████            ] 69/160 (43%)
 - [x] **Commit 69**: Link visibility toggle
 
 ### Phase 2F: Phone Preview (Commits 70-72)
-- [ ] **Commit 70**: Preview frame
+- [x] **Commit 70**: Preview frame
 - [ ] **Commit 71**: Preview content
 - [ ] **Commit 72**: Live update
 
