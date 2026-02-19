@@ -79,7 +79,12 @@ export function PageEditor({ pageId }: PageEditorProps) {
                       ))}
                     </div>
                   ) : (
-                    <LinkList links={links} onReorder={handleReorder} />
+                    <LinkList
+                      links={links}
+                      pageId={pageId}
+                      onReorder={handleReorder}
+                      onUpdated={() => mutateLinks()}
+                    />
                   )}
                   <LinkForm pageId={pageId} onAdded={() => mutateLinks()} />
                 </div>

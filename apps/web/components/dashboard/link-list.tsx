@@ -19,16 +19,18 @@ import { LinkRow } from "@/components/dashboard/link-row";
 
 interface LinkListProps {
   links: Link[];
+  pageId: string;
   onReorder?: (linkIds: string[]) => void;
-  onEdit?: (link: Link) => void;
+  onUpdated?: () => void;
   onDelete?: (link: Link) => void;
   onToggleVisibility?: (link: Link) => void;
 }
 
 export function LinkList({
   links,
+  pageId,
   onReorder,
-  onEdit,
+  onUpdated,
   onDelete,
   onToggleVisibility,
 }: LinkListProps) {
@@ -77,7 +79,8 @@ export function LinkList({
             <LinkRow
               key={link.id}
               link={link}
-              onEdit={onEdit}
+              pageId={pageId}
+              onUpdated={onUpdated}
               onDelete={onDelete}
               onToggleVisibility={onToggleVisibility}
             />
