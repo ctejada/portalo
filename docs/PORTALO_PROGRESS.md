@@ -15,9 +15,9 @@ Sprint 2: [████████████████████] 34/34  
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [███████████         ] 12/21  (57%)
+Sprint 6: [████████████        ] 13/21  (62%)
 ─────────────────────────────────────────
-TOTAL:    [███████████████████ ] 151/160 (94%)
+TOTAL:    [███████████████████ ] 152/160 (95%)
 ```
 
 ---
@@ -44,7 +44,7 @@ TOTAL:    [███████████████████ ] 151/160 (
 | **M16: MCP Server** | 5 | 129-139 | [x] Complete | MCP server published to npm |
 | **M17: PWA Ready** | 6 | 140-141 | [x] Complete | Installable PWA |
 | **M18: Edge Caching** | 6 | 142-147 | [x] Complete | Pages cached at CF edge |
-| **M19: E2E Tests** | 6 | 148-152 | [ ] Not Started | Critical paths tested |
+| **M19: E2E Tests** | 6 | 148-152 | [x] Complete | Critical paths tested |
 | **M20: Launch Ready** | 6 | 153-160 | [ ] Not Started | Landing page, Lighthouse >90 |
 
 ---
@@ -331,7 +331,7 @@ TOTAL:    [███████████████████ ] 151/160 (
 - [x] **Commit 149**: Playwright setup
 - [x] **Commit 150**: Signup + create page test
 - [x] **Commit 151**: Links + reorder test
-- [ ] **Commit 152**: Public page + click test
+- [x] **Commit 152**: Public page + click test
 
 ### Phase 6F: Landing + SEO (Commits 153-156)
 - [ ] **Commit 153**: Landing page
