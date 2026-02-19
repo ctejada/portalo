@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [████                ] 9/34   (26%)
+Sprint 2: [████                ] 10/34  (29%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██████              ] 47/160 (29%)
+TOTAL:    [██████              ] 48/160 (30%)
 ```
 
 ---
@@ -130,7 +130,7 @@ TOTAL:    [██████              ] 47/160 (29%)
 - [x] **Commit 47**: DELETE /api/v1/pages/[id]
 
 ### Phase 2C: Dashboard Pages List (Commits 48-52)
-- [ ] **Commit 48**: use-pages hook
+- [x] **Commit 48**: use-pages hook
 - [ ] **Commit 49**: Page list component
 - [ ] **Commit 50**: Dashboard home update
 - [ ] **Commit 51**: New page dialog
