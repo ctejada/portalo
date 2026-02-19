@@ -99,6 +99,19 @@ export class PortaloClient {
     return this.request<unknown>("GET", "/account");
   }
 
+  // Domains
+  async listDomains() {
+    return this.request<unknown[]>("GET", "/domains");
+  }
+
+  async addDomain(data: { page_id: string; domain: string }) {
+    return this.request<unknown>("POST", "/domains", data);
+  }
+
+  async removeDomain(domainId: string) {
+    return this.request<void>("DELETE", `/domains/${domainId}`);
+  }
+
   // Analytics
   async getAnalytics(
     pageId: string,

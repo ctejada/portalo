@@ -229,6 +229,42 @@ server.tool(
   }
 );
 
+// list_domains
+server.tool(
+  "list_domains",
+  "List all custom domains linked to your pages",
+  {},
+  async () => {
+    const domains = await client.listDomains();
+    return { content: [{ type: "text", text: JSON.stringify(domains, null, 2) }] };
+  }
+);
+
+// add_domain
+server.tool(
+  "add_domain",
+  "Add a custom domain to a page",
+  {
+    page_id: z.string().uuid().describe("The page to attach the domain to"),
+    domain: z.string().min(1).max(253).describe("The custom domain (e.g. links.example.com)"),
+  },
+  async ({ page_id, domain }) => {
+    const result = await client.addDomain({ page_id, domain });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  }
+);
+
+// remove_domain
+server.tool(
+  "remove_domain",
+  "Remove a custom domain",
+  { domain_id: z.string().uuid().describe("The domain ID to remove") },
+  async ({ domain_id }) => {
+    await client.removeDomain(domain_id);
+    return { content: [{ type: "text", text: "Domain removed successfully" }] };
+  }
+);
+
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
