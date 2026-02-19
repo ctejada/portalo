@@ -6,8 +6,8 @@ import { UserNav } from "./user-nav";
 
 const navGroups = [
   {
-    label: "Pages",
-    items: [{ name: "My Pages", href: "/dashboard" }],
+    label: "Page",
+    items: [{ name: "My Page", href: "/dashboard" }],
   },
   {
     label: "Insights",
@@ -28,7 +28,7 @@ const navGroups = [
 ];
 
 const mobileTabs = [
-  { name: "Pages", href: "/dashboard" },
+  { name: "Page", href: "/dashboard" },
   { name: "Analytics", href: "/dashboard/analytics" },
   { name: "Contacts", href: "/dashboard/contacts" },
   { name: "Settings", href: "/dashboard/settings" },

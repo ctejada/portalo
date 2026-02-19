@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { usePage } from "@/hooks/use-page";
 import { useLinks } from "@/hooks/use-links";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,6 +11,8 @@ import { PhonePreview } from "@/components/dashboard/phone-preview";
 import { PreviewContent } from "@/components/dashboard/preview-content";
 import { ThemePicker } from "@/components/dashboard/theme-picker";
 import type { Link as LinkType, ThemeConfig } from "@portalo/shared";
+
+const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so";
 
 interface PageEditorProps {
   pageId: string;
@@ -101,35 +102,55 @@ export function PageEditor({ pageId }: PageEditorProps) {
     <div className="h-full">
       {/* Header */}
       <div className="flex items-center gap-3 px-6 py-4 border-b border-border-primary">
-        <Link
-          href="/dashboard"
-          className="text-text-secondary hover:text-text-primary text-body"
-        >
-          &larr; Pages
-        </Link>
+        <h1 className="text-body-strong text-text-primary">My Page</h1>
         {page && (
           <>
-            <span className="text-small text-text-tertiary">/ {page.slug}</span>
+            <button
+              onClick={async () => {
+                const res = await fetch(`/api/v1/pages/${pageId}`, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ published: !page.published }),
+                });
+                if (!res.ok) {
+                  showToast("Failed to update", "error");
+                  return;
+                }
+                mutate();
+                showToast(page.published ? "Page unpublished" : "Page published", "success");
+              }}
+              className={`text-tiny font-medium px-2 py-0.5 rounded-full transition-colors ${
+                page.published
+                  ? "bg-success/10 text-success hover:bg-success/20"
+                  : "bg-bg-tertiary text-text-secondary hover:bg-bg-hover"
+              }`}
+            >
+              {page.published ? "Published" : "Draft"}
+            </button>
+
             <div className="ml-auto flex items-center gap-2">
               <a
-                href={`https://${process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so"}/${page.slug}`}
+                href={`https://${APP_DOMAIN}/@${page.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-small text-text-secondary hover:text-text-primary transition-colors"
               >
-                {process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so"}/{page.slug}
+                {APP_DOMAIN}/@{page.slug}
               </a>
               <button
                 onClick={() => {
+                  if (!page.published) return;
                   navigator.clipboard.writeText(
-                    `https://${process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so"}/${page.slug}`
+                    `https://${APP_DOMAIN}/@${page.slug}`
                   );
                   showToast("Link copied!", "success");
                 }}
-                className="p-1 rounded hover:bg-bg-hover text-text-secondary hover:text-text-primary transition-colors"
-                title="Copy link"
+                disabled={!page.published}
+                className="p-2.5 rounded hover:bg-bg-hover text-text-secondary hover:text-text-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                aria-label="Copy public link"
+                title={page.published ? "Copy link" : "Publish your page first"}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                 </svg>
