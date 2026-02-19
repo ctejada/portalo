@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { CreatorPage } from "@/components/public/creator-page";
@@ -26,6 +27,35 @@ async function getPageBySlug(slug: string) {
     .order("position", { ascending: true });
 
   return { page: page as Page, links: (links ?? []) as Link[] };
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const result = await getPageBySlug(slug);
+
+  if (!result) {
+    return { title: "Page Not Found" };
+  }
+
+  const { page } = result;
+  const title = page.title || "Untitled";
+  const description = page.bio || `${title} on Portalo`;
+
+  return {
+    title: `${title} - Portalo`,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "profile",
+      url: `/${page.slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
 }
 
 export default async function PublicPage({ params }: PageProps) {
