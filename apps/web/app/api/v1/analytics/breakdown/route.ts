@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
   const url = new URL(request.url);
   const parsed = analyticsQuerySchema.safeParse({
-    page_id: url.searchParams.get("page_id"),
+    page_id: url.searchParams.get("page_id") || undefined,
     period: url.searchParams.get("period") ?? "7d",
   });
 
@@ -23,18 +23,32 @@ export async function GET(request: NextRequest) {
   const { page_id, period } = parsed.data;
   const supabase = await createClient();
 
-  const { data: page } = await supabase
-    .from("pages")
-    .select("id")
-    .eq("id", page_id)
-    .eq("user_id", auth.userId)
-    .single();
+  // Get page IDs to query
+  let pageIds: string[];
+  if (page_id) {
+    const { data: page } = await supabase
+      .from("pages")
+      .select("id")
+      .eq("id", page_id)
+      .eq("user_id", auth.userId)
+      .single();
+    if (!page) {
+      return Response.json(
+        { error: { code: "not_found", message: "Page not found" } },
+        { status: 404 }
+      );
+    }
+    pageIds = [page_id];
+  } else {
+    const { data: pages } = await supabase
+      .from("pages")
+      .select("id")
+      .eq("user_id", auth.userId);
+    pageIds = (pages ?? []).map((p) => p.id);
+  }
 
-  if (!page) {
-    return Response.json(
-      { error: { code: "not_found", message: "Page not found" } },
-      { status: 404 }
-    );
+  if (pageIds.length === 0) {
+    return Response.json({ data: { referrers: [], countries: [] } });
   }
 
   const days = period === "90d" ? 90 : period === "30d" ? 30 : 7;
@@ -44,7 +58,7 @@ export async function GET(request: NextRequest) {
   const { data: events } = await supabase
     .from("analytics_events")
     .select("referrer, country")
-    .eq("page_id", page_id)
+    .in("page_id", pageIds)
     .gte("created_at", since.toISOString());
 
   const refCounts: Record<string, number> = {};
