@@ -175,7 +175,7 @@ TOTAL:    [█████████           ] 72/160 (45%)
 **Goal**: Public creator pages served, 3 themes working, click tracking
 
 ### Phase 3A: Public API (Commits 73-74)
-- [ ] **Commit 73**: GET /public/page/[slug]
+- [x] **Commit 73**: GET /public/page/[slug]
 - [ ] **Commit 74**: POST /public/track
 
 ### Phase 3B: Public Components (Commits 75-77)
