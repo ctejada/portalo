@@ -51,6 +51,28 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
   const { id } = await params;
   const supabase = await getSupabaseClient(auth.isApiKey);
+
+  // Merge theme colors with existing (don't overwrite the whole theme object)
+  if (parsed.data.theme) {
+    const { data: existing } = await supabase
+      .from("pages")
+      .select("theme")
+      .eq("id", id)
+      .eq("user_id", auth.userId)
+      .single();
+
+    if (existing?.theme) {
+      const prev = existing.theme as Record<string, unknown>;
+      parsed.data.theme = {
+        name: parsed.data.theme.name ?? (prev.name as string) ?? "clean",
+        colors: {
+          ...((prev.colors as Record<string, string>) ?? {}),
+          ...(parsed.data.theme.colors ?? {}),
+        },
+      } as typeof parsed.data.theme;
+    }
+  }
+
   const { data, error } = await supabase
     .from("pages")
     .update(parsed.data)
