@@ -226,7 +226,7 @@ TOTAL:    [███████████         ] 88/160 (55%)
 
 ### Phase 4C: Email Capture (Commits 97-99)
 - [x] **Commit 97**: POST /public/capture
-- [ ] **Commit 98**: Email capture widget
+- [x] **Commit 98**: Email capture widget
 - [ ] **Commit 99**: Add to public page
 
 ### Phase 4D: Contacts (Commits 100-103)
