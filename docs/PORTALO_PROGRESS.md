@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [                    ] 0/34   (0%)
+Sprint 2: [██                  ] 3/34   (9%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████                ] 38/160 (24%)
+TOTAL:    [█████               ] 41/160 (26%)
 ```
 
 ---
@@ -117,9 +117,9 @@ TOTAL:    [████                ] 38/160 (24%)
 **Goal**: Create pages, add/edit/delete/reorder links, live preview
 
 ### Phase 2A: Shared Schemas (Commits 39-41)
-- [ ] **Commit 39**: Page + Link TypeScript interfaces
-- [ ] **Commit 40**: Page Zod schemas
-- [ ] **Commit 41**: Link Zod schemas
+- [x] **Commit 39**: Page + Link TypeScript interfaces
+- [x] **Commit 40**: Page Zod schemas
+- [x] **Commit 41**: Link Zod schemas
 
 ### Phase 2B: Pages API (Commits 42-47)
 - [ ] **Commit 42**: API auth helper
