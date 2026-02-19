@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePage } from "@/hooks/use-page";
+import { useLinks } from "@/hooks/use-links";
 import { Skeleton } from "@/components/ui/skeleton";
 import { showToast } from "@/components/ui/toast";
+import { LinkList } from "@/components/dashboard/link-list";
 
 interface PageEditorProps {
   pageId: string;
@@ -12,6 +14,7 @@ interface PageEditorProps {
 
 export function PageEditor({ pageId }: PageEditorProps) {
   const { page, isLoading, mutate } = usePage(pageId);
+  const { links, isLoading: linksLoading } = useLinks(pageId);
 
   return (
     <div className="h-full">
@@ -48,14 +51,20 @@ export function PageEditor({ pageId }: PageEditorProps) {
                   onSave={() => mutate()}
                 />
 
-                {/* Links section — placeholder for commits 62-69 */}
+                {/* Links section */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-section-title">Links</h2>
                   </div>
-                  <p className="text-small text-text-tertiary">
-                    Links will appear here.
-                  </p>
+                  {linksLoading ? (
+                    <div className="space-y-2">
+                      {[1, 2, 3].map((i) => (
+                        <Skeleton key={i} className="h-14 w-full" />
+                      ))}
+                    </div>
+                  ) : (
+                    <LinkList links={links} />
+                  )}
                 </div>
               </>
             ) : (
