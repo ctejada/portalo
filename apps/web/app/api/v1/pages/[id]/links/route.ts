@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
-import { createClient } from "@/lib/supabase/server";
+import { getSupabaseClient } from "@/lib/supabase/api-client";
 import { createLinkSchema } from "@portalo/shared";
 import { checkLinkLimit } from "@/lib/plan-gate";
 import { invalidatePageCache } from "@/lib/cache";
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest, { params }: Params) {
   if (auth.error) return auth.error;
 
   const { id } = await params;
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
 
   // Verify page belongs to user
   const { data: page } = await supabase
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest, { params }: Params) {
   }
 
   const { id } = await params;
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
 
   // Verify page belongs to user and get slug for cache
   const { data: page } = await supabase

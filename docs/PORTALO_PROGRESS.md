@@ -354,6 +354,14 @@ TOTAL:    [████████████████████] 160/160
 
 ---
 
+## Bug Fixes
+
+| # | Description | Files Changed | Status |
+|---|-------------|---------------|--------|
+| **BF-1** | Fix RLS policy violation when MCP server writes via API key — API routes now use `supabaseAdmin` for API key auth (bypasses RLS since there's no session), while session auth continues using the cookie-based client | `lib/api-auth.ts`, `lib/supabase/api-client.ts` (new), 5 API route files | Complete |
+
+---
+
 ## Recent Activity
 
 | Date | Commit | Description | Status |

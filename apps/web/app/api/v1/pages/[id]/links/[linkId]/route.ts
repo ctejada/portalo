@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
-import { createClient } from "@/lib/supabase/server";
+import { getSupabaseClient } from "@/lib/supabase/api-client";
 import { updateLinkSchema } from "@portalo/shared";
 import { invalidatePageCache } from "@/lib/cache";
 
@@ -27,7 +27,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
   }
 
   const { id, linkId } = await params;
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
 
   // Verify page belongs to user
   const { data: page } = await supabase
@@ -75,7 +75,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
   if (auth.error) return auth.error;
 
   const { id, linkId } = await params;
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
 
   // Verify page belongs to user
   const { data: page } = await supabase

@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
-import { createClient } from "@/lib/supabase/server";
+import { getSupabaseClient } from "@/lib/supabase/api-client";
 import { reorderLinksSchema } from "@portalo/shared";
 
 type Params = { params: Promise<{ id: string }> };
@@ -26,7 +26,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   }
 
   const { id } = await params;
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
 
   // Verify page belongs to user
   const { data: page } = await supabase

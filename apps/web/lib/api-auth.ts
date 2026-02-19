@@ -3,11 +3,13 @@ import type { NextRequest } from "next/server";
 
 interface AuthResult {
   userId: string;
+  isApiKey: boolean;
   error?: never;
 }
 
 interface AuthError {
   userId?: never;
+  isApiKey?: never;
   error: Response;
 }
 
@@ -42,7 +44,7 @@ async function authenticateWithSession(): Promise<AuthResult | AuthError> {
     };
   }
 
-  return { userId: user.id };
+  return { userId: user.id, isApiKey: false };
 }
 
 async function authenticateWithApiKey(
@@ -70,5 +72,5 @@ async function authenticateWithApiKey(
     };
   }
 
-  return { userId: profile.id };
+  return { userId: profile.id, isApiKey: true };
 }

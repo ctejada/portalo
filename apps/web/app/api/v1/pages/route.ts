@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
-import { createClient } from "@/lib/supabase/server";
+import { getSupabaseClient } from "@/lib/supabase/api-client";
 import { createPageSchema } from "@portalo/shared";
 import { checkPageLimit } from "@/lib/plan-gate";
 
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const auth = await getApiUser(request);
   if (auth.error) return auth.error;
 
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
   const { data, error } = await supabase
     .from("pages")
     .select("*")
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
 
   const { data, error } = await supabase
     .from("pages")
