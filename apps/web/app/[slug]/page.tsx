@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { CreatorPage } from "@/components/public/creator-page";
+import { ViewTracker } from "@/components/public/view-tracker";
 import type { Page, Link } from "@portalo/shared";
 
 interface PageProps {
@@ -33,5 +34,10 @@ export default async function PublicPage({ params }: PageProps) {
 
   if (!result) notFound();
 
-  return <CreatorPage page={result.page} links={result.links} />;
+  return (
+    <>
+      <ViewTracker pageId={result.page.id} />
+      <CreatorPage page={result.page} links={result.links} />
+    </>
+  );
 }

@@ -193,8 +193,8 @@ TOTAL:    [█████████           ] 72/160 (45%)
 
 ### Phase 3D: Public Route (Commits 84-86)
 - [x] **Commit 84**: [slug] catch-all route
-- [ ] **Commit 85**: Click tracking
-- [ ] **Commit 86**: View tracking
+- [x] **Commit 85**: Click tracking
+- [x] **Commit 86**: View tracking
 
 ### Phase 3E: SEO (Commits 87-88)
 - [ ] **Commit 87**: Dynamic meta tags
