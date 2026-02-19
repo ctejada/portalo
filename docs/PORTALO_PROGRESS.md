@@ -230,10 +230,10 @@ TOTAL:    [███████████         ] 88/160 (55%)
 - [x] **Commit 99**: Add to public page
 
 ### Phase 4D: Contacts (Commits 100-103)
-- [ ] **Commit 100**: GET /contacts
-- [ ] **Commit 101**: POST /contacts/export
-- [ ] **Commit 102**: Contacts page
-- [ ] **Commit 103**: Export button
+- [x] **Commit 100**: GET /contacts
+- [x] **Commit 101**: POST /contacts/export
+- [x] **Commit 102**: Contacts page
+- [x] **Commit 103**: Export button
 
 ### Phase 4E: API Keys (Commits 104-107)
 - [ ] **Commit 104**: POST /account/api-key
