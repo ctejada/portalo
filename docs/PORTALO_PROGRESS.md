@@ -221,7 +221,7 @@ TOTAL:    [███████████         ] 88/160 (55%)
 - [x] **Commit 92**: Metrics row component
 - [x] **Commit 93**: use-analytics hook
 - [x] **Commit 94**: Recharts chart
-- [ ] **Commit 95**: Top links table
+- [x] **Commit 95**: Top links table
 - [ ] **Commit 96**: Referrers + countries tables
 
 ### Phase 4C: Email Capture (Commits 97-99)
