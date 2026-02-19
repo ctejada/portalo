@@ -1,5 +1,7 @@
 "use client";
 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { Link } from "@portalo/shared";
 
 interface LinkRowProps {
@@ -15,10 +17,37 @@ export function LinkRow({
   onDelete,
   onToggleVisibility,
 }: LinkRowProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: link.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
-    <div className="flex items-center gap-3 py-3 px-2 group hover:bg-bg-secondary">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`flex items-center gap-3 py-3 px-2 group hover:bg-bg-secondary ${
+        isDragging ? "shadow-sm scale-[1.01] bg-bg-secondary z-10 relative" : ""
+      }`}
+    >
       {/* Drag handle */}
-      <span className="text-text-tertiary cursor-grab select-none">⠿</span>
+      <button
+        type="button"
+        className="text-text-tertiary cursor-grab select-none touch-none"
+        {...attributes}
+        {...listeners}
+      >
+        ⠿
+      </button>
 
       {/* Content */}
       <div className="flex-1 min-w-0">
