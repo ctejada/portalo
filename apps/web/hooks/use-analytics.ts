@@ -26,15 +26,18 @@ async function fetcher<T>(url: string): Promise<T> {
   return json.data;
 }
 
-export function useAnalytics(pageId: string, period: "7d" | "30d" | "90d" = "7d") {
+export function useAnalytics(pageId?: string, period: "7d" | "30d" | "90d" = "7d") {
+  const params = new URLSearchParams({ period });
+  if (pageId) params.set("page_id", pageId);
+
   const { data: overview, isLoading: overviewLoading } = useSWR<OverviewData>(
-    pageId ? `/api/v1/analytics/overview?page_id=${pageId}&period=${period}` : null,
+    `/api/v1/analytics/overview?${params}`,
     fetcher,
     { revalidateOnFocus: false, dedupingInterval: 30_000 }
   );
 
   const { data: timeseries, isLoading: timeseriesLoading } = useSWR<TimeseriesPoint[]>(
-    pageId ? `/api/v1/analytics/timeseries?page_id=${pageId}&period=${period}` : null,
+    `/api/v1/analytics/timeseries?${params}`,
     fetcher,
     { revalidateOnFocus: false, dedupingInterval: 30_000 }
   );

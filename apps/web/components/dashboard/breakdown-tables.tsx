@@ -20,13 +20,16 @@ async function fetcher(url: string): Promise<BreakdownData> {
 }
 
 interface BreakdownTablesProps {
-  pageId: string;
+  pageId?: string;
   period: string;
 }
 
 export function BreakdownTables({ pageId, period }: BreakdownTablesProps) {
+  const params = new URLSearchParams({ period });
+  if (pageId) params.set("page_id", pageId);
+
   const { data } = useSWR(
-    pageId ? `/api/v1/analytics/breakdown?page_id=${pageId}&period=${period}` : null,
+    `/api/v1/analytics/breakdown?${params}`,
     fetcher,
     { revalidateOnFocus: false }
   );
