@@ -1,4 +1,5 @@
 import type { Page, Link } from "@portalo/shared";
+import { LinkItem } from "@/components/public/link-item";
 
 interface CreatorPageProps {
   page: Page;
@@ -60,28 +61,13 @@ export function CreatorPage({ page, links }: CreatorPageProps) {
         {/* Links */}
         <div className="space-y-1">
           {links.map((link, index) => (
-            <a
+            <LinkItem
               key={link.id}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`block py-2.5 text-sm transition-colors ${
-                isDark
-                  ? "text-[#D1D5DB] hover:text-white"
-                  : "text-text-primary hover:underline"
-              }`}
-            >
-              {isEditorial ? (
-                <span className="flex items-baseline gap-2">
-                  <span className={isDark ? "text-[#6B7280]" : "text-text-tertiary"}>
-                    {index + 1}.
-                  </span>
-                  {link.title}
-                </span>
-              ) : (
-                <span>&rarr; {link.title}</span>
-              )}
-            </a>
+              link={link}
+              pageId={page.id}
+              index={index}
+              themeName={themeName}
+            />
           ))}
           {links.length === 0 && (
             <p

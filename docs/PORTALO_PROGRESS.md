@@ -180,7 +180,7 @@ TOTAL:    [█████████           ] 72/160 (45%)
 
 ### Phase 3B: Public Components (Commits 75-77)
 - [x] **Commit 75**: creator-page component
-- [ ] **Commit 76**: link-item component
+- [x] **Commit 76**: link-item component
 - [ ] **Commit 77**: powered-by footer
 
 ### Phase 3C: Theme System (Commits 78-83)
