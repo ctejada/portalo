@@ -179,20 +179,41 @@ server.tool(
   }
 );
 
-// update_theme
+// update_page
 server.tool(
-  "update_theme",
-  "Change the theme of a page",
+  "update_page",
+  "Update a page's slug, title, bio, theme, settings, or published status",
   {
     page_id: z.string().uuid().describe("The page ID"),
+    slug: z
+      .string()
+      .min(1)
+      .max(64)
+      .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers, and hyphens only")
+      .optional()
+      .describe("New URL slug"),
+    title: z.string().max(100).optional().describe("New page title"),
+    bio: z.string().max(500).optional().describe("New bio/description"),
     theme: z
       .enum(["clean", "minimal-dark", "editorial"])
+      .optional()
       .describe("Theme name"),
+    published: z.boolean().optional().describe("Whether the page is publicly visible"),
+    show_email_capture: z.boolean().optional().describe("Show email capture widget"),
+    show_powered_by: z.boolean().optional().describe("Show Powered by Portalo footer"),
   },
-  async ({ page_id, theme }) => {
-    const page = await client.updatePage(page_id, {
-      theme: { name: theme },
-    });
+  async ({ page_id, slug, title, bio, theme, published, show_email_capture, show_powered_by }) => {
+    const updates: Record<string, unknown> = {};
+    if (slug !== undefined) updates.slug = slug;
+    if (title !== undefined) updates.title = title;
+    if (bio !== undefined) updates.bio = bio;
+    if (theme !== undefined) updates.theme = { name: theme };
+    if (published !== undefined) updates.published = published;
+    const settings: Record<string, boolean> = {};
+    if (show_email_capture !== undefined) settings.show_email_capture = show_email_capture;
+    if (show_powered_by !== undefined) settings.show_powered_by = show_powered_by;
+    if (Object.keys(settings).length > 0) updates.settings = settings;
+    const page = await client.updatePage(page_id, updates);
     return { content: [{ type: "text", text: JSON.stringify(page, null, 2) }] };
   }
 );
