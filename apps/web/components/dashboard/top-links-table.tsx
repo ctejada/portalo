@@ -13,27 +13,20 @@ async function fetcher(url: string): Promise<TopLink[]> {
   const res = await fetch(url);
   if (!res.ok) return [];
   const json = await res.json();
-  // Links come from the page's links endpoint, sorted by clicks
-  const links = json.data ?? [];
-  return links
-    .map((l: TopLink) => ({
-      id: l.id,
-      title: l.title,
-      url: l.url,
-      clicks: l.clicks,
-    }))
-    .sort((a: TopLink, b: TopLink) => b.clicks - a.clicks)
-    .slice(0, 10);
+  return json.data ?? [];
 }
 
 interface TopLinksTableProps {
-  pageId: string;
+  pageId?: string;
   period: string;
 }
 
-export function TopLinksTable({ pageId }: TopLinksTableProps) {
+export function TopLinksTable({ pageId, period }: TopLinksTableProps) {
+  const params = new URLSearchParams({ period });
+  if (pageId) params.set("page_id", pageId);
+
   const { data: links } = useSWR(
-    pageId ? `/api/v1/pages/${pageId}/links` : null,
+    `/api/v1/analytics/top-links?${params}`,
     fetcher,
     { revalidateOnFocus: false }
   );
