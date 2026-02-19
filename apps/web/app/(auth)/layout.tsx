@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign in - Portalo",
+  description: "Sign in to your Portalo account",
+};
+
 export default function AuthLayout({
   children,
 }: {
