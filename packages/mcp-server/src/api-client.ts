@@ -43,8 +43,16 @@ export class PortaloClient {
     return this.request<unknown>("GET", `/pages/${pageId}`);
   }
 
+  async createPage(data: Record<string, unknown>) {
+    return this.request<unknown>("POST", "/pages", data);
+  }
+
   async updatePage(pageId: string, updates: Record<string, unknown>) {
     return this.request<unknown>("PUT", `/pages/${pageId}`, updates);
+  }
+
+  async deletePage(pageId: string) {
+    return this.request<void>("DELETE", `/pages/${pageId}`);
   }
 
   // Links

@@ -44,6 +44,45 @@ server.tool(
   }
 );
 
+// create_page
+server.tool(
+  "create_page",
+  "Create a new Portalo page with a unique slug",
+  {
+    slug: z
+      .string()
+      .min(1)
+      .max(64)
+      .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers, and hyphens only")
+      .describe("URL slug for the page"),
+    title: z.string().max(100).optional().describe("Page title"),
+    bio: z.string().max(500).optional().describe("Page bio/description"),
+    theme: z
+      .enum(["clean", "minimal-dark", "editorial"])
+      .optional()
+      .describe("Theme name"),
+  },
+  async ({ slug, title, bio, theme }) => {
+    const body: Record<string, unknown> = { slug };
+    if (title !== undefined) body.title = title;
+    if (bio !== undefined) body.bio = bio;
+    if (theme !== undefined) body.theme = { name: theme };
+    const page = await client.createPage(body);
+    return { content: [{ type: "text", text: JSON.stringify(page, null, 2) }] };
+  }
+);
+
+// delete_page
+server.tool(
+  "delete_page",
+  "Permanently delete a page and all its links",
+  { page_id: z.string().uuid().describe("The page ID to delete") },
+  async ({ page_id }) => {
+    await client.deletePage(page_id);
+    return { content: [{ type: "text", text: "Page deleted successfully" }] };
+  }
+);
+
 // add_link
 server.tool(
   "add_link",
