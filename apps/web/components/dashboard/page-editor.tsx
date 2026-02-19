@@ -7,6 +7,7 @@ import { useLinks } from "@/hooks/use-links";
 import { Skeleton } from "@/components/ui/skeleton";
 import { showToast } from "@/components/ui/toast";
 import { LinkList } from "@/components/dashboard/link-list";
+import { LinkForm } from "@/components/dashboard/link-form";
 
 interface PageEditorProps {
   pageId: string;
@@ -80,6 +81,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
                   ) : (
                     <LinkList links={links} onReorder={handleReorder} />
                   )}
+                  <LinkForm pageId={pageId} onAdded={() => mutateLinks()} />
                 </div>
               </>
             ) : (

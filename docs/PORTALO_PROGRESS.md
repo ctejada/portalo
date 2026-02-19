@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [████████████        ] 27/34  (79%)
+Sprint 2: [████████████        ] 28/34  (82%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████████            ] 65/160 (41%)
+TOTAL:    [████████            ] 66/160 (41%)
 ```
 
 ---
@@ -152,7 +152,7 @@ TOTAL:    [████████            ] 65/160 (41%)
 - [x] **Commit 63**: Link row component
 - [x] **Commit 64**: Add @dnd-kit drag-drop
 - [x] **Commit 65**: Wire drag to reorder API
-- [ ] **Commit 66**: Inline link add form
+- [x] **Commit 66**: Inline link add form
 - [ ] **Commit 67**: Link edit in row
 - [ ] **Commit 68**: Link delete
 - [ ] **Commit 69**: Link visibility toggle
