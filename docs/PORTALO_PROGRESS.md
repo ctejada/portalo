@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [█████████████       ] 30/34  (88%)
+Sprint 2: [██████████████      ] 31/34  (91%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████████            ] 68/160 (43%)
+TOTAL:    [████████            ] 69/160 (43%)
 ```
 
 ---
@@ -32,7 +32,7 @@ TOTAL:    [████████            ] 68/160 (43%)
 | **M4: Auth Working** | 1 | 23-31 | [x] Complete | Can sign in/out with Google + Magic Link |
 | **M5: Dashboard Shell** | 1 | 32-38 | [x] Complete | Empty dashboard renders, deploys to CF |
 | **M6: Pages CRUD** | 2 | 39-52 | [x] Complete | Can create/edit/delete pages |
-| **M7: Links CRUD** | 2 | 53-69 | [ ] Not Started | Can add/edit/reorder/delete links |
+| **M7: Links CRUD** | 2 | 53-69 | [x] Complete | Can add/edit/reorder/delete links |
 | **M8: Live Preview** | 2 | 70-72 | [ ] Not Started | Preview updates as you edit |
 | **M9: Public Pages** | 3 | 73-86 | [ ] Not Started | Public pages render with themes |
 | **M10: SEO Ready** | 3 | 87-88 | [ ] Not Started | Meta tags and OG images work |
@@ -155,7 +155,7 @@ TOTAL:    [████████            ] 68/160 (43%)
 - [x] **Commit 66**: Inline link add form
 - [x] **Commit 67**: Link edit in row
 - [x] **Commit 68**: Link delete
-- [ ] **Commit 69**: Link visibility toggle
+- [x] **Commit 69**: Link visibility toggle
 
 ### Phase 2F: Phone Preview (Commits 70-72)
 - [ ] **Commit 70**: Preview frame
@@ -164,8 +164,8 @@ TOTAL:    [████████            ] 68/160 (43%)
 
 **Sprint 2 Completion Criteria**:
 - [x] Can create a new page
-- [ ] Can add/edit/delete links
-- [ ] Can drag-drop reorder links
+- [x] Can add/edit/delete links
+- [x] Can drag-drop reorder links
 - [ ] Preview updates live
 
 ---

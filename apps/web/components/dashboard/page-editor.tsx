@@ -35,6 +35,22 @@ export function PageEditor({ pageId }: PageEditorProps) {
     [pageId, mutateLinks]
   );
 
+  const handleToggleVisibility = useCallback(
+    async (link: LinkType) => {
+      const res = await fetch(`/api/v1/pages/${pageId}/links/${link.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ visible: !link.visible }),
+      });
+      if (!res.ok) {
+        showToast("Failed to update visibility", "error");
+        return;
+      }
+      mutateLinks();
+    },
+    [pageId, mutateLinks]
+  );
+
   const handleReorder = useCallback(
     async (linkIds: string[]) => {
       const res = await fetch(`/api/v1/pages/${pageId}/links/reorder`, {
@@ -103,6 +119,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
                       onReorder={handleReorder}
                       onUpdated={() => mutateLinks()}
                       onDelete={handleDelete}
+                      onToggleVisibility={handleToggleVisibility}
                     />
                   )}
                   <LinkForm pageId={pageId} onAdded={() => mutateLinks()} />
