@@ -1,9 +1,9 @@
 interface PoweredByProps {
   show: boolean;
-  isDark?: boolean;
+  className?: string;
 }
 
-export function PoweredBy({ show, isDark }: PoweredByProps) {
+export function PoweredBy({ show, className }: PoweredByProps) {
   if (!show) return null;
 
   return (
@@ -12,9 +12,7 @@ export function PoweredBy({ show, isDark }: PoweredByProps) {
         href="https://portalo.so"
         target="_blank"
         rel="noopener noreferrer"
-        className={`text-xs ${
-          isDark ? "text-[#4B5563]" : "text-text-tertiary"
-        } hover:underline`}
+        className={`text-xs hover:underline ${className ?? "text-text-tertiary"}`}
       >
         Powered by Portalo
       </a>

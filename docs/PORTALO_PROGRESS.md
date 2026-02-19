@@ -185,7 +185,7 @@ TOTAL:    [█████████           ] 72/160 (45%)
 
 ### Phase 3C: Theme System (Commits 78-83)
 - [x] **Commit 78**: Theme config types
-- [ ] **Commit 79**: "Clean" theme
+- [x] **Commit 79**: "Clean" theme
 - [ ] **Commit 80**: "Minimal Dark" theme
 - [ ] **Commit 81**: "Editorial" theme
 - [ ] **Commit 82**: Theme selector

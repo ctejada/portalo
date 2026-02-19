@@ -1,6 +1,7 @@
 "use client";
 
 import type { Link } from "@portalo/shared";
+import { getTheme } from "@/lib/themes";
 
 interface LinkItemProps {
   link: Link;
@@ -10,11 +11,9 @@ interface LinkItemProps {
 }
 
 export function LinkItem({ link, pageId, index, themeName }: LinkItemProps) {
-  const isDark = themeName === "minimal-dark";
-  const isEditorial = themeName === "editorial";
+  const theme = getTheme(themeName);
 
   function handleClick() {
-    // Non-blocking analytics tracking
     fetch("/api/v1/public/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,22 +32,9 @@ export function LinkItem({ link, pageId, index, themeName }: LinkItemProps) {
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      className={`block py-2.5 text-sm transition-colors ${
-        isDark
-          ? "text-[#D1D5DB] hover:text-white"
-          : "text-text-primary hover:underline"
-      }`}
+      className={`block py-2.5 text-sm transition-colors ${theme.linkText}`}
     >
-      {isEditorial ? (
-        <span className="flex items-baseline gap-2">
-          <span className={isDark ? "text-[#6B7280]" : "text-text-tertiary"}>
-            {index + 1}.
-          </span>
-          {link.title}
-        </span>
-      ) : (
-        <span>&rarr; {link.title}</span>
-      )}
+      <span>{theme.linkPrefix(index)} {link.title}</span>
     </a>
   );
 }
