@@ -189,7 +189,7 @@ TOTAL:    [█████████           ] 72/160 (45%)
 - [x] **Commit 80**: "Minimal Dark" theme
 - [x] **Commit 81**: "Editorial" theme
 - [x] **Commit 82**: Theme selector
-- [ ] **Commit 83**: Wire theme to API
+- [x] **Commit 83**: Wire theme to API
 
 ### Phase 3D: Public Route (Commits 84-86)
 - [ ] **Commit 84**: [slug] catch-all route

@@ -10,7 +10,8 @@ import { LinkList } from "@/components/dashboard/link-list";
 import { LinkForm } from "@/components/dashboard/link-form";
 import { PhonePreview } from "@/components/dashboard/phone-preview";
 import { PreviewContent } from "@/components/dashboard/preview-content";
-import type { Link as LinkType } from "@portalo/shared";
+import { ThemePicker } from "@/components/dashboard/theme-picker";
+import type { Link as LinkType, ThemeConfig } from "@portalo/shared";
 
 interface PageEditorProps {
   pageId: string;
@@ -21,11 +22,13 @@ export function PageEditor({ pageId }: PageEditorProps) {
   const { links, isLoading: linksLoading, mutate: mutateLinks } = useLinks(pageId);
   const [title, setTitle] = useState("");
   const [bio, setBio] = useState("");
+  const [theme, setTheme] = useState<ThemeConfig>({ name: "clean" });
 
   useEffect(() => {
     if (page) {
       setTitle(page.title);
       setBio(page.bio);
+      setTheme(page.theme ?? { name: "clean" });
     }
   }, [page]);
 
@@ -60,6 +63,23 @@ export function PageEditor({ pageId }: PageEditorProps) {
       mutateLinks();
     },
     [pageId, mutateLinks]
+  );
+
+  const handleThemeChange = useCallback(
+    async (newTheme: ThemeConfig) => {
+      setTheme(newTheme);
+      const res = await fetch(`/api/v1/pages/${pageId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ theme: newTheme }),
+      });
+      if (!res.ok) {
+        showToast("Failed to update theme", "error");
+        return;
+      }
+      mutate();
+    },
+    [pageId, mutate]
   );
 
   const handleReorder = useCallback(
@@ -137,6 +157,9 @@ export function PageEditor({ pageId }: PageEditorProps) {
                   )}
                   <LinkForm pageId={pageId} onAdded={() => mutateLinks()} />
                 </div>
+
+                {/* Theme section */}
+                <ThemePicker currentTheme={theme} onChange={handleThemeChange} />
               </>
             ) : (
               <p className="text-body text-text-secondary">Page not found.</p>
@@ -151,6 +174,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
               title={title}
               bio={bio}
               links={links}
+              themeName={theme.name}
             />
           </PhonePreview>
         </div>
