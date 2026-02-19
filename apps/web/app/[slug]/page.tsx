@@ -71,8 +71,27 @@ export default async function PublicPage({ params }: PageProps) {
 
   if (!result) notFound();
 
+  const baseUrl = `https://${process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so"}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    name: result.page.title || "Untitled",
+    description: result.page.bio || undefined,
+    url: `${baseUrl}/${result.page.slug}`,
+    mainEntity: {
+      "@type": "Person",
+      name: result.page.title || "Untitled",
+      url: `${baseUrl}/${result.page.slug}`,
+      sameAs: result.links.map((link) => link.url),
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ViewTracker pageId={result.page.id} />
       <CreatorPage page={result.page} links={result.links} />
     </>
