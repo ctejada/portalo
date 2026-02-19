@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [████████            ] 17/34  (50%)
+Sprint 2: [████████            ] 18/34  (53%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██████              ] 55/160 (34%)
+TOTAL:    [███████             ] 56/160 (35%)
 ```
 
 ---
@@ -140,7 +140,7 @@ TOTAL:    [██████              ] 55/160 (34%)
 - [x] **Commit 53**: GET /pages/[id]/links
 - [x] **Commit 54**: POST /pages/[id]/links
 - [x] **Commit 55**: PUT /pages/[id]/links/[linkId]
-- [ ] **Commit 56**: DELETE /pages/[id]/links/[linkId]
+- [x] **Commit 56**: DELETE /pages/[id]/links/[linkId]
 - [ ] **Commit 57**: PATCH /links/reorder
 
 ### Phase 2E: Page Editor (Commits 58-69)

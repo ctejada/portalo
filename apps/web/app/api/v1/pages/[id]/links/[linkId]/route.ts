@@ -66,3 +66,41 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
   return Response.json({ data });
 }
+
+export async function DELETE(request: NextRequest, { params }: Params) {
+  const auth = await getApiUser(request);
+  if (auth.error) return auth.error;
+
+  const { id, linkId } = await params;
+  const supabase = await createClient();
+
+  // Verify page belongs to user
+  const { data: page } = await supabase
+    .from("pages")
+    .select("id")
+    .eq("id", id)
+    .eq("user_id", auth.userId)
+    .single();
+
+  if (!page) {
+    return Response.json(
+      { error: { code: "not_found", message: "Page not found" } },
+      { status: 404 }
+    );
+  }
+
+  const { error } = await supabase
+    .from("links")
+    .delete()
+    .eq("id", linkId)
+    .eq("page_id", id);
+
+  if (error) {
+    return Response.json(
+      { error: { code: "db_error", message: error.message } },
+      { status: 500 }
+    );
+  }
+
+  return new Response(null, { status: 204 });
+}
