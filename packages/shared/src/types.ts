@@ -22,6 +22,17 @@ export interface Profile {
   updated_at: string;
 }
 
+// Platform identifiers for social links
+export type Platform =
+  | "youtube" | "twitter" | "instagram" | "tiktok"
+  | "github" | "linkedin" | "facebook" | "twitch"
+  | "discord" | "spotify" | "apple-music" | "soundcloud"
+  | "pinterest" | "snapchat" | "reddit" | "telegram"
+  | "whatsapp" | "dribbble";
+
+// Link display modes
+export type DisplayMode = "default" | "featured" | "icon-only";
+
 // Page theme configuration
 export interface ThemeConfig {
   name: "clean" | "minimal-dark" | "editorial";
@@ -34,6 +45,30 @@ export interface PageSettings {
   show_powered_by: boolean;
 }
 
+// Page layout types
+export type SectionType = "header" | "icon-bar" | "links" | "block";
+
+export interface Section {
+  type: SectionType;
+  id?: string; // Only for "block" sections — references a block in blocks[]
+}
+
+export type BlockKind = "spacer" | "divider" | "text";
+
+export interface BlockConfig {
+  id: string;
+  kind: BlockKind;
+  props: {
+    height?: number; // spacer: height in px (8-96)
+    text?: string;   // text block: plain text content
+  };
+}
+
+export interface PageLayout {
+  sections: Section[];
+  blocks: BlockConfig[];
+}
+
 // Page type
 export interface Page {
   id: string;
@@ -43,6 +78,7 @@ export interface Page {
   bio: string;
   theme: ThemeConfig;
   settings: PageSettings;
+  layout: PageLayout | null;
   published: boolean;
   views_count: number;
   created_at: string;
@@ -56,6 +92,8 @@ export interface Link {
   url: string;
   title: string;
   thumbnail_url: string | null;
+  platform: Platform | null;
+  display_mode: DisplayMode;
   position: number;
   visible: boolean;
   schedule_start: string | null;

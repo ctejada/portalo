@@ -77,6 +77,27 @@ export function planFromStripePrice(priceId: string): Plan | null {
 export const THEME_NAMES = ["clean", "minimal-dark", "editorial"] as const;
 export type ThemeName = (typeof THEME_NAMES)[number];
 
+// Supported platforms for social link detection
+export const PLATFORMS = [
+  "youtube", "twitter", "instagram", "tiktok",
+  "github", "linkedin", "facebook", "twitch",
+  "discord", "spotify", "apple-music", "soundcloud",
+  "pinterest", "snapchat", "reddit", "telegram",
+  "whatsapp", "dribbble",
+] as const;
+
+// Link display modes
+export const DISPLAY_MODES = ["default", "featured", "icon-only"] as const;
+
+// Default page layout (used when layout column is NULL)
+export const DEFAULT_LAYOUT = {
+  sections: [
+    { type: "header" as const },
+    { type: "links" as const },
+  ],
+  blocks: [] as const,
+};
+
 // API versioning
 export const API_VERSION = "v1";
 export const API_BASE_PATH = `/api/${API_VERSION}`;

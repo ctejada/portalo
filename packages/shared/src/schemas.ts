@@ -19,6 +19,18 @@ export const usernameSchema = z
   .max(32)
   .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers, and hyphens only");
 
+// Platform enum
+export const platformSchema = z.enum([
+  "youtube", "twitter", "instagram", "tiktok",
+  "github", "linkedin", "facebook", "twitch",
+  "discord", "spotify", "apple-music", "soundcloud",
+  "pinterest", "snapchat", "reddit", "telegram",
+  "whatsapp", "dribbble",
+]);
+
+// Display mode enum
+export const displayModeSchema = z.enum(["default", "featured", "icon-only"]);
+
 // Theme schema
 export const themeSchema = z.object({
   name: z.enum(["clean", "minimal-dark", "editorial"]).default("clean"),
@@ -29,6 +41,28 @@ export const themeSchema = z.object({
 export const pageSettingsSchema = z.object({
   show_email_capture: z.boolean().default(true),
   show_powered_by: z.boolean().default(true),
+});
+
+// Section schema
+export const sectionSchema = z.object({
+  type: z.enum(["header", "icon-bar", "links", "block"]),
+  id: z.string().optional(),
+});
+
+// Block config schema
+export const blockConfigSchema = z.object({
+  id: z.string().min(1),
+  kind: z.enum(["spacer", "divider", "text"]),
+  props: z.object({
+    height: z.number().int().min(8).max(96).optional(),
+    text: z.string().max(500).optional(),
+  }),
+});
+
+// Page layout schema
+export const pageLayoutSchema = z.object({
+  sections: z.array(sectionSchema).min(1).max(20),
+  blocks: z.array(blockConfigSchema).max(10),
 });
 
 // Create page schema
@@ -47,6 +81,7 @@ export const updatePageSchema = z.object({
   bio: z.string().max(500).optional(),
   theme: themeSchema.optional(),
   settings: pageSettingsSchema.partial().optional(),
+  layout: pageLayoutSchema.optional(),
   published: z.boolean().optional(),
 });
 
@@ -55,6 +90,8 @@ export const createLinkSchema = z.object({
   url: z.string().url("Must be a valid URL"),
   title: z.string().min(1).max(100),
   thumbnail_url: z.string().url().optional(),
+  platform: platformSchema.nullable().optional(),
+  display_mode: displayModeSchema.optional().default("default"),
   position: z.number().int().min(0).optional(),
   visible: z.boolean().optional().default(true),
   schedule_start: z.string().datetime().optional(),
@@ -66,6 +103,8 @@ export const updateLinkSchema = z.object({
   url: z.string().url("Must be a valid URL").optional(),
   title: z.string().min(1).max(100).optional(),
   thumbnail_url: z.string().url().nullable().optional(),
+  platform: platformSchema.nullable().optional(),
+  display_mode: displayModeSchema.optional(),
   position: z.number().int().min(0).optional(),
   visible: z.boolean().optional(),
   schedule_start: z.string().datetime().nullable().optional(),
@@ -124,3 +163,5 @@ export type EmailCaptureInput = z.infer<typeof emailCaptureSchema>;
 export type UsernameInput = z.infer<typeof usernameSchema>;
 export type AnalyticsQueryInput = z.infer<typeof analyticsQuerySchema>;
 export type TrackEventInput = z.infer<typeof trackEventSchema>;
+export type PageLayoutInput = z.infer<typeof pageLayoutSchema>;
+export type BlockConfigInput = z.infer<typeof blockConfigSchema>;
