@@ -2,8 +2,8 @@
 
 **Project**: Portalo Link-in-Bio Platform
 **Timeline**: 12 Weeks (6 Sprints) + Ongoing Improvements
-**Total Commits**: 171
-**Status**: Complete
+**Total Commits**: 183
+**Status**: In Progress
 
 ---
 
@@ -18,8 +18,9 @@ Sprint 5: [████████████████████] 29/29  
 Sprint 6: [████████████████████] 21/21  (100%) ✓
 Sprint 7: [████████████████████] 8/8    (100%) ✓
 Sprint 8: [████████████████████] 3/3    (100%) ✓
+Sprint 9: [██                  ] 1/12   (8%)
 ─────────────────────────────────────────
-TOTAL:    [████████████████████] 171/171 (100%) ✓
+TOTAL:    [████████████████████] 172/183 (94%)
 ```
 
 ---
@@ -50,6 +51,7 @@ TOTAL:    [████████████████████] 171/171
 | **M20: Launch Ready** | 6 | 153-160 | [x] Complete | Landing page, Lighthouse >90 |
 | **M21: MCP Feature Improvements** | 7 | 161-168 | [x] Complete | 15 MCP tools, page CRUD via MCP |
 | **M22: Copy Link UX** | 8 | 169-171 | [x] Complete | Users can see and copy their public page URL |
+| **M23: Username URLs + Analytics** | 9 | 172-183 | [ ] In Progress | @username URLs, fixed analytics, simplified dashboard |
 
 ---
 
@@ -405,6 +407,50 @@ TOTAL:    [████████████████████] 171/171
 - [x] Copy button copies `https://portalo.so/{slug}` to clipboard
 - [x] Toast confirms "Link copied!"
 - [x] pnpm build passes
+
+---
+
+## Sprint 9: Username URLs + Analytics Overhaul
+
+**Goal**: Replace slug-based URLs with `@username` identity URLs, fix broken analytics counters, add aggregate analytics, simplify dashboard to single-page model
+
+### Phase 9A: Documentation (Commit 172)
+- [x] **Commit 172**: Add Sprint 9 to progress docs
+
+### Phase 9B: Database + Types (Commit 173)
+- [ ] **Commit 173**: Migration: add username to profiles + counter trigger + type/schema updates
+
+### Phase 9C: Middleware + Public Route (Commit 174)
+- [ ] **Commit 174**: Middleware @username rewrite + update public route lookup
+
+### Phase 9D: Account API + Username Setup (Commits 175-176)
+- [ ] **Commit 175**: Account API: username support + username-check endpoint
+- [ ] **Commit 176**: Username setup dialog (dismissible) + nudge banner
+
+### Phase 9E: Analytics Counters Fix (Commit 177)
+- [ ] **Commit 177**: Fix TopLinksTable: new top-links analytics endpoint
+
+### Phase 9F: Aggregate Analytics (Commits 178-179)
+- [ ] **Commit 178**: Aggregate analytics: modify overview/timeseries/breakdown endpoints
+- [ ] **Commit 179**: Update analytics hook + dashboard (remove page selector, keep period)
+
+### Phase 9G: Dashboard Simplification (Commits 180-183)
+- [ ] **Commit 180**: Dashboard goes straight to editor (username setup if needed)
+- [ ] **Commit 181**: Editor: published toggle, @username URL, sidebar labels, accessibility
+- [ ] **Commit 182**: Settings: username field with change warning
+- [ ] **Commit 183**: Seed data update + pnpm build verification
+
+**Sprint 9 Completion Criteria**:
+- [ ] Public URLs use `portalo.so/@username` format
+- [ ] Old `/slug` URLs 301-redirect to `/@username`
+- [ ] `views_count` and `clicks` counters auto-increment via SQL trigger
+- [ ] Analytics dashboard shows aggregate view (all pages)
+- [ ] Period selector (7d/30d/90d) retained
+- [ ] TopLinksTable shows period-aware click counts
+- [ ] Dashboard goes straight to editor (no page list)
+- [ ] Username setup dialog with live availability check
+- [ ] Published toggle visible in editor header
+- [ ] pnpm build passes
 
 ---
 
