@@ -2,7 +2,7 @@
 
 **Project**: Portalo Link-in-Bio Platform
 **Timeline**: 12 Weeks (6 Sprints) + Ongoing Improvements
-**Total Commits**: 168
+**Total Commits**: 171
 **Status**: Complete
 
 ---
@@ -17,8 +17,9 @@ Sprint 4: [████████████████████] 22/22  
 Sprint 5: [████████████████████] 29/29  (100%) ✓
 Sprint 6: [████████████████████] 21/21  (100%) ✓
 Sprint 7: [████████████████████] 8/8    (100%) ✓
+Sprint 8: [████████████████████] 3/3    (100%) ✓
 ─────────────────────────────────────────
-TOTAL:    [████████████████████] 168/168 (100%) ✓
+TOTAL:    [████████████████████] 171/171 (100%) ✓
 ```
 
 ---
@@ -48,6 +49,7 @@ TOTAL:    [████████████████████] 168/168
 | **M19: E2E Tests** | 6 | 148-152 | [x] Complete | Critical paths tested |
 | **M20: Launch Ready** | 6 | 153-160 | [x] Complete | Landing page, Lighthouse >90 |
 | **M21: MCP Feature Improvements** | 7 | 161-168 | [x] Complete | 15 MCP tools, page CRUD via MCP |
+| **M22: Copy Link UX** | 8 | 169-171 | [x] Complete | Users can see and copy their public page URL |
 
 ---
 
@@ -382,6 +384,26 @@ TOTAL:    [████████████████████] 168/168
 - [x] Domain management via MCP
 - [x] reorder_links bug fixed
 - [x] Domain RLS bug fixed
+- [x] pnpm build passes
+
+---
+
+## Sprint 8: Copy Link UX
+
+**Goal**: Show users their public page URL with copy-to-clipboard throughout the dashboard
+
+### Phase 8A: Documentation (Commit 169)
+- [x] **Commit 169**: Add Sprint 8 to progress docs
+
+### Phase 8B: Copy Link Feature (Commits 170-171)
+- [x] **Commit 170**: Add full URL display + copy button to page editor header
+- [x] **Commit 171**: Add full URL + copy/external-link buttons to page list rows
+
+**Sprint 8 Completion Criteria**:
+- [x] Page editor header shows `portalo.so/{slug}` with copy button
+- [x] Page list rows show full URL with copy and external link buttons
+- [x] Copy button copies `https://portalo.so/{slug}` to clipboard
+- [x] Toast confirms "Link copied!"
 - [x] pnpm build passes
 
 ---

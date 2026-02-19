@@ -108,7 +108,34 @@ export function PageEditor({ pageId }: PageEditorProps) {
           &larr; Pages
         </Link>
         {page && (
-          <span className="text-small text-text-tertiary">/ {page.slug}</span>
+          <>
+            <span className="text-small text-text-tertiary">/ {page.slug}</span>
+            <div className="ml-auto flex items-center gap-2">
+              <a
+                href={`https://${process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so"}/${page.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-small text-text-secondary hover:text-text-primary transition-colors"
+              >
+                {process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so"}/{page.slug}
+              </a>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://${process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so"}/${page.slug}`
+                  );
+                  showToast("Link copied!", "success");
+                }}
+                className="p-1 rounded hover:bg-bg-hover text-text-secondary hover:text-text-primary transition-colors"
+                title="Copy link"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+              </button>
+            </div>
+          </>
         )}
       </div>
 

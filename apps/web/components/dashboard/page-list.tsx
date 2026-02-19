@@ -3,6 +3,9 @@
 import Link from "next/link";
 import type { Page } from "@portalo/shared";
 import { Badge } from "@/components/ui";
+import { showToast } from "@/components/ui/toast";
+
+const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so";
 
 interface PageListProps {
   pages: Page[];
@@ -19,6 +22,8 @@ export function PageList({ pages }: PageListProps) {
 }
 
 function PageRow({ page }: { page: Page }) {
+  const publicUrl = `https://${APP_DOMAIN}/${page.slug}`;
+
   return (
     <Link
       href={`/dashboard/pages/${page.id}`}
@@ -28,8 +33,37 @@ function PageRow({ page }: { page: Page }) {
         <p className="text-body-strong truncate">
           {page.title || page.slug}
         </p>
-        <p className="text-small text-text-tertiary mt-0.5">
-          /{page.slug}
+        <p className="text-small text-text-tertiary mt-0.5 flex items-center gap-1.5">
+          <span>{APP_DOMAIN}/{page.slug}</span>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              navigator.clipboard.writeText(publicUrl);
+              showToast("Link copied!", "success");
+            }}
+            className="p-0.5 rounded hover:bg-bg-active text-text-tertiary hover:text-text-primary transition-colors"
+            title="Copy link"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
+          </button>
+          <a
+            href={publicUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="p-0.5 rounded hover:bg-bg-active text-text-tertiary hover:text-text-primary transition-colors"
+            title="Open page"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          </a>
         </p>
       </div>
 
