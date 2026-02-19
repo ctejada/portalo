@@ -225,7 +225,7 @@ TOTAL:    [███████████         ] 88/160 (55%)
 - [x] **Commit 96**: Referrers + countries tables
 
 ### Phase 4C: Email Capture (Commits 97-99)
-- [ ] **Commit 97**: POST /public/capture
+- [x] **Commit 97**: POST /public/capture
 - [ ] **Commit 98**: Email capture widget
 - [ ] **Commit 99**: Add to public page
 
