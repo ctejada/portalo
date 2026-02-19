@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
 import { createClient } from "@/lib/supabase/server";
-import { createPageSchema, PLANS } from "@portalo/shared";
-import type { Plan } from "@portalo/shared";
+import { createPageSchema } from "@portalo/shared";
+import { checkPageLimit } from "@/lib/plan-gate";
 
 export async function GET(request: NextRequest) {
   const auth = await getApiUser(request);
@@ -45,34 +45,20 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const supabase = await createClient();
-
-  // Check plan page limit
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("plan")
-    .eq("id", auth.userId)
-    .single();
-
-  const plan = (profile?.plan ?? "free") as Plan;
-  const limit = PLANS[plan].limits.pages;
-
-  const { count } = await supabase
-    .from("pages")
-    .select("*", { count: "exact", head: true })
-    .eq("user_id", auth.userId);
-
-  if ((count ?? 0) >= limit) {
+  const gate = await checkPageLimit(auth.userId);
+  if (!gate.allowed) {
     return Response.json(
       {
         error: {
           code: "plan_limit",
-          message: `Your ${plan} plan allows ${limit} page${limit === 1 ? "" : "s"}. Upgrade to create more.`,
+          message: `Your ${gate.plan} plan allows ${gate.limit} page${gate.limit === 1 ? "" : "s"}. Upgrade to create more.`,
         },
       },
       { status: 403 }
     );
   }
+
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("pages")
