@@ -176,7 +176,7 @@ TOTAL:    [█████████           ] 72/160 (45%)
 
 ### Phase 3A: Public API (Commits 73-74)
 - [x] **Commit 73**: GET /public/page/[slug]
-- [ ] **Commit 74**: POST /public/track
+- [x] **Commit 74**: POST /public/track
 
 ### Phase 3B: Public Components (Commits 75-77)
 - [ ] **Commit 75**: creator-page component
