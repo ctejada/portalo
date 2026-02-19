@@ -36,12 +36,12 @@ TOTAL:    [█████████████████   ] 139/160 (87%)
 | **M8: Live Preview** | 2 | 70-72 | [x] Complete | Preview updates as you edit |
 | **M9: Public Pages** | 3 | 73-86 | [x] Complete | Public pages render with themes |
 | **M10: SEO Ready** | 3 | 87-88 | [x] Complete | Meta tags and OG images work |
-| **M11: Analytics** | 4 | 89-96 | [ ] Not Started | Analytics dashboard functional |
-| **M12: Email Capture** | 4 | 97-103 | [ ] Not Started | Email capture + contacts export |
-| **M13: API Keys** | 4 | 104-110 | [ ] Not Started | API key auth working |
-| **M14: Billing** | 5 | 111-123 | [ ] Not Started | Stripe checkout + plan gating |
-| **M15: Custom Domains** | 5 | 124-128 | [ ] Not Started | Domain verification working |
-| **M16: MCP Server** | 5 | 129-139 | [ ] Not Started | MCP server published to npm |
+| **M11: Analytics** | 4 | 89-96 | [x] Complete | Analytics dashboard functional |
+| **M12: Email Capture** | 4 | 97-103 | [x] Complete | Email capture + contacts export |
+| **M13: API Keys** | 4 | 104-110 | [x] Complete | API key auth working |
+| **M14: Billing** | 5 | 111-123 | [x] Complete | Stripe checkout + plan gating |
+| **M15: Custom Domains** | 5 | 124-128 | [x] Complete | Domain verification working |
+| **M16: MCP Server** | 5 | 129-139 | [x] Complete | MCP server published to npm |
 | **M17: PWA Ready** | 6 | 140-141 | [ ] Not Started | Installable PWA |
 | **M18: Edge Caching** | 6 | 142-147 | [ ] Not Started | Pages cached at CF edge |
 | **M19: E2E Tests** | 6 | 148-152 | [ ] Not Started | Critical paths tested |
