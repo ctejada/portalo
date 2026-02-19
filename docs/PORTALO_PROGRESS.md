@@ -13,11 +13,11 @@
 Sprint 1: [████████████████████] 38/38  (100%) ✓
 Sprint 2: [████████████████████] 34/34  (100%) ✓
 Sprint 3: [████████████████████] 16/16  (100%) ✓
-Sprint 4: [                    ] 0/22   (0%)
+Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [███████████         ] 88/160 (55%)
+TOTAL:    [██████████████      ] 110/160 (69%)
 ```
 
 ---
@@ -242,15 +242,15 @@ TOTAL:    [███████████         ] 88/160 (55%)
 - [x] **Commit 107**: API settings page
 
 ### Phase 4F: Settings (Commits 108-110)
-- [ ] **Commit 108**: Settings profile page
-- [ ] **Commit 109**: GET /account
-- [ ] **Commit 110**: Avatar upload
+- [x] **Commit 108**: Settings profile page
+- [x] **Commit 109**: GET /account
+- [x] **Commit 110**: Avatar upload
 
 **Sprint 4 Completion Criteria**:
-- [ ] Analytics dashboard shows data
-- [ ] Email capture works on public pages
-- [ ] Can export contacts as CSV
-- [ ] API key authentication works
+- [x] Analytics dashboard shows data
+- [x] Email capture works on public pages
+- [x] Can export contacts as CSV
+- [x] API key authentication works
 
 ---
 
