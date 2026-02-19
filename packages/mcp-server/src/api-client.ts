@@ -79,10 +79,11 @@ export class PortaloClient {
   }
 
   async reorderLinks(pageId: string, linkIds: string[]) {
-    return this.request<unknown>("PATCH", `/links/reorder`, {
-      page_id: pageId,
-      link_ids: linkIds,
-    });
+    return this.request<unknown>(
+      "PATCH",
+      `/pages/${pageId}/links/reorder`,
+      { link_ids: linkIds }
+    );
   }
 
   // Analytics
