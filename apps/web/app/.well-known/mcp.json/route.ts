@@ -15,13 +15,19 @@ export async function GET() {
     tools: [
       "list_pages",
       "get_page",
+      "create_page",
+      "update_page",
+      "delete_page",
       "add_link",
       "update_link",
       "remove_link",
       "reorder_links",
       "get_analytics",
       "export_contacts",
-      "update_theme",
+      "get_account",
+      "list_domains",
+      "add_domain",
+      "remove_domain",
     ],
   });
 }
