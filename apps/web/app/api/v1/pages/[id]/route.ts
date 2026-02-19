@@ -79,3 +79,25 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
   return Response.json({ data });
 }
+
+export async function DELETE(request: NextRequest, { params }: Params) {
+  const auth = await getApiUser(request);
+  if (auth.error) return auth.error;
+
+  const { id } = await params;
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("pages")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", auth.userId);
+
+  if (error) {
+    return Response.json(
+      { error: { code: "db_error", message: error.message } },
+      { status: 500 }
+    );
+  }
+
+  return new Response(null, { status: 204 });
+}
