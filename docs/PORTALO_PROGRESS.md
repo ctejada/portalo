@@ -15,9 +15,9 @@ Sprint 2: [████████████████████] 34/34  
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [█████               ] 6/21   (29%)
+Sprint 6: [██████              ] 7/21   (33%)
 ─────────────────────────────────────────
-TOTAL:    [██████████████████  ] 145/160 (91%)
+TOTAL:    [██████████████████  ] 146/160 (91%)
 ```
 
 ---
@@ -321,7 +321,7 @@ TOTAL:    [██████████████████  ] 145/160 (91
 ### Phase 6C: Edge Caching (Commits 144-147)
 - [x] **Commit 144**: CF Worker renderer
 - [x] **Commit 145**: R2 cache write
-- [ ] **Commit 146**: Cache invalidation
+- [x] **Commit 146**: Cache invalidation
 - [ ] **Commit 147**: Invalidate on save
 
 ### Phase 6D: Error Tracking (Commit 148)

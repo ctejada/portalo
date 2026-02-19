@@ -8,3 +8,24 @@ export const CACHE_HEADERS = {
 export function getCacheKey(slug: string): string {
   return `page:${slug}`;
 }
+
+export async function invalidatePageCache(slug: string): Promise<void> {
+  const zoneId = process.env.CLOUDFLARE_ZONE_ID;
+  const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+  if (!zoneId || !apiToken) return;
+
+  const domain = process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so";
+  await fetch(
+    `https://api.cloudflare.com/client/v4/zones/${zoneId}/purge_cache`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        files: [`https://${domain}/api/v1/public/page/${slug}`],
+      }),
+    }
+  ).catch(() => {});
+}
