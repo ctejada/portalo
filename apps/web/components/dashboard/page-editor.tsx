@@ -1,12 +1,18 @@
 "use client";
 
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePage } from "@/hooks/use-page";
+import { Skeleton } from "@/components/ui/skeleton";
+import { showToast } from "@/components/ui/toast";
 
 interface PageEditorProps {
   pageId: string;
 }
 
-export function PageEditor({ pageId: _pageId }: PageEditorProps) {
+export function PageEditor({ pageId }: PageEditorProps) {
+  const { page, isLoading, mutate } = usePage(pageId);
+
   return (
     <div className="h-full">
       {/* Header */}
@@ -17,6 +23,9 @@ export function PageEditor({ pageId: _pageId }: PageEditorProps) {
         >
           &larr; Pages
         </Link>
+        {page && (
+          <span className="text-small text-text-tertiary">/ {page.slug}</span>
+        )}
       </div>
 
       {/* Split view */}
@@ -24,25 +33,34 @@ export function PageEditor({ pageId: _pageId }: PageEditorProps) {
         {/* Editor panel (60%) */}
         <div className="w-3/5 overflow-y-auto p-6 border-r border-border-primary">
           <div className="max-w-xl mx-auto space-y-8">
-            {/* Title/bio section — placeholder for commit 61 */}
-            <div className="space-y-4">
-              <div className="h-10 text-text-tertiary text-page-title">
-                Page editor
+            {isLoading ? (
+              <div className="space-y-4">
+                <Skeleton className="h-10 w-3/4" />
+                <Skeleton className="h-20 w-full" />
               </div>
-              <p className="text-body text-text-secondary">
-                Editor content will be wired in upcoming commits.
-              </p>
-            </div>
+            ) : page ? (
+              <>
+                {/* Title/bio inline edit */}
+                <InlineFields
+                  pageId={pageId}
+                  initialTitle={page.title}
+                  initialBio={page.bio}
+                  onSave={() => mutate()}
+                />
 
-            {/* Links section — placeholder for commits 62-69 */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-section-title">Links</h2>
-              </div>
-              <p className="text-small text-text-tertiary">
-                Links will appear here.
-              </p>
-            </div>
+                {/* Links section — placeholder for commits 62-69 */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-section-title">Links</h2>
+                  </div>
+                  <p className="text-small text-text-tertiary">
+                    Links will appear here.
+                  </p>
+                </div>
+              </>
+            ) : (
+              <p className="text-body text-text-secondary">Page not found.</p>
+            )}
           </div>
         </div>
 
@@ -55,6 +73,77 @@ export function PageEditor({ pageId: _pageId }: PageEditorProps) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function InlineFields({
+  pageId,
+  initialTitle,
+  initialBio,
+  onSave,
+}: {
+  pageId: string;
+  initialTitle: string;
+  initialBio: string;
+  onSave: () => void;
+}) {
+  const [title, setTitle] = useState(initialTitle);
+  const [bio, setBio] = useState(initialBio);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const save = useCallback(
+    async (fields: { title?: string; bio?: string }) => {
+      const res = await fetch(`/api/v1/pages/${pageId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fields),
+      });
+      if (!res.ok) {
+        showToast("Failed to save", "error");
+        return;
+      }
+      onSave();
+    },
+    [pageId, onSave]
+  );
+
+  const debouncedSave = useCallback(
+    (fields: { title?: string; bio?: string }) => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => save(fields), 500);
+    },
+    [save]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  return (
+    <div className="space-y-3">
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => {
+          setTitle(e.target.value);
+          debouncedSave({ title: e.target.value, bio });
+        }}
+        placeholder="Page title"
+        className="w-full bg-transparent text-page-title text-text-primary placeholder:text-text-tertiary focus:outline-none"
+      />
+      <textarea
+        value={bio}
+        onChange={(e) => {
+          setBio(e.target.value);
+          debouncedSave({ title, bio: e.target.value });
+        }}
+        placeholder="Write a short bio..."
+        rows={3}
+        className="w-full bg-transparent text-body text-text-primary placeholder:text-text-tertiary focus:outline-none resize-none"
+      />
     </div>
   );
 }
