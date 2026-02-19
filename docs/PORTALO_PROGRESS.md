@@ -236,10 +236,10 @@ TOTAL:    [███████████         ] 88/160 (55%)
 - [x] **Commit 103**: Export button
 
 ### Phase 4E: API Keys (Commits 104-107)
-- [ ] **Commit 104**: POST /account/api-key
-- [ ] **Commit 105**: API key auth support
-- [ ] **Commit 106**: Rate limiting
-- [ ] **Commit 107**: API settings page
+- [x] **Commit 104**: POST /account/api-key
+- [x] **Commit 105**: API key auth support
+- [x] **Commit 106**: Rate limiting
+- [x] **Commit 107**: API settings page
 
 ### Phase 4F: Settings (Commits 108-110)
 - [ ] **Commit 108**: Settings profile page
