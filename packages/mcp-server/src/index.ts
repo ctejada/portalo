@@ -17,7 +17,7 @@ const client = new PortaloClient(baseUrl, apiKey);
 
 const server = new McpServer({
   name: "portalo",
-  version: "0.2.0",
+  version: "0.3.0",
 });
 
 // list_pages

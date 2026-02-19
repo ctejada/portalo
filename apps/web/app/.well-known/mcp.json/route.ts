@@ -28,6 +28,11 @@ export async function GET() {
       "list_domains",
       "add_domain",
       "remove_domain",
+      "update_design",
+      "set_layout",
+      "add_block",
+      "remove_block",
+      "set_link_display",
     ],
   });
 }
