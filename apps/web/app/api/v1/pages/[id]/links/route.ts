@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
 import { createClient } from "@/lib/supabase/server";
-import { createLinkSchema, PLANS } from "@portalo/shared";
-import type { Plan } from "@portalo/shared";
+import { createLinkSchema } from "@portalo/shared";
+import { checkLinkLimit } from "@/lib/plan-gate";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -83,26 +83,13 @@ export async function POST(request: NextRequest, { params }: Params) {
   }
 
   // Check plan link limit
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("plan")
-    .eq("id", auth.userId)
-    .single();
-
-  const plan = (profile?.plan ?? "free") as Plan;
-  const limit = PLANS[plan].limits.links_per_page;
-
-  const { count } = await supabase
-    .from("links")
-    .select("*", { count: "exact", head: true })
-    .eq("page_id", id);
-
-  if ((count ?? 0) >= limit) {
+  const gate = await checkLinkLimit(auth.userId, id);
+  if (!gate.allowed) {
     return Response.json(
       {
         error: {
           code: "plan_limit",
-          message: `Your ${plan} plan allows ${limit} links per page. Upgrade to add more.`,
+          message: `Your ${gate.plan} plan allows ${gate.limit} links per page. Upgrade to add more.`,
         },
       },
       { status: 403 }
@@ -110,7 +97,7 @@ export async function POST(request: NextRequest, { params }: Params) {
   }
 
   // Auto-assign position to end of list
-  const position = parsed.data.position ?? (count ?? 0);
+  const position = parsed.data.position ?? gate.current;
 
   const { data, error } = await supabase
     .from("links")
