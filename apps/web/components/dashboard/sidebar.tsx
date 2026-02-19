@@ -20,7 +20,7 @@ const navGroups = [
     label: "Settings",
     items: [
       { name: "Profile", href: "/dashboard/settings" },
-      { name: "Billing", href: "/dashboard/billing" },
+      { name: "Billing", href: "/dashboard/settings/billing" },
       { name: "API Keys", href: "/dashboard/settings/api" },
     ],
   },
