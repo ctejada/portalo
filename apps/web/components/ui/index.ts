@@ -9,5 +9,6 @@ export {
   SkeletonAvatar,
   SkeletonCard,
 } from "./skeleton";
+export { Dialog, DialogTitle } from "./dialog";
 export { ToastProvider } from "./toast-provider";
 export { showToast, toast } from "./toast";

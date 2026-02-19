@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [█████               ] 12/34  (35%)
+Sprint 2: [██████              ] 13/34  (38%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██████              ] 50/160 (31%)
+TOTAL:    [██████              ] 51/160 (32%)
 ```
 
 ---
@@ -133,7 +133,7 @@ TOTAL:    [██████              ] 50/160 (31%)
 - [x] **Commit 48**: use-pages hook
 - [x] **Commit 49**: Page list component
 - [x] **Commit 50**: Dashboard home update
-- [ ] **Commit 51**: New page dialog
+- [x] **Commit 51**: New page dialog
 - [ ] **Commit 52**: Wire "+ New page" button
 
 ### Phase 2D: Links API (Commits 53-57)
