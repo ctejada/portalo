@@ -61,7 +61,12 @@ export function LinkRow({
           <p className="text-body font-medium text-text-primary truncate">
             {link.title}
           </p>
-          <p className="text-small text-text-secondary truncate">{link.url}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-small text-text-secondary truncate">{link.url}</p>
+            {(link.schedule_start || link.schedule_end) && (
+              <span className="text-tiny text-warning shrink-0">Scheduled</span>
+            )}
+          </div>
         </div>
 
         {/* Click count */}
@@ -127,6 +132,12 @@ function InlineEditForm({
 }) {
   const [title, setTitle] = useState(link.title);
   const [url, setUrl] = useState(link.url);
+  const [scheduleStart, setScheduleStart] = useState(
+    link.schedule_start ? link.schedule_start.slice(0, 16) : ""
+  );
+  const [scheduleEnd, setScheduleEnd] = useState(
+    link.schedule_end ? link.schedule_end.slice(0, 16) : ""
+  );
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -136,7 +147,12 @@ function InlineEditForm({
     const res = await fetch(`/api/v1/pages/${pageId}/links/${link.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, url }),
+      body: JSON.stringify({
+        title,
+        url,
+        schedule_start: scheduleStart ? new Date(scheduleStart).toISOString() : null,
+        schedule_end: scheduleEnd ? new Date(scheduleEnd).toISOString() : null,
+      }),
     });
 
     setLoading(false);
@@ -174,6 +190,26 @@ function InlineEditForm({
         required
         className="w-full px-3 py-1.5 bg-bg-tertiary border border-border-primary rounded-md text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-accent"
       />
+      <div className="flex gap-3">
+        <label className="flex-1 space-y-1">
+          <span className="text-tiny">Start date</span>
+          <input
+            type="datetime-local"
+            value={scheduleStart}
+            onChange={(e) => setScheduleStart(e.target.value)}
+            className="w-full px-3 py-1.5 bg-bg-tertiary border border-border-primary rounded-md text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+        </label>
+        <label className="flex-1 space-y-1">
+          <span className="text-tiny">End date</span>
+          <input
+            type="datetime-local"
+            value={scheduleEnd}
+            onChange={(e) => setScheduleEnd(e.target.value)}
+            className="w-full px-3 py-1.5 bg-bg-tertiary border border-border-primary rounded-md text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+        </label>
+      </div>
       <div className="flex gap-2">
         <Button size="sm" type="submit" loading={loading}>
           Save

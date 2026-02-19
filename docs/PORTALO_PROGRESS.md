@@ -15,9 +15,9 @@ Sprint 2: [████████████████████] 34/34  
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [██                  ] 2/21   (10%)
+Sprint 6: [███                 ] 3/21   (14%)
 ─────────────────────────────────────────
-TOTAL:    [█████████████████   ] 141/160 (88%)
+TOTAL:    [█████████████████   ] 142/160 (89%)
 ```
 
 ---
@@ -315,7 +315,7 @@ TOTAL:    [█████████████████   ] 141/160 (88%)
 - [x] **Commit 141**: Service worker
 
 ### Phase 6B: Link Scheduling (Commits 142-143)
-- [ ] **Commit 142**: Schedule fields
+- [x] **Commit 142**: Schedule fields
 - [ ] **Commit 143**: Filter by schedule
 
 ### Phase 6C: Edge Caching (Commits 144-147)
