@@ -1,0 +1,83 @@
+import type { NextRequest } from "next/server";
+import { getApiUser } from "@/lib/api-auth";
+import { createClient } from "@/lib/supabase/server";
+import { analyticsQuerySchema } from "@portalo/shared";
+
+export async function GET(request: NextRequest) {
+  const auth = await getApiUser(request);
+  if (auth.error) return auth.error;
+
+  const url = new URL(request.url);
+  const parsed = analyticsQuerySchema.safeParse({
+    page_id: url.searchParams.get("page_id"),
+    period: url.searchParams.get("period") ?? "7d",
+  });
+
+  if (!parsed.success) {
+    return Response.json(
+      { error: parsed.error.flatten() },
+      { status: 400 }
+    );
+  }
+
+  const { page_id, period } = parsed.data;
+
+  const supabase = await createClient();
+
+  // Verify page belongs to user
+  const { data: page } = await supabase
+    .from("pages")
+    .select("id")
+    .eq("id", page_id)
+    .eq("user_id", auth.userId)
+    .single();
+
+  if (!page) {
+    return Response.json(
+      { error: { code: "not_found", message: "Page not found" } },
+      { status: 404 }
+    );
+  }
+
+  const days = period === "90d" ? 90 : period === "30d" ? 30 : 7;
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+
+  const { data: events } = await supabase
+    .from("analytics_events")
+    .select("event_type, referrer, country")
+    .eq("page_id", page_id)
+    .gte("created_at", since.toISOString());
+
+  const rows = events ?? [];
+  const views = rows.filter((e) => e.event_type === "view").length;
+  const clicks = rows.filter((e) => e.event_type === "click").length;
+  const emailCaptures = rows.filter((e) => e.event_type === "email_capture").length;
+  const ctr = views > 0 ? Math.round((clicks / views) * 1000) / 10 : 0;
+
+  // Top referrer
+  const refCounts: Record<string, number> = {};
+  for (const e of rows) {
+    if (e.referrer) refCounts[e.referrer] = (refCounts[e.referrer] || 0) + 1;
+  }
+  const topReferrer = Object.entries(refCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+
+  // Top country
+  const countryCounts: Record<string, number> = {};
+  for (const e of rows) {
+    if (e.country) countryCounts[e.country] = (countryCounts[e.country] || 0) + 1;
+  }
+  const topCountry = Object.entries(countryCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+
+  return Response.json({
+    data: {
+      views,
+      clicks,
+      ctr,
+      email_captures: emailCaptures,
+      top_referrer: topReferrer,
+      top_country: topCountry,
+      period_days: days,
+    },
+  });
+}
