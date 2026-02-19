@@ -2,6 +2,7 @@ import type { Page, Link } from "@portalo/shared";
 import { getTheme } from "@/lib/themes";
 import { LinkItem } from "@/components/public/link-item";
 import { PoweredBy } from "@/components/public/powered-by";
+import { EmailCapture } from "@/components/public/email-capture";
 
 interface CreatorPageProps {
   page: Page;
@@ -52,6 +53,16 @@ export function CreatorPage({ page, links }: CreatorPageProps) {
             </p>
           )}
         </div>
+
+        {/* Email capture */}
+        {page.settings?.show_email_capture && (
+          <div className="mt-8">
+            <p className={`text-xs text-center mb-2 ${theme.textSecondary}`}>
+              Get updates
+            </p>
+            <EmailCapture pageId={page.id} themeName={themeName} />
+          </div>
+        )}
 
         <PoweredBy
           show={page.settings?.show_powered_by !== false}
