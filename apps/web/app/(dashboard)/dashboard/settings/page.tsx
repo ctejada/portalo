@@ -10,25 +10,54 @@ import { AvatarUpload } from "@/components/dashboard/avatar-upload";
 import { PlanBadge } from "@/components/dashboard/plan-badge";
 import type { Plan } from "@portalo/shared";
 
+const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so";
+
 export default function SettingsProfilePage() {
   const { user, isLoading, mutate } = useUser();
   const [displayName, setDisplayName] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [usernameError, setUsernameError] = useState("");
   const [saving, setSaving] = useState(false);
 
   const name = displayName ?? user?.display_name ?? "";
+  const currentUsername = username ?? user?.username ?? "";
+  const usernameChanged = username !== null && username !== (user?.username ?? "");
+
+  function handleUsernameChange(value: string) {
+    const formatted = value
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .slice(0, 32);
+    setUsername(formatted);
+    setUsernameError("");
+  }
 
   async function handleSave() {
     setSaving(true);
+    setUsernameError("");
     try {
+      const body: Record<string, string> = { display_name: name };
+      if (usernameChanged) body.username = currentUsername;
+
       const res = await fetch("/api/v1/account", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ display_name: name }),
+        body: JSON.stringify(body),
       });
+      const json = await res.json();
       if (!res.ok) {
-        showToast("Failed to save profile", "error");
+        if (json.error?.code === "username_taken") {
+          setUsernameError("This username is already taken");
+        } else if (json.error?.code === "username_reserved") {
+          setUsernameError("This username is reserved");
+        } else {
+          showToast(json.error?.message || "Failed to save profile", "error");
+        }
         return;
       }
+      setUsername(null);
+      setDisplayName(null);
       await mutate();
       showToast("Profile updated", "success");
     } finally {
@@ -72,6 +101,34 @@ export default function SettingsProfilePage() {
             disabled
             className="w-full text-body bg-bg-secondary border border-border-primary rounded-md px-3 py-2 text-text-tertiary"
           />
+        </div>
+
+        <div>
+          <label
+            htmlFor="username"
+            className="block text-small font-medium text-text-secondary mb-1"
+          >
+            Username
+          </label>
+          <input
+            id="username"
+            type="text"
+            value={currentUsername}
+            onChange={(e) => handleUsernameChange(e.target.value)}
+            placeholder="your-name"
+            className="w-full text-body bg-bg-primary border border-border-primary rounded-md px-3 py-2 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+          <p className="text-small text-text-tertiary mt-1">
+            {APP_DOMAIN}/@{currentUsername || "your-name"}
+          </p>
+          {usernameChanged && (
+            <p className="text-tiny text-warning mt-1">
+              Changing your username will update your public URL. Your old link will no longer work.
+            </p>
+          )}
+          {usernameError && (
+            <p className="text-tiny text-error mt-1">{usernameError}</p>
+          )}
         </div>
 
         <div>
