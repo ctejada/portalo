@@ -9,12 +9,24 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getPageBySlug(slug: string) {
+async function getPageByUsername(username: string) {
+  // Look up profile by username
+  const { data: profile } = await supabaseAdmin
+    .from("profiles")
+    .select("id, username")
+    .eq("username", username)
+    .single();
+
+  if (!profile) return null;
+
+  // Get their published page
   const { data: page } = await supabaseAdmin
     .from("pages")
     .select("*")
-    .eq("slug", slug)
+    .eq("user_id", profile.id)
     .eq("published", true)
+    .order("created_at", { ascending: true })
+    .limit(1)
     .single();
 
   if (!page) return null;
@@ -33,18 +45,18 @@ async function getPageBySlug(slug: string) {
     return true;
   });
 
-  return { page: page as Page, links: activeLinks };
+  return { page: page as Page, links: activeLinks, username: profile.username };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const result = await getPageBySlug(slug);
+  const result = await getPageByUsername(slug);
 
   if (!result) {
     return { title: "Page Not Found" };
   }
 
-  const { page } = result;
+  const { page, username } = result;
   const title = page.title || "Untitled";
   const description = page.bio || `${title} on Portalo`;
 
@@ -55,7 +67,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       type: "profile",
-      url: `/${page.slug}`,
+      url: `/@${username}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -67,21 +79,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function PublicPage({ params }: PageProps) {
   const { slug } = await params;
-  const result = await getPageBySlug(slug);
+  const result = await getPageByUsername(slug);
 
   if (!result) notFound();
 
+  const { username } = result;
   const baseUrl = `https://${process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so"}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     name: result.page.title || "Untitled",
     description: result.page.bio || undefined,
-    url: `${baseUrl}/${result.page.slug}`,
+    url: `${baseUrl}/@${username}`,
     mainEntity: {
       "@type": "Person",
       name: result.page.title || "Untitled",
-      url: `${baseUrl}/${result.page.slug}`,
+      url: `${baseUrl}/@${username}`,
       sameAs: result.links.map((link) => link.url),
     },
   };
