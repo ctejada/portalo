@@ -1,8 +1,8 @@
 # Portalo MVP - Progress Tracker
 
 **Project**: Portalo Link-in-Bio Platform
-**Timeline**: 12 Weeks (6 Sprints)
-**Total Commits**: 160
+**Timeline**: 12 Weeks (6 Sprints) + Ongoing Improvements
+**Total Commits**: 168
 **Status**: Complete
 
 ---
@@ -16,8 +16,9 @@ Sprint 3: [████████████████████] 16/16  
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
 Sprint 6: [████████████████████] 21/21  (100%) ✓
+Sprint 7: [████████████████████] 8/8    (100%) ✓
 ─────────────────────────────────────────
-TOTAL:    [████████████████████] 160/160 (100%) ✓
+TOTAL:    [████████████████████] 168/168 (100%) ✓
 ```
 
 ---
@@ -46,6 +47,7 @@ TOTAL:    [████████████████████] 160/160
 | **M18: Edge Caching** | 6 | 142-147 | [x] Complete | Pages cached at CF edge |
 | **M19: E2E Tests** | 6 | 148-152 | [x] Complete | Critical paths tested |
 | **M20: Launch Ready** | 6 | 153-160 | [x] Complete | Landing page, Lighthouse >90 |
+| **M21: MCP Feature Improvements** | 7 | 161-168 | [x] Complete | 15 MCP tools, page CRUD via MCP |
 
 ---
 
@@ -354,11 +356,42 @@ TOTAL:    [████████████████████] 160/160
 
 ---
 
+## Sprint 7: MCP Feature Improvements
+
+**Goal**: Expand MCP server from 9 to 15 tools, fix bugs, complete page and domain management
+
+### Phase 7A: Bug Fixes (Commits 161-162)
+- [x] **Commit 161**: Fix reorder_links URL path bug in MCP API client
+- [x] **Commit 162**: Fix RLS policy violation in domain API routes (BF-2)
+
+### Phase 7B: Page Management Tools (Commits 163-164)
+- [x] **Commit 163**: Add create_page and delete_page MCP tools
+- [x] **Commit 164**: Replace update_theme with full update_page MCP tool
+
+### Phase 7C: Account & Domain Tools (Commits 165-166)
+- [x] **Commit 165**: Add get_account MCP tool
+- [x] **Commit 166**: Add domain management MCP tools (list, add, remove)
+
+### Phase 7D: Finalize (Commits 167-168)
+- [x] **Commit 167**: Update MCP discovery endpoint and bump version to 0.2.0
+- [x] **Commit 168**: Update progress tracking
+
+**Sprint 7 Completion Criteria**:
+- [x] MCP server has 15 tools (was 9)
+- [x] Can create/update/delete pages via MCP
+- [x] Domain management via MCP
+- [x] reorder_links bug fixed
+- [x] Domain RLS bug fixed
+- [x] pnpm build passes
+
+---
+
 ## Bug Fixes
 
 | # | Description | Files Changed | Status |
 |---|-------------|---------------|--------|
 | **BF-1** | Fix RLS policy violation when MCP server writes via API key — API routes now use `supabaseAdmin` for API key auth (bypasses RLS since there's no session), while session auth continues using the cookie-based client | `lib/api-auth.ts`, `lib/supabase/api-client.ts` (new), 5 API route files | Complete |
+| **BF-2** | Fix RLS policy violation in domain API routes — same pattern as BF-1, domain routes now use `getSupabaseClient(auth.isApiKey)` | 3 domain route files | Complete |
 
 ---
 

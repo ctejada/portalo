@@ -209,22 +209,27 @@ All under `/api/v1/`. Auth via Bearer token (Supabase JWT or API key).
 
 ## 6. MCP Server Specification
 
-The MCP server is a TypeScript npm package (`@portalo/mcp-server`) that wraps the REST API. ~500 lines of code. Ships at MVP.
+The MCP server is a TypeScript npm package (`@portalo/mcp-server`) that wraps the REST API. ~700 lines of code. Ships at MVP.
 
-### Tools Exposed
+### Tools Exposed (15 tools)
 
 | Tool | Description | Key Parameters |
 |---|---|---|
 | `list_pages` | Get user's pages | — |
 | `get_page` | Page details + links | page_id |
+| `create_page` | Create a new page | slug, title?, bio?, theme? |
+| `update_page` | Update page properties | page_id, slug?, title?, bio?, theme?, published?, settings? |
+| `delete_page` | Delete page + links | page_id |
 | `add_link` | Add link to page | page_id, url, title, position? |
-| `update_link` | Edit link | page_id, link_id, url?, title? |
+| `update_link` | Edit link | page_id, link_id, url?, title?, visible? |
 | `remove_link` | Delete link | page_id, link_id |
 | `reorder_links` | Change order | page_id, link_ids[] |
 | `get_analytics` | Click/view data | page_id, period? |
-| `export_contacts` | Download emails | page_id, format? |
-| `update_theme` | Change design | page_id, colors?, font? |
-| `schedule_link` | Set visibility window | page_id, link_id, start, end? |
+| `export_contacts` | Download emails | page_id |
+| `get_account` | Profile + plan info | — |
+| `list_domains` | List custom domains | — |
+| `add_domain` | Add custom domain | page_id, domain |
+| `remove_domain` | Remove custom domain | domain_id |
 
 ### Discovery
 
