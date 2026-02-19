@@ -24,6 +24,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
   const [title, setTitle] = useState("");
   const [bio, setBio] = useState("");
   const [theme, setTheme] = useState<ThemeConfig>({ name: "clean" });
+  const [isTogglingPublished, setIsTogglingPublished] = useState(false);
 
   useEffect(() => {
     if (page) {
@@ -83,6 +84,23 @@ export function PageEditor({ pageId }: PageEditorProps) {
     [pageId, mutate]
   );
 
+  const handleTogglePublished = useCallback(async () => {
+    if (!page) return;
+    setIsTogglingPublished(true);
+    const res = await fetch(`/api/v1/pages/${pageId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ published: !page.published }),
+    });
+    setIsTogglingPublished(false);
+    if (!res.ok) {
+      showToast("Failed to update", "error");
+      return;
+    }
+    mutate();
+    showToast(page.published ? "Page unpublished" : "Page published", "success");
+  }, [page, pageId, mutate]);
+
   const handleReorder = useCallback(
     async (linkIds: string[]) => {
       const res = await fetch(`/api/v1/pages/${pageId}/links/reorder`, {
@@ -106,26 +124,19 @@ export function PageEditor({ pageId }: PageEditorProps) {
         {page && (
           <>
             <button
-              onClick={async () => {
-                const res = await fetch(`/api/v1/pages/${pageId}`, {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ published: !page.published }),
-                });
-                if (!res.ok) {
-                  showToast("Failed to update", "error");
-                  return;
-                }
-                mutate();
-                showToast(page.published ? "Page unpublished" : "Page published", "success");
-              }}
-              className={`text-tiny font-medium px-2 py-0.5 rounded-full transition-colors ${
+              role="switch"
+              aria-checked={page.published}
+              aria-busy={isTogglingPublished}
+              disabled={isTogglingPublished}
+              onClick={handleTogglePublished}
+              title={page.published ? "Click to unpublish" : "Click to publish"}
+              className={`text-tiny font-medium px-2.5 py-1.5 rounded-full transition-colors ${
                 page.published
                   ? "bg-success/10 text-success hover:bg-success/20"
                   : "bg-bg-tertiary text-text-secondary hover:bg-bg-hover"
               }`}
             >
-              {page.published ? "Published" : "Draft"}
+              {isTogglingPublished ? "..." : page.published ? "Published" : "Draft"}
             </button>
 
             <div className="ml-auto flex items-center gap-2">

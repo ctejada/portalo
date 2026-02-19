@@ -32,7 +32,14 @@ export function TopLinksTable({ pageId, period }: TopLinksTableProps) {
   );
 
   if (!links || links.length === 0) {
-    return null;
+    return (
+      <div>
+        <h2 className="text-section-title mb-3">Top Links</h2>
+        <p className="text-small text-text-tertiary py-4">
+          No link clicks recorded for this period. Share your page to start tracking.
+        </p>
+      </div>
+    );
   }
 
   return (

@@ -50,10 +50,13 @@ export function Sidebar() {
         <nav className="flex-1 px-3 space-y-6 overflow-y-auto">
           {navGroups.map((group) => (
             <div key={group.label}>
-              <p className="px-2 mb-1 text-tiny font-medium uppercase tracking-wider">
+              <p
+                id={`nav-group-${group.label.toLowerCase()}`}
+                className="px-2 mb-1 text-tiny font-medium uppercase tracking-wider"
+              >
                 {group.label}
               </p>
-              <ul className="space-y-0.5">
+              <ul aria-labelledby={`nav-group-${group.label.toLowerCase()}`} className="space-y-0.5">
                 {group.items.map((item) => {
                   const isActive =
                     item.href === "/dashboard"
@@ -64,6 +67,7 @@ export function Sidebar() {
                     <li key={item.href}>
                       <Link
                         href={item.href}
+                        aria-current={isActive ? "page" : undefined}
                         className={`
                           block px-2 py-1.5 rounded-md text-body-strong transition-colors duration-150
                           ${
@@ -101,6 +105,7 @@ export function Sidebar() {
               <li key={tab.href} className="flex-1">
                 <Link
                   href={tab.href}
+                  aria-current={isActive ? "page" : undefined}
                   className={`
                     flex items-center justify-center py-3 text-tiny font-medium transition-colors
                     ${isActive ? "text-accent" : "text-text-secondary"}

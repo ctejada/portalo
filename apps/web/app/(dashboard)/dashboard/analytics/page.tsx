@@ -9,6 +9,7 @@ import { TopLinksTable } from "@/components/dashboard/top-links-table";
 import { BreakdownTables } from "@/components/dashboard/breakdown-tables";
 
 const PERIODS = ["7d", "30d", "90d"] as const;
+const PERIOD_LABELS: Record<string, string> = { "7d": "Last 7 days", "30d": "Last 30 days", "90d": "Last 90 days" };
 type Period = (typeof PERIODS)[number];
 
 export default function AnalyticsPage() {
@@ -21,13 +22,15 @@ export default function AnalyticsPage() {
         <h1 className="text-page-title">Analytics</h1>
 
         {/* Period selector */}
-        <div className="flex border border-border-primary rounded-md overflow-hidden" role="group" aria-label="Time period">
+        <div className="flex border border-border-primary rounded-md overflow-hidden" role="radiogroup" aria-label="Time period">
           {PERIODS.map((p) => (
             <button
               key={p}
               type="button"
+              role="radio"
+              aria-checked={period === p}
+              aria-label={PERIOD_LABELS[p]}
               onClick={() => setPeriod(p)}
-              aria-pressed={period === p}
               className={`px-3 py-1 text-small transition-colors ${
                 period === p
                   ? "bg-accent text-text-inverse"

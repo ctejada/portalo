@@ -8,8 +8,9 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Handle @username URLs: rewrite /@username to /username for Next.js routing
-  if (/^\/@[a-z0-9-]+$/.test(path)) {
-    const username = path.slice(2);
+  // Case-insensitive match with lowercase normalization
+  if (/^\/@[a-zA-Z0-9-]+$/.test(path)) {
+    const username = path.slice(2).toLowerCase();
     return NextResponse.rewrite(new URL(`/${username}`, request.url));
   }
 

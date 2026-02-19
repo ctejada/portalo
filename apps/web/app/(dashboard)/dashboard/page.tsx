@@ -28,7 +28,15 @@ export default function DashboardPage() {
       return (
         <>
           <UsernameNudgeBanner onSetup={() => setDismissed(false)} />
-          {pages[0] && <PageEditor pageId={pages[0].id} />}
+          {pages[0] ? (
+            <PageEditor pageId={pages[0].id} />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-64 gap-4">
+              <p className="text-body text-text-secondary">
+                Set up your username to create your page.
+              </p>
+            </div>
+          )}
         </>
       );
     }

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/admin";
@@ -9,7 +10,7 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getPageByUsername(username: string) {
+const getPageByUsername = cache(async function getPageByUsername(username: string) {
   // Look up profile by username
   const { data: profile } = await supabaseAdmin
     .from("profiles")
@@ -46,7 +47,7 @@ async function getPageByUsername(username: string) {
   });
 
   return { page: page as Page, links: activeLinks, username: profile.username };
-}
+});
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
