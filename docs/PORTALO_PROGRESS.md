@@ -15,9 +15,9 @@ Sprint 2: [████████████████████] 34/34  
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [█                   ] 1/21   (5%)
+Sprint 6: [██                  ] 2/21   (10%)
 ─────────────────────────────────────────
-TOTAL:    [█████████████████   ] 140/160 (88%)
+TOTAL:    [█████████████████   ] 141/160 (88%)
 ```
 
 ---
@@ -42,7 +42,7 @@ TOTAL:    [█████████████████   ] 140/160 (88%)
 | **M14: Billing** | 5 | 111-123 | [x] Complete | Stripe checkout + plan gating |
 | **M15: Custom Domains** | 5 | 124-128 | [x] Complete | Domain verification working |
 | **M16: MCP Server** | 5 | 129-139 | [x] Complete | MCP server published to npm |
-| **M17: PWA Ready** | 6 | 140-141 | [ ] Not Started | Installable PWA |
+| **M17: PWA Ready** | 6 | 140-141 | [x] Complete | Installable PWA |
 | **M18: Edge Caching** | 6 | 142-147 | [ ] Not Started | Pages cached at CF edge |
 | **M19: E2E Tests** | 6 | 148-152 | [ ] Not Started | Critical paths tested |
 | **M20: Launch Ready** | 6 | 153-160 | [ ] Not Started | Landing page, Lighthouse >90 |
@@ -312,7 +312,7 @@ TOTAL:    [█████████████████   ] 140/160 (88%)
 
 ### Phase 6A: PWA (Commits 140-141)
 - [x] **Commit 140**: PWA manifest
-- [ ] **Commit 141**: Service worker
+- [x] **Commit 141**: Service worker
 
 ### Phase 6B: Link Scheduling (Commits 142-143)
 - [ ] **Commit 142**: Schedule fields

@@ -19,6 +19,11 @@ export default function RootLayout({
       <body className="bg-bg-primary text-text-primary">
         {children}
         <ToastProvider />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js")`,
+          }}
+        />
       </body>
     </html>
   );
