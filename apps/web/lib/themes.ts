@@ -31,6 +31,19 @@ export const THEMES: Record<string, ThemeStyles> = {
     linkPrefix: () => "\u2192",
     footerText: "text-text-tertiary",
   },
+  "minimal-dark": {
+    bg: "bg-[#0F0F0F]",
+    text: "text-[#F9FAFB]",
+    textSecondary: "text-[#9CA3AF]",
+    linkText: "text-[#D1D5DB] hover:text-white",
+    linkHover: "",
+    divider: "border-[#2A2A2A]",
+    avatarBg: "bg-[#2A2A2A]",
+    container: "max-w-[480px]",
+    titleClass: "text-xl font-semibold",
+    linkPrefix: () => "\u2192",
+    footerText: "text-[#4B5563]",
+  },
 };
 
 export function getTheme(name: string): ThemeStyles {
