@@ -15,9 +15,9 @@ Sprint 2: [████████████████████] 34/34  
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [                    ] 0/21   (0%)
+Sprint 6: [█                   ] 1/21   (5%)
 ─────────────────────────────────────────
-TOTAL:    [█████████████████   ] 139/160 (87%)
+TOTAL:    [█████████████████   ] 140/160 (88%)
 ```
 
 ---
@@ -311,7 +311,7 @@ TOTAL:    [█████████████████   ] 139/160 (87%)
 **Goal**: Production-ready, PWA installable, launched
 
 ### Phase 6A: PWA (Commits 140-141)
-- [ ] **Commit 140**: PWA manifest
+- [x] **Commit 140**: PWA manifest
 - [ ] **Commit 141**: Service worker
 
 ### Phase 6B: Link Scheduling (Commits 142-143)

@@ -5,6 +5,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Portalo",
   description: "Your link-in-bio, powered by AI",
+  manifest: "/manifest.json",
+  themeColor: "#4F46E5",
 };
 
 export default function RootLayout({
