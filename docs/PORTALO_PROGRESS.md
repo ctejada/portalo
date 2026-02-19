@@ -220,7 +220,7 @@ TOTAL:    [███████████         ] 88/160 (55%)
 - [x] **Commit 91**: Analytics page route
 - [x] **Commit 92**: Metrics row component
 - [x] **Commit 93**: use-analytics hook
-- [ ] **Commit 94**: Recharts chart
+- [x] **Commit 94**: Recharts chart
 - [ ] **Commit 95**: Top links table
 - [ ] **Commit 96**: Referrers + countries tables
 
