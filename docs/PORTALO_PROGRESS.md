@@ -192,7 +192,7 @@ TOTAL:    [█████████           ] 72/160 (45%)
 - [x] **Commit 83**: Wire theme to API
 
 ### Phase 3D: Public Route (Commits 84-86)
-- [ ] **Commit 84**: [slug] catch-all route
+- [x] **Commit 84**: [slug] catch-all route
 - [ ] **Commit 85**: Click tracking
 - [ ] **Commit 86**: View tracking
 
