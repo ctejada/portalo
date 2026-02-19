@@ -14,7 +14,22 @@ interface PageEditorProps {
 
 export function PageEditor({ pageId }: PageEditorProps) {
   const { page, isLoading, mutate } = usePage(pageId);
-  const { links, isLoading: linksLoading } = useLinks(pageId);
+  const { links, isLoading: linksLoading, mutate: mutateLinks } = useLinks(pageId);
+
+  const handleReorder = useCallback(
+    async (linkIds: string[]) => {
+      const res = await fetch(`/api/v1/pages/${pageId}/links/reorder`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ link_ids: linkIds }),
+      });
+      if (!res.ok) {
+        showToast("Failed to reorder", "error");
+      }
+      mutateLinks();
+    },
+    [pageId, mutateLinks]
+  );
 
   return (
     <div className="h-full">
@@ -63,7 +78,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
                       ))}
                     </div>
                   ) : (
-                    <LinkList links={links} />
+                    <LinkList links={links} onReorder={handleReorder} />
                   )}
                 </div>
               </>
