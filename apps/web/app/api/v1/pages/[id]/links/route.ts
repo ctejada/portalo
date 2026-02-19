@@ -3,6 +3,7 @@ import { getApiUser } from "@/lib/api-auth";
 import { createClient } from "@/lib/supabase/server";
 import { createLinkSchema } from "@portalo/shared";
 import { checkLinkLimit } from "@/lib/plan-gate";
+import { invalidatePageCache } from "@/lib/cache";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -67,10 +68,10 @@ export async function POST(request: NextRequest, { params }: Params) {
   const { id } = await params;
   const supabase = await createClient();
 
-  // Verify page belongs to user and get plan
+  // Verify page belongs to user and get slug for cache
   const { data: page } = await supabase
     .from("pages")
-    .select("id, user_id")
+    .select("id, user_id, slug")
     .eq("id", id)
     .eq("user_id", auth.userId)
     .single();
@@ -111,6 +112,8 @@ export async function POST(request: NextRequest, { params }: Params) {
       { status: 500 }
     );
   }
+
+  invalidatePageCache(page.slug).catch(() => {});
 
   return Response.json({ data }, { status: 201 });
 }

@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
 import { createClient } from "@/lib/supabase/server";
 import { updatePageSchema } from "@portalo/shared";
+import { invalidatePageCache } from "@/lib/cache";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -76,6 +77,8 @@ export async function PUT(request: NextRequest, { params }: Params) {
       { status: 500 }
     );
   }
+
+  invalidatePageCache(data.slug).catch(() => {});
 
   return Response.json({ data });
 }

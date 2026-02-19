@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
 import { createClient } from "@/lib/supabase/server";
 import { updateLinkSchema } from "@portalo/shared";
+import { invalidatePageCache } from "@/lib/cache";
 
 type Params = { params: Promise<{ id: string; linkId: string }> };
 
@@ -31,7 +32,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
   // Verify page belongs to user
   const { data: page } = await supabase
     .from("pages")
-    .select("id")
+    .select("id, slug")
     .eq("id", id)
     .eq("user_id", auth.userId)
     .single();
@@ -64,6 +65,8 @@ export async function PUT(request: NextRequest, { params }: Params) {
     );
   }
 
+  invalidatePageCache(page.slug).catch(() => {});
+
   return Response.json({ data });
 }
 
@@ -77,7 +80,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
   // Verify page belongs to user
   const { data: page } = await supabase
     .from("pages")
-    .select("id")
+    .select("id, slug")
     .eq("id", id)
     .eq("user_id", auth.userId)
     .single();
@@ -101,6 +104,8 @@ export async function DELETE(request: NextRequest, { params }: Params) {
       { status: 500 }
     );
   }
+
+  invalidatePageCache(page.slug).catch(() => {});
 
   return new Response(null, { status: 204 });
 }

@@ -15,9 +15,9 @@ Sprint 2: [████████████████████] 34/34  
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [██████              ] 7/21   (33%)
+Sprint 6: [████████            ] 8/21   (38%)
 ─────────────────────────────────────────
-TOTAL:    [██████████████████  ] 146/160 (91%)
+TOTAL:    [██████████████████  ] 147/160 (92%)
 ```
 
 ---
@@ -43,7 +43,7 @@ TOTAL:    [██████████████████  ] 146/160 (91
 | **M15: Custom Domains** | 5 | 124-128 | [x] Complete | Domain verification working |
 | **M16: MCP Server** | 5 | 129-139 | [x] Complete | MCP server published to npm |
 | **M17: PWA Ready** | 6 | 140-141 | [x] Complete | Installable PWA |
-| **M18: Edge Caching** | 6 | 142-147 | [ ] Not Started | Pages cached at CF edge |
+| **M18: Edge Caching** | 6 | 142-147 | [x] Complete | Pages cached at CF edge |
 | **M19: E2E Tests** | 6 | 148-152 | [ ] Not Started | Critical paths tested |
 | **M20: Launch Ready** | 6 | 153-160 | [ ] Not Started | Landing page, Lighthouse >90 |
 
@@ -322,7 +322,7 @@ TOTAL:    [██████████████████  ] 146/160 (91
 - [x] **Commit 144**: CF Worker renderer
 - [x] **Commit 145**: R2 cache write
 - [x] **Commit 146**: Cache invalidation
-- [ ] **Commit 147**: Invalidate on save
+- [x] **Commit 147**: Invalidate on save
 
 ### Phase 6D: Error Tracking (Commit 148)
 - [ ] **Commit 148**: Sentry integration
