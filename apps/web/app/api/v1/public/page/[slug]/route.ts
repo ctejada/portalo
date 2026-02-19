@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import { CACHE_HEADERS } from "@/lib/cache";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -41,5 +42,8 @@ export async function GET(_request: NextRequest, { params }: Params) {
     return true;
   });
 
-  return Response.json({ data: { ...page, links: activeLinks } });
+  return Response.json(
+    { data: { ...page, links: activeLinks } },
+    { headers: CACHE_HEADERS.public_page }
+  );
 }
