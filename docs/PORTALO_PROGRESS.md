@@ -460,6 +460,7 @@ TOTAL:    [████████████████████] 172/183
 |---|-------------|---------------|--------|
 | **BF-1** | Fix RLS policy violation when MCP server writes via API key — API routes now use `supabaseAdmin` for API key auth (bypasses RLS since there's no session), while session auth continues using the cookie-based client | `lib/api-auth.ts`, `lib/supabase/api-client.ts` (new), 5 API route files | Complete |
 | **BF-2** | Fix RLS policy violation in domain API routes — same pattern as BF-1, domain routes now use `getSupabaseClient(auth.isApiKey)` | 3 domain route files | Complete |
+| **BF-3** | Fix PUT /api/v1/account 500 on username claim — migration 008 made `username` NOT NULL but never updated `handle_new_user()` trigger, so new signups couldn't create profiles. Dropped NOT NULL constraint + backfill orphaned users | `009_fix_username_nullable.sql` | Complete |
 
 ---
 
