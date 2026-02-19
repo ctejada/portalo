@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { emailCaptureSchema } from "@portalo/shared";
+import { emailCaptureSchema, PLANS } from "@portalo/shared";
+import type { Plan } from "@portalo/shared";
 
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
@@ -17,6 +18,29 @@ export async function POST(request: NextRequest) {
       { error: parsed.error.flatten() },
       { status: 400 }
     );
+  }
+
+  // Check if page owner's plan includes email capture
+  const { data: page } = await supabaseAdmin
+    .from("pages")
+    .select("user_id")
+    .eq("id", parsed.data.page_id)
+    .single();
+
+  if (page) {
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("plan")
+      .eq("id", page.user_id)
+      .single();
+
+    const plan = (profile?.plan ?? "free") as Plan;
+    if (!PLANS[plan].limits.email_capture) {
+      return Response.json(
+        { error: { code: "plan_limit", message: "Email capture requires a paid plan" } },
+        { status: 403 }
+      );
+    }
   }
 
   const { data, error } = await supabaseAdmin
