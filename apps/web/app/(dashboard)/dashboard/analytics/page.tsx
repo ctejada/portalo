@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MetricsRow } from "@/components/dashboard/metrics-row";
 import { AnalyticsChart } from "@/components/dashboard/analytics-chart";
 import { TopLinksTable } from "@/components/dashboard/top-links-table";
+import { BreakdownTables } from "@/components/dashboard/breakdown-tables";
 
 const PERIODS = ["7d", "30d", "90d"] as const;
 type Period = (typeof PERIODS)[number];
@@ -82,7 +83,10 @@ export default function AnalyticsPage() {
           {timeseries && <AnalyticsChart data={timeseries} />}
 
           {overview && (
-            <TopLinksTable pageId={pageId} period={period} />
+            <>
+              <TopLinksTable pageId={pageId} period={period} />
+              <BreakdownTables pageId={pageId} period={period} />
+            </>
           )}
         </div>
       )}

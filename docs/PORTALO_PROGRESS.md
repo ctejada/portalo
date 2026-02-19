@@ -222,7 +222,7 @@ TOTAL:    [███████████         ] 88/160 (55%)
 - [x] **Commit 93**: use-analytics hook
 - [x] **Commit 94**: Recharts chart
 - [x] **Commit 95**: Top links table
-- [ ] **Commit 96**: Referrers + countries tables
+- [x] **Commit 96**: Referrers + countries tables
 
 ### Phase 4C: Email Capture (Commits 97-99)
 - [ ] **Commit 97**: POST /public/capture
