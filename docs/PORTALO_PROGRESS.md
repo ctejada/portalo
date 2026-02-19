@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [███                 ] 6/34   (18%)
+Sprint 2: [███                 ] 7/34   (21%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [█████               ] 44/160 (28%)
+TOTAL:    [██████              ] 45/160 (28%)
 ```
 
 ---
@@ -125,7 +125,7 @@ TOTAL:    [█████               ] 44/160 (28%)
 - [x] **Commit 42**: API auth helper
 - [x] **Commit 43**: GET /api/v1/pages
 - [x] **Commit 44**: POST /api/v1/pages
-- [ ] **Commit 45**: GET /api/v1/pages/[id]
+- [x] **Commit 45**: GET /api/v1/pages/[id]
 - [ ] **Commit 46**: PUT /api/v1/pages/[id]
 - [ ] **Commit 47**: DELETE /api/v1/pages/[id]
 
