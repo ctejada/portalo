@@ -22,8 +22,8 @@ VALUES (
 ON CONFLICT (id) DO NOTHING;
 
 -- Test user profile
-INSERT INTO public.profiles (id, display_name, plan)
-VALUES ('00000000-0000-0000-0000-000000000001', 'Demo User', 'pro')
+INSERT INTO public.profiles (id, display_name, username, plan)
+VALUES ('00000000-0000-0000-0000-000000000001', 'Demo User', 'demo', 'pro')
 ON CONFLICT (id) DO NOTHING;
 
 -- Demo page
@@ -39,21 +39,21 @@ VALUES (
 )
 ON CONFLICT (slug) DO NOTHING;
 
--- Sample links
-INSERT INTO public.links (page_id, url, title, position, visible) VALUES
-  ('10000000-0000-0000-0000-000000000001', 'https://example.com', 'My Website', 0, true),
-  ('10000000-0000-0000-0000-000000000001', 'https://twitter.com/demo', 'Twitter', 1, true),
-  ('10000000-0000-0000-0000-000000000001', 'https://github.com/demo', 'GitHub', 2, true),
-  ('10000000-0000-0000-0000-000000000001', 'https://youtube.com/@demo', 'YouTube', 3, true),
-  ('10000000-0000-0000-0000-000000000001', 'https://linkedin.com/in/demo', 'LinkedIn', 4, false);
+-- Sample links (fixed IDs so analytics events can reference them)
+INSERT INTO public.links (id, page_id, url, title, position, visible) VALUES
+  ('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', 'https://example.com', 'My Website', 0, true),
+  ('20000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000001', 'https://twitter.com/demo', 'Twitter', 1, true),
+  ('20000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000001', 'https://github.com/demo', 'GitHub', 2, true),
+  ('20000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000001', 'https://youtube.com/@demo', 'YouTube', 3, true),
+  ('20000000-0000-0000-0000-000000000005', '10000000-0000-0000-0000-000000000001', 'https://linkedin.com/in/demo', 'LinkedIn', 4, false);
 
--- Sample analytics events
-INSERT INTO public.analytics_events (page_id, event_type, referrer, country, device, browser, created_at) VALUES
-  ('10000000-0000-0000-0000-000000000001', 'view', 'https://google.com', 'US', 'desktop', 'Chrome', NOW() - INTERVAL '1 day'),
-  ('10000000-0000-0000-0000-000000000001', 'view', 'https://twitter.com', 'UK', 'mobile', 'Safari', NOW() - INTERVAL '1 day'),
-  ('10000000-0000-0000-0000-000000000001', 'view', NULL, 'DE', 'desktop', 'Firefox', NOW() - INTERVAL '2 days'),
-  ('10000000-0000-0000-0000-000000000001', 'click', 'https://google.com', 'US', 'desktop', 'Chrome', NOW() - INTERVAL '1 day'),
-  ('10000000-0000-0000-0000-000000000001', 'click', NULL, 'US', 'mobile', 'Safari', NOW() - INTERVAL '3 days');
+-- Sample analytics events (click events include link_id for top-links analytics)
+INSERT INTO public.analytics_events (page_id, event_type, link_id, referrer, country, device, browser, created_at) VALUES
+  ('10000000-0000-0000-0000-000000000001', 'view', NULL, 'https://google.com', 'US', 'desktop', 'Chrome', NOW() - INTERVAL '1 day'),
+  ('10000000-0000-0000-0000-000000000001', 'view', NULL, 'https://twitter.com', 'UK', 'mobile', 'Safari', NOW() - INTERVAL '1 day'),
+  ('10000000-0000-0000-0000-000000000001', 'view', NULL, NULL, 'DE', 'desktop', 'Firefox', NOW() - INTERVAL '2 days'),
+  ('10000000-0000-0000-0000-000000000001', 'click', '20000000-0000-0000-0000-000000000001', 'https://google.com', 'US', 'desktop', 'Chrome', NOW() - INTERVAL '1 day'),
+  ('10000000-0000-0000-0000-000000000001', 'click', '20000000-0000-0000-0000-000000000002', NULL, 'US', 'mobile', 'Safari', NOW() - INTERVAL '3 days');
 
 -- Sample contact
 INSERT INTO public.contacts (page_id, email, source)
