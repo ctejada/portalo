@@ -2,7 +2,7 @@
 
 **Project**: Portalo Link-in-Bio Platform
 **Timeline**: 12 Weeks (6 Sprints) + Ongoing Improvements
-**Total Commits**: 183
+**Total Commits**: 213
 **Status**: In Progress
 
 ---
@@ -10,17 +10,18 @@
 ## Overall Progress
 
 ```
-Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [████████████████████] 34/34  (100%) ✓
-Sprint 3: [████████████████████] 16/16  (100%) ✓
-Sprint 4: [████████████████████] 22/22  (100%) ✓
-Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [████████████████████] 21/21  (100%) ✓
-Sprint 7: [████████████████████] 8/8    (100%) ✓
-Sprint 8: [████████████████████] 3/3    (100%) ✓
-Sprint 9: [██                  ] 1/12   (8%)
+Sprint 1:  [████████████████████] 38/38  (100%) ✓
+Sprint 2:  [████████████████████] 34/34  (100%) ✓
+Sprint 3:  [████████████████████] 16/16  (100%) ✓
+Sprint 4:  [████████████████████] 22/22  (100%) ✓
+Sprint 5:  [████████████████████] 29/29  (100%) ✓
+Sprint 6:  [████████████████████] 21/21  (100%) ✓
+Sprint 7:  [████████████████████] 8/8    (100%) ✓
+Sprint 8:  [████████████████████] 3/3    (100%) ✓
+Sprint 9:  [████████████████████] 12/12  (100%) ✓
+Sprint 10: [                    ] 0/30   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████████████████████] 172/183 (94%)
+TOTAL:     [██████████████████  ] 183/213 (86%)
 ```
 
 ---
@@ -51,7 +52,8 @@ TOTAL:    [████████████████████] 172/183
 | **M20: Launch Ready** | 6 | 153-160 | [x] Complete | Landing page, Lighthouse >90 |
 | **M21: MCP Feature Improvements** | 7 | 161-168 | [x] Complete | 15 MCP tools, page CRUD via MCP |
 | **M22: Copy Link UX** | 8 | 169-171 | [x] Complete | Users can see and copy their public page URL |
-| **M23: Username URLs + Analytics** | 9 | 172-183 | [ ] In Progress | @username URLs, fixed analytics, simplified dashboard |
+| **M23: Username URLs + Analytics** | 9 | 172-183 | [x] Complete | @username URLs, fixed analytics, simplified dashboard |
+| **M24: Page Customization** | 10 | 184-213 | [ ] Not Started | Custom colors, icon bar, section reorder, 19 MCP tools |
 
 ---
 
@@ -418,38 +420,94 @@ TOTAL:    [████████████████████] 172/183
 - [x] **Commit 172**: Add Sprint 9 to progress docs
 
 ### Phase 9B: Database + Types (Commit 173)
-- [ ] **Commit 173**: Migration: add username to profiles + counter trigger + type/schema updates
+- [x] **Commit 173**: Migration: add username to profiles + counter trigger + type/schema updates
 
 ### Phase 9C: Middleware + Public Route (Commit 174)
-- [ ] **Commit 174**: Middleware @username rewrite + update public route lookup
+- [x] **Commit 174**: Middleware @username rewrite + update public route lookup
 
 ### Phase 9D: Account API + Username Setup (Commits 175-176)
-- [ ] **Commit 175**: Account API: username support + username-check endpoint
-- [ ] **Commit 176**: Username setup dialog (dismissible) + nudge banner
+- [x] **Commit 175**: Account API: username support + username-check endpoint
+- [x] **Commit 176**: Username setup dialog (dismissible) + nudge banner
 
 ### Phase 9E: Analytics Counters Fix (Commit 177)
-- [ ] **Commit 177**: Fix TopLinksTable: new top-links analytics endpoint
+- [x] **Commit 177**: Fix TopLinksTable: new top-links analytics endpoint
 
 ### Phase 9F: Aggregate Analytics (Commits 178-179)
-- [ ] **Commit 178**: Aggregate analytics: modify overview/timeseries/breakdown endpoints
-- [ ] **Commit 179**: Update analytics hook + dashboard (remove page selector, keep period)
+- [x] **Commit 178**: Aggregate analytics: modify overview/timeseries/breakdown endpoints
+- [x] **Commit 179**: Update analytics hook + dashboard (remove page selector, keep period)
 
 ### Phase 9G: Dashboard Simplification (Commits 180-183)
-- [ ] **Commit 180**: Dashboard goes straight to editor (username setup if needed)
-- [ ] **Commit 181**: Editor: published toggle, @username URL, sidebar labels, accessibility
-- [ ] **Commit 182**: Settings: username field with change warning
-- [ ] **Commit 183**: Seed data update + pnpm build verification
+- [x] **Commit 180**: Dashboard goes straight to editor (username setup if needed)
+- [x] **Commit 181**: Editor: published toggle, @username URL, sidebar labels, accessibility
+- [x] **Commit 182**: Settings: username field with change warning
+- [x] **Commit 183**: Seed data update + pnpm build verification
 
 **Sprint 9 Completion Criteria**:
-- [ ] Public URLs use `portalo.so/@username` format
-- [ ] Old `/slug` URLs 301-redirect to `/@username`
-- [ ] `views_count` and `clicks` counters auto-increment via SQL trigger
-- [ ] Analytics dashboard shows aggregate view (all pages)
-- [ ] Period selector (7d/30d/90d) retained
-- [ ] TopLinksTable shows period-aware click counts
-- [ ] Dashboard goes straight to editor (no page list)
-- [ ] Username setup dialog with live availability check
-- [ ] Published toggle visible in editor header
+- [x] Public URLs use `portalo.so/@username` format
+- [x] Old `/slug` URLs 301-redirect to `/@username`
+- [x] `views_count` and `clicks` counters auto-increment via SQL trigger
+- [x] Analytics dashboard shows aggregate view (all pages)
+- [x] Period selector (7d/30d/90d) retained
+- [x] TopLinksTable shows period-aware click counts
+- [x] Dashboard goes straight to editor (no page list)
+- [x] Username setup dialog with live availability check
+- [x] Published toggle visible in editor header
+- [x] pnpm build passes
+
+---
+
+## Sprint 10: Page Customization (API/MCP-First)
+
+**Goal**: Add comprehensive customization following API/MCP-first principle (API → MCP → GUI)
+
+### Phase 10A: Database + Schemas (Commits 184-186)
+- [ ] **Commit 184**: Migration: add platform, display_mode to links
+- [ ] **Commit 185**: Migration: add layout to pages
+- [ ] **Commit 186**: Extend Zod schemas for customization
+
+### Phase 10B: API Endpoints (Commits 187-192)
+- [ ] **Commit 187**: Platform detection utility
+- [ ] **Commit 188**: Extend PUT /pages/:id for layout + colors
+- [ ] **Commit 189**: PUT /pages/:id/layout endpoint
+- [ ] **Commit 190**: POST/DELETE /pages/:id/blocks endpoints
+- [ ] **Commit 191**: Extend links API for platform + display_mode
+- [ ] **Commit 192**: GET /utils/detect-platform endpoint
+
+### Phase 10C: MCP Tools (Commits 193-197)
+- [ ] **Commit 193**: update_design MCP tool
+- [ ] **Commit 194**: set_layout MCP tool
+- [ ] **Commit 195**: add_block + remove_block MCP tools
+- [ ] **Commit 196**: set_link_display MCP tool
+- [ ] **Commit 197**: Update MCP discovery + bump to v0.3.0
+
+### Phase 10D: Public Page Rendering (Commits 198-203)
+- [ ] **Commit 198**: Social icons component (18 platforms)
+- [ ] **Commit 199**: Theme system: custom color merge
+- [ ] **Commit 200**: Icon bar component
+- [ ] **Commit 201**: Block components (spacer, divider, text)
+- [ ] **Commit 202**: Update creator-page for dynamic sections
+- [ ] **Commit 203**: Update link-item for platform icons
+
+### Phase 10E: Dashboard GUI (Commits 204-210)
+- [ ] **Commit 204**: Color picker component
+- [ ] **Commit 205**: Color customizer panel
+- [ ] **Commit 206**: Section list + drag-drop
+- [ ] **Commit 207**: Add block dropdown menu
+- [ ] **Commit 208**: Link form: platform auto-detect
+- [ ] **Commit 209**: Link row: icon + display mode toggle
+- [ ] **Commit 210**: Integrate into page editor
+
+### Phase 10F: Polish (Commits 211-213)
+- [ ] **Commit 211**: Progressive disclosure
+- [ ] **Commit 212**: Backfill migration script
+- [ ] **Commit 213**: Build verification + docs
+
+**Sprint 10 Completion Criteria**:
+- [ ] API endpoints for layout/colors/blocks all functional
+- [ ] MCP tools: update_design, set_layout, add_block, remove_block, set_link_display
+- [ ] Public pages render with custom colors, sections, icon bar
+- [ ] Dashboard GUI for all customization options
+- [ ] 18 social platform icons auto-detect
 - [ ] pnpm build passes
 
 ---
