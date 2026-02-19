@@ -94,6 +94,20 @@ export class PortaloClient {
     );
   }
 
+  // Layout
+  async setLayout(pageId: string, layout: Record<string, unknown>) {
+    return this.request<unknown>("PUT", `/pages/${pageId}/layout`, layout);
+  }
+
+  // Blocks
+  async addBlock(pageId: string, data: Record<string, unknown>) {
+    return this.request<unknown>("POST", `/pages/${pageId}/blocks`, data);
+  }
+
+  async removeBlock(pageId: string, blockId: string) {
+    return this.request<void>("DELETE", `/pages/${pageId}/blocks`, { block_id: blockId });
+  }
+
   // Account
   async getAccount() {
     return this.request<unknown>("GET", "/account");

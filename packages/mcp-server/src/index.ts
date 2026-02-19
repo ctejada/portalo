@@ -265,6 +265,120 @@ server.tool(
   }
 );
 
+// update_design
+server.tool(
+  "update_design",
+  "Update a page's theme and custom colors. Colors override the base theme.",
+  {
+    page_id: z.string().uuid().describe("The page ID"),
+    theme: z.enum(["clean", "minimal-dark", "editorial"]).optional().describe("Base theme name"),
+    bg: z.string().optional().describe("Background color (hex, e.g. #1a1a2e)"),
+    text: z.string().optional().describe("Primary text color (hex)"),
+    secondary: z.string().optional().describe("Secondary text color (hex)"),
+    link_bg: z.string().optional().describe("Link background color (hex)"),
+    link_text: z.string().optional().describe("Link text color (hex)"),
+  },
+  async ({ page_id, theme, bg, text, secondary, link_bg, link_text }) => {
+    const updates: Record<string, unknown> = {};
+    const themeObj: Record<string, unknown> = {};
+    if (theme !== undefined) themeObj.name = theme;
+    const colors: Record<string, string> = {};
+    if (bg !== undefined) colors.bg = bg;
+    if (text !== undefined) colors.text = text;
+    if (secondary !== undefined) colors.secondary = secondary;
+    if (link_bg !== undefined) colors.link_bg = link_bg;
+    if (link_text !== undefined) colors.link_text = link_text;
+    if (Object.keys(colors).length > 0) themeObj.colors = colors;
+    if (Object.keys(themeObj).length > 0) updates.theme = themeObj;
+    const page = await client.updatePage(page_id, updates);
+    return { content: [{ type: "text", text: JSON.stringify(page, null, 2) }] };
+  }
+);
+
+// set_layout
+server.tool(
+  "set_layout",
+  "Set the section order and blocks for a page. Sections: header, icon-bar, links, block. Blocks: spacer, divider, text.",
+  {
+    page_id: z.string().uuid().describe("The page ID"),
+    sections: z.array(z.object({
+      type: z.enum(["header", "icon-bar", "links", "block"]).describe("Section type"),
+      id: z.string().optional().describe("Block ID (only for block sections)"),
+    })).min(1).describe("Ordered list of page sections"),
+    blocks: z.array(z.object({
+      id: z.string().describe("Unique block ID"),
+      kind: z.enum(["spacer", "divider", "text"]).describe("Block type"),
+      props: z.object({
+        height: z.number().optional().describe("Height in px (spacer only, 8-96)"),
+        text: z.string().optional().describe("Text content (text block only)"),
+      }).optional().default({}),
+    })).optional().default([]).describe("Block definitions"),
+  },
+  async ({ page_id, sections, blocks }) => {
+    const layout = await client.setLayout(page_id, { sections, blocks });
+    return { content: [{ type: "text", text: JSON.stringify(layout, null, 2) }] };
+  }
+);
+
+// add_block
+server.tool(
+  "add_block",
+  "Add a content block (spacer, divider, or text) to a page's layout",
+  {
+    page_id: z.string().uuid().describe("The page ID"),
+    kind: z.enum(["spacer", "divider", "text"]).describe("Block type"),
+    text: z.string().optional().describe("Text content (for text blocks)"),
+    height: z.number().int().min(8).max(96).optional().describe("Height in px (for spacer blocks)"),
+    after_section: z.number().int().min(0).optional().describe("Insert after this section index"),
+  },
+  async ({ page_id, kind, text, height, after_section }) => {
+    const props: Record<string, unknown> = {};
+    if (text !== undefined) props.text = text;
+    if (height !== undefined) props.height = height;
+    const block = await client.addBlock(page_id, { kind, props, after_section });
+    return { content: [{ type: "text", text: JSON.stringify(block, null, 2) }] };
+  }
+);
+
+// remove_block
+server.tool(
+  "remove_block",
+  "Remove a content block from a page's layout",
+  {
+    page_id: z.string().uuid().describe("The page ID"),
+    block_id: z.string().describe("The block ID to remove"),
+  },
+  async ({ page_id, block_id }) => {
+    await client.removeBlock(page_id, block_id);
+    return { content: [{ type: "text", text: "Block removed successfully" }] };
+  }
+);
+
+// set_link_display
+server.tool(
+  "set_link_display",
+  "Set a link's display mode and platform. Use icon-only for social icon bar, featured for highlighted links.",
+  {
+    page_id: z.string().uuid().describe("The page ID"),
+    link_id: z.string().uuid().describe("The link ID"),
+    display_mode: z.enum(["default", "featured", "icon-only"]).optional().describe("Display mode"),
+    platform: z.enum([
+      "youtube", "twitter", "instagram", "tiktok",
+      "github", "linkedin", "facebook", "twitch",
+      "discord", "spotify", "apple-music", "soundcloud",
+      "pinterest", "snapchat", "reddit", "telegram",
+      "whatsapp", "dribbble",
+    ]).nullable().optional().describe("Platform override (null to clear)"),
+  },
+  async ({ page_id, link_id, display_mode, platform }) => {
+    const updates: Record<string, unknown> = {};
+    if (display_mode !== undefined) updates.display_mode = display_mode;
+    if (platform !== undefined) updates.platform = platform;
+    const link = await client.updateLink(page_id, link_id, updates);
+    return { content: [{ type: "text", text: JSON.stringify(link, null, 2) }] };
+  }
+);
+
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
