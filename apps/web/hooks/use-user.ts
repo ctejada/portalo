@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 
 interface Profile {
   id: string;
+  username: string | null;
   display_name: string | null;
   avatar_url: string | null;
   plan: "free" | "pro" | "business";
@@ -22,7 +23,7 @@ async function fetchUser(): Promise<Profile | null> {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, display_name, avatar_url, plan")
+    .select("id, username, display_name, avatar_url, plan")
     .eq("id", user.id)
     .single();
 
@@ -30,6 +31,7 @@ async function fetchUser(): Promise<Profile | null> {
     ? { ...profile, email: user.email ?? null }
     : {
         id: user.id,
+        username: null,
         display_name: null,
         avatar_url: null,
         plan: "free",
