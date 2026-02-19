@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [███████████████     ] 32/34  (94%)
+Sprint 2: [████████████████    ] 33/34  (97%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████████            ] 70/160 (44%)
+TOTAL:    [████████            ] 71/160 (44%)
 ```
 
 ---
@@ -159,7 +159,7 @@ TOTAL:    [████████            ] 70/160 (44%)
 
 ### Phase 2F: Phone Preview (Commits 70-72)
 - [x] **Commit 70**: Preview frame
-- [ ] **Commit 71**: Preview content
+- [x] **Commit 71**: Preview content
 - [ ] **Commit 72**: Live update
 
 **Sprint 2 Completion Criteria**:

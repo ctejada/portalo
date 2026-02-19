@@ -9,6 +9,7 @@ import { showToast } from "@/components/ui/toast";
 import { LinkList } from "@/components/dashboard/link-list";
 import { LinkForm } from "@/components/dashboard/link-form";
 import { PhonePreview } from "@/components/dashboard/phone-preview";
+import { PreviewContent } from "@/components/dashboard/preview-content";
 import type { Link as LinkType } from "@portalo/shared";
 
 interface PageEditorProps {
@@ -135,9 +136,11 @@ export function PageEditor({ pageId }: PageEditorProps) {
         {/* Preview panel (40%) */}
         <div className="w-2/5 bg-bg-secondary flex items-start justify-center p-8 overflow-y-auto">
           <PhonePreview>
-            <p className="text-small text-text-tertiary p-6">
-              Preview will render here.
-            </p>
+            <PreviewContent
+              title={page?.title ?? ""}
+              bio={page?.bio ?? ""}
+              links={links}
+            />
           </PhonePreview>
         </div>
       </div>
