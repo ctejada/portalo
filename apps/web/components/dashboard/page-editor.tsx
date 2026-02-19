@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { showToast } from "@/components/ui/toast";
 import { LinkList } from "@/components/dashboard/link-list";
 import { LinkForm } from "@/components/dashboard/link-form";
+import type { Link as LinkType } from "@portalo/shared";
 
 interface PageEditorProps {
   pageId: string;
@@ -16,6 +17,23 @@ interface PageEditorProps {
 export function PageEditor({ pageId }: PageEditorProps) {
   const { page, isLoading, mutate } = usePage(pageId);
   const { links, isLoading: linksLoading, mutate: mutateLinks } = useLinks(pageId);
+
+  const handleDelete = useCallback(
+    async (link: LinkType) => {
+      if (!confirm(`Delete "${link.title}"?`)) return;
+
+      const res = await fetch(`/api/v1/pages/${pageId}/links/${link.id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        showToast("Failed to delete link", "error");
+        return;
+      }
+      showToast("Link deleted", "success");
+      mutateLinks();
+    },
+    [pageId, mutateLinks]
+  );
 
   const handleReorder = useCallback(
     async (linkIds: string[]) => {
@@ -84,6 +102,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
                       pageId={pageId}
                       onReorder={handleReorder}
                       onUpdated={() => mutateLinks()}
+                      onDelete={handleDelete}
                     />
                   )}
                   <LinkForm pageId={pageId} onAdded={() => mutateLinks()} />

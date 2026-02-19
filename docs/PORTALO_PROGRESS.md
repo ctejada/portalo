@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [█████████████       ] 29/34  (85%)
+Sprint 2: [█████████████       ] 30/34  (88%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████████            ] 67/160 (42%)
+TOTAL:    [████████            ] 68/160 (43%)
 ```
 
 ---
@@ -154,7 +154,7 @@ TOTAL:    [████████            ] 67/160 (42%)
 - [x] **Commit 65**: Wire drag to reorder API
 - [x] **Commit 66**: Inline link add form
 - [x] **Commit 67**: Link edit in row
-- [ ] **Commit 68**: Link delete
+- [x] **Commit 68**: Link delete
 - [ ] **Commit 69**: Link visibility toggle
 
 ### Phase 2F: Phone Preview (Commits 70-72)
