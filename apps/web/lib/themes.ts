@@ -44,6 +44,19 @@ export const THEMES: Record<string, ThemeStyles> = {
     linkPrefix: () => "\u2192",
     footerText: "text-[#4B5563]",
   },
+  editorial: {
+    bg: "bg-[#FAFAF8]",
+    text: "text-[#1A1A1A]",
+    textSecondary: "text-[#666666]",
+    linkText: "text-[#1A1A1A] hover:underline",
+    linkHover: "",
+    divider: "border-[#E0E0E0]",
+    avatarBg: "bg-[#EBEBEB]",
+    container: "max-w-[520px]",
+    titleClass: "text-2xl font-semibold font-serif",
+    linkPrefix: (index: number) => `${index + 1}.`,
+    footerText: "text-[#999999]",
+  },
 };
 
 export function getTheme(name: string): ThemeStyles {
