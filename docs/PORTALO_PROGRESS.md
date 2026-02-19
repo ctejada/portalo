@@ -14,10 +14,10 @@ Sprint 1: [████████████████████] 38/38  
 Sprint 2: [████████████████████] 34/34  (100%) ✓
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
-Sprint 5: [                    ] 0/29   (0%)
+Sprint 5: [████████████████████] 29/29  (100%) ✓
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██████████████      ] 110/160 (69%)
+TOTAL:    [█████████████████   ] 139/160 (87%)
 ```
 
 ---
@@ -259,50 +259,50 @@ TOTAL:    [██████████████      ] 110/160 (69%)
 **Goal**: Stripe billing, custom domains, MCP server published
 
 ### Phase 5A: Stripe Setup (Commits 111-115)
-- [ ] **Commit 111**: Stripe client
-- [ ] **Commit 112**: Plan constants
-- [ ] **Commit 113**: Checkout session
-- [ ] **Commit 114**: Webhook handler
-- [ ] **Commit 115**: Billing portal
+- [x] **Commit 111**: Stripe client
+- [x] **Commit 112**: Plan constants
+- [x] **Commit 113**: Checkout session
+- [x] **Commit 114**: Webhook handler
+- [x] **Commit 115**: Billing portal
 
 ### Phase 5B: Billing UI (Commits 116-119)
-- [ ] **Commit 116**: Billing page
-- [ ] **Commit 117**: Plan badge
-- [ ] **Commit 118**: Upgrade buttons
-- [ ] **Commit 119**: Manage billing link
+- [x] **Commit 116**: Billing page
+- [x] **Commit 117**: Plan badge
+- [x] **Commit 118**: Upgrade buttons
+- [x] **Commit 119**: Manage billing link
 
 ### Phase 5C: Plan Gating (Commits 120-123)
-- [ ] **Commit 120**: Plan gate helper
-- [ ] **Commit 121**: Page limit enforcement
-- [ ] **Commit 122**: Link limit enforcement
-- [ ] **Commit 123**: Gate email capture
+- [x] **Commit 120**: Plan gate helper
+- [x] **Commit 121**: Page limit enforcement
+- [x] **Commit 122**: Link limit enforcement
+- [x] **Commit 123**: Gate email capture
 
 ### Phase 5D: Custom Domains (Commits 124-128)
-- [ ] **Commit 124**: POST /domains
-- [ ] **Commit 125**: GET /domains/[id]/verify
-- [ ] **Commit 126**: DELETE /domains/[id]
-- [ ] **Commit 127**: Domain settings page
-- [ ] **Commit 128**: Verification status
+- [x] **Commit 124**: POST /domains
+- [x] **Commit 125**: GET /domains/[id]/verify
+- [x] **Commit 126**: DELETE /domains/[id]
+- [x] **Commit 127**: Domain settings page
+- [x] **Commit 128**: Verification status
 
 ### Phase 5E: MCP Server (Commits 129-139)
-- [ ] **Commit 129**: Initialize package
-- [ ] **Commit 130**: API client wrapper
-- [ ] **Commit 131**: MCP server + list_pages
-- [ ] **Commit 132**: get_page tool
-- [ ] **Commit 133**: Link tools
-- [ ] **Commit 134**: reorder_links tool
-- [ ] **Commit 135**: get_analytics tool
-- [ ] **Commit 136**: export_contacts tool
-- [ ] **Commit 137**: update_theme tool
-- [ ] **Commit 138**: .well-known/mcp.json
-- [ ] **Commit 139**: npm publish config
+- [x] **Commit 129**: Initialize package
+- [x] **Commit 130**: API client wrapper
+- [x] **Commit 131**: MCP server + list_pages
+- [x] **Commit 132**: get_page tool
+- [x] **Commit 133**: Link tools
+- [x] **Commit 134**: reorder_links tool
+- [x] **Commit 135**: get_analytics tool
+- [x] **Commit 136**: export_contacts tool
+- [x] **Commit 137**: update_theme tool
+- [x] **Commit 138**: .well-known/mcp.json
+- [x] **Commit 139**: npm publish config
 
 **Sprint 5 Completion Criteria**:
-- [ ] Can upgrade to Pro via Stripe
-- [ ] Plan limits enforced
-- [ ] Custom domains can be added/verified
-- [ ] MCP server published to npm
-- [ ] Claude can manage page via MCP
+- [x] Can upgrade to Pro via Stripe
+- [x] Plan limits enforced
+- [x] Custom domains can be added/verified
+- [x] MCP server published to npm
+- [x] Claude can manage page via MCP
 
 ---
 
