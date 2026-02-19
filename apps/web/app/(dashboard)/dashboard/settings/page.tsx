@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { useUser } from "@/hooks/use-user";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { showToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AvatarUpload } from "@/components/dashboard/avatar-upload";
+import { PlanBadge } from "@/components/dashboard/plan-badge";
+import type { Plan } from "@portalo/shared";
 
 export default function SettingsProfilePage() {
   const { user, isLoading, mutate } = useUser();
@@ -91,6 +94,19 @@ export default function SettingsProfilePage() {
         <Button onClick={handleSave} disabled={saving}>
           {saving ? "Saving…" : "Save"}
         </Button>
+
+        <div className="pt-4 border-t border-border-primary">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-small font-medium text-text-secondary">Plan</span>
+            <PlanBadge plan={(user?.plan ?? "free") as Plan} />
+          </div>
+          <Link
+            href="/dashboard/settings/billing"
+            className="text-small text-accent hover:underline"
+          >
+            Manage billing &rarr;
+          </Link>
+        </div>
       </div>
     </div>
   );
