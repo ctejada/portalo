@@ -1,9 +1,27 @@
 -- seed.sql
 -- Test data for local development
 -- Note: In production, profiles are created via the on_auth_user_created trigger.
--- This seed inserts directly for local testing without auth.
+-- For local seeding, we insert into auth.users first so the FK on profiles is satisfied.
 
--- Test user profile (use a fixed UUID for predictable local dev)
+-- Test auth user (fixed UUID for predictable local dev)
+INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at, confirmation_token, raw_app_meta_data, raw_user_meta_data)
+VALUES (
+  '00000000-0000-0000-0000-000000000001',
+  '00000000-0000-0000-0000-000000000000',
+  'authenticated',
+  'authenticated',
+  'demo@portalo.so',
+  crypt('password123', gen_salt('bf')),
+  NOW(),
+  NOW(),
+  NOW(),
+  '',
+  '{"provider": "email", "providers": ["email"]}',
+  '{"display_name": "Demo User"}'
+)
+ON CONFLICT (id) DO NOTHING;
+
+-- Test user profile
 INSERT INTO public.profiles (id, display_name, plan)
 VALUES ('00000000-0000-0000-0000-000000000001', 'Demo User', 'pro')
 ON CONFLICT (id) DO NOTHING;
