@@ -179,6 +179,17 @@ server.tool(
   }
 );
 
+// get_account
+server.tool(
+  "get_account",
+  "Get your account profile and plan information",
+  {},
+  async () => {
+    const account = await client.getAccount();
+    return { content: [{ type: "text", text: JSON.stringify(account, null, 2) }] };
+  }
+);
+
 // update_page
 server.tool(
   "update_page",

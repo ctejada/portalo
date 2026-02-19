@@ -94,6 +94,11 @@ export class PortaloClient {
     );
   }
 
+  // Account
+  async getAccount() {
+    return this.request<unknown>("GET", "/account");
+  }
+
   // Analytics
   async getAnalytics(
     pageId: string,
