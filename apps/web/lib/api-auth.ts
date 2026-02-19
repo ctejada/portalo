@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
 import type { NextRequest } from "next/server";
 
 interface AuthResult {
@@ -55,6 +54,9 @@ async function authenticateWithApiKey(
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hash = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+
+  // Lazy import to avoid build-time env var resolution
+  const { supabaseAdmin } = await import("@/lib/supabase/admin");
 
   const { data: profile, error } = await supabaseAdmin
     .from("profiles")
