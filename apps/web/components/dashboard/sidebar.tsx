@@ -21,6 +21,7 @@ const navGroups = [
     items: [
       { name: "Profile", href: "/dashboard/settings" },
       { name: "Billing", href: "/dashboard/settings/billing" },
+      { name: "Domains", href: "/dashboard/settings/domain" },
       { name: "API Keys", href: "/dashboard/settings/api" },
     ],
   },
