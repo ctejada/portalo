@@ -1,12 +1,21 @@
 "use client";
 
 import type { Link } from "@portalo/shared";
+import { LinkRow } from "@/components/dashboard/link-row";
 
 interface LinkListProps {
   links: Link[];
+  onEdit?: (link: Link) => void;
+  onDelete?: (link: Link) => void;
+  onToggleVisibility?: (link: Link) => void;
 }
 
-export function LinkList({ links }: LinkListProps) {
+export function LinkList({
+  links,
+  onEdit,
+  onDelete,
+  onToggleVisibility,
+}: LinkListProps) {
   if (links.length === 0) {
     return (
       <p className="text-small text-text-tertiary py-4">
@@ -18,30 +27,14 @@ export function LinkList({ links }: LinkListProps) {
   return (
     <div className="divide-y divide-border-primary border-y border-border-primary">
       {links.map((link) => (
-        <LinkRow key={link.id} link={link} />
+        <LinkRow
+          key={link.id}
+          link={link}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onToggleVisibility={onToggleVisibility}
+        />
       ))}
-    </div>
-  );
-}
-
-function LinkRow({ link }: { link: Link }) {
-  return (
-    <div className="flex items-center gap-3 py-3 px-2 group hover:bg-bg-secondary">
-      {/* Drag handle placeholder */}
-      <span className="text-text-tertiary cursor-grab select-none">⠿</span>
-
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <p className="text-body font-medium text-text-primary truncate">
-          {link.title}
-        </p>
-        <p className="text-small text-text-secondary truncate">{link.url}</p>
-      </div>
-
-      {/* Click count */}
-      <span className="text-small text-text-tertiary tabular-nums">
-        {link.clicks}
-      </span>
     </div>
   );
 }
