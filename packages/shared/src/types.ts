@@ -9,6 +9,7 @@ export type Plan = "free" | "pro" | "business";
 // Profile type (extends Supabase auth.users)
 export interface Profile {
   id: string;
+  username: string;
   display_name: string | null;
   avatar_url: string | null;
   plan: Plan;

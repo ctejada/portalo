@@ -12,6 +12,13 @@ const slugSchema = z
   .max(64)
   .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers, and hyphens only");
 
+// Username validation
+export const usernameSchema = z
+  .string()
+  .min(1)
+  .max(32)
+  .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers, and hyphens only");
+
 // Theme schema
 export const themeSchema = z.object({
   name: z.enum(["clean", "minimal-dark", "editorial"]).default("clean"),
@@ -89,9 +96,9 @@ export const emailCaptureSchema = z.object({
   page_id: z.string().uuid(),
 });
 
-// Analytics query schema
+// Analytics query schema (page_id optional for aggregate queries)
 export const analyticsQuerySchema = z.object({
-  page_id: z.string().uuid(),
+  page_id: z.string().uuid().optional(),
   period: z.enum(["7d", "30d", "90d"]).default("7d"),
 });
 
@@ -114,5 +121,6 @@ export type UpdateLinkInput = z.infer<typeof updateLinkSchema>;
 export type ReorderLinksInput = z.infer<typeof reorderLinksSchema>;
 export type CreateDomainInput = z.infer<typeof createDomainSchema>;
 export type EmailCaptureInput = z.infer<typeof emailCaptureSchema>;
+export type UsernameInput = z.infer<typeof usernameSchema>;
 export type AnalyticsQueryInput = z.infer<typeof analyticsQuerySchema>;
 export type TrackEventInput = z.infer<typeof trackEventSchema>;
