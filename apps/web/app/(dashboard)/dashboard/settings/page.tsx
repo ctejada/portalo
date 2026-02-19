@@ -5,6 +5,7 @@ import { useUser } from "@/hooks/use-user";
 import { Button } from "@/components/ui/button";
 import { showToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AvatarUpload } from "@/components/dashboard/avatar-upload";
 
 export default function SettingsProfilePage() {
   const { user, isLoading, mutate } = useUser();
@@ -46,6 +47,14 @@ export default function SettingsProfilePage() {
       <h1 className="text-page-title mb-6">Profile</h1>
 
       <div className="space-y-4">
+        {user && (
+          <AvatarUpload
+            userId={user.id}
+            currentUrl={user.avatar_url}
+            onUploaded={() => mutate()}
+          />
+        )}
+
         <div>
           <label
             htmlFor="email"

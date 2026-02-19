@@ -34,6 +34,10 @@ export async function PUT(request: NextRequest) {
     updates.display_name = body.display_name.trim().slice(0, 100);
   }
 
+  if (typeof body.avatar_url === "string") {
+    updates.avatar_url = body.avatar_url;
+  }
+
   if (Object.keys(updates).length === 0) {
     return Response.json(
       { error: { code: "bad_request", message: "No valid fields to update" } },
