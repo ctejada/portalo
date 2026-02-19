@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [██████              ] 14/34  (41%)
+Sprint 2: [██████              ] 15/34  (44%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██████              ] 52/160 (33%)
+TOTAL:    [██████              ] 53/160 (33%)
 ```
 
 ---
@@ -137,7 +137,7 @@ TOTAL:    [██████              ] 52/160 (33%)
 - [x] **Commit 52**: Wire "+ New page" button
 
 ### Phase 2D: Links API (Commits 53-57)
-- [ ] **Commit 53**: GET /pages/[id]/links
+- [x] **Commit 53**: GET /pages/[id]/links
 - [ ] **Commit 54**: POST /pages/[id]/links
 - [ ] **Commit 55**: PUT /pages/[id]/links/[linkId]
 - [ ] **Commit 56**: DELETE /pages/[id]/links/[linkId]
