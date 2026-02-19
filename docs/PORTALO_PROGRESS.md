@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [██████              ] 13/34  (38%)
+Sprint 2: [██████              ] 14/34  (41%)
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [██████              ] 51/160 (32%)
+TOTAL:    [██████              ] 52/160 (33%)
 ```
 
 ---
@@ -31,7 +31,7 @@ TOTAL:    [██████              ] 51/160 (32%)
 | **M3: Database Ready** | 1 | 14-22 | [x] Complete | All migrations applied, RLS working |
 | **M4: Auth Working** | 1 | 23-31 | [x] Complete | Can sign in/out with Google + Magic Link |
 | **M5: Dashboard Shell** | 1 | 32-38 | [x] Complete | Empty dashboard renders, deploys to CF |
-| **M6: Pages CRUD** | 2 | 39-52 | [ ] Not Started | Can create/edit/delete pages |
+| **M6: Pages CRUD** | 2 | 39-52 | [x] Complete | Can create/edit/delete pages |
 | **M7: Links CRUD** | 2 | 53-69 | [ ] Not Started | Can add/edit/reorder/delete links |
 | **M8: Live Preview** | 2 | 70-72 | [ ] Not Started | Preview updates as you edit |
 | **M9: Public Pages** | 3 | 73-86 | [ ] Not Started | Public pages render with themes |
@@ -134,7 +134,7 @@ TOTAL:    [██████              ] 51/160 (32%)
 - [x] **Commit 49**: Page list component
 - [x] **Commit 50**: Dashboard home update
 - [x] **Commit 51**: New page dialog
-- [ ] **Commit 52**: Wire "+ New page" button
+- [x] **Commit 52**: Wire "+ New page" button
 
 ### Phase 2D: Links API (Commits 53-57)
 - [ ] **Commit 53**: GET /pages/[id]/links
@@ -163,7 +163,7 @@ TOTAL:    [██████              ] 51/160 (32%)
 - [ ] **Commit 72**: Live update
 
 **Sprint 2 Completion Criteria**:
-- [ ] Can create a new page
+- [x] Can create a new page
 - [ ] Can add/edit/delete links
 - [ ] Can drag-drop reorder links
 - [ ] Preview updates live
