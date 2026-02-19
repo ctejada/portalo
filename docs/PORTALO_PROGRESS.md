@@ -15,9 +15,9 @@ Sprint 2: [████████████████████] 34/34  
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [██████████          ] 10/21  (48%)
+Sprint 6: [██████████          ] 11/21  (52%)
 ─────────────────────────────────────────
-TOTAL:    [██████████████████  ] 149/160 (93%)
+TOTAL:    [███████████████████ ] 150/160 (94%)
 ```
 
 ---
@@ -329,7 +329,7 @@ TOTAL:    [██████████████████  ] 149/160 (93
 
 ### Phase 6E: E2E Tests (Commits 149-152)
 - [x] **Commit 149**: Playwright setup
-- [ ] **Commit 150**: Signup + create page test
+- [x] **Commit 150**: Signup + create page test
 - [ ] **Commit 151**: Links + reorder test
 - [ ] **Commit 152**: Public page + click test
 
