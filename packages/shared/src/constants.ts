@@ -38,6 +38,7 @@ export const PLANS: Record<Plan, PlanConfig> = {
   pro: {
     name: "Pro",
     price: 700, // $7.00
+    stripe_price_id: "pro",
     limits: {
       pages: 5,
       links_per_page: 50,
@@ -51,6 +52,7 @@ export const PLANS: Record<Plan, PlanConfig> = {
   business: {
     name: "Business",
     price: 1900, // $19.00
+    stripe_price_id: "business",
     limits: {
       pages: 20,
       links_per_page: 200,
@@ -62,6 +64,14 @@ export const PLANS: Record<Plan, PlanConfig> = {
     },
   },
 };
+
+// Lookup plan by Stripe price key
+export function planFromStripePrice(priceId: string): Plan | null {
+  for (const [plan, config] of Object.entries(PLANS)) {
+    if (config.stripe_price_id === priceId) return plan as Plan;
+  }
+  return null;
+}
 
 // Theme names
 export const THEME_NAMES = ["clean", "minimal-dark", "editorial"] as const;
