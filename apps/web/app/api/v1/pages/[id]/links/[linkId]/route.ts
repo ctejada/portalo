@@ -3,6 +3,7 @@ import { getApiUser } from "@/lib/api-auth";
 import { getSupabaseClient } from "@/lib/supabase/api-client";
 import { updateLinkSchema } from "@portalo/shared";
 import { invalidatePageCache } from "@/lib/cache";
+import { detectPlatform } from "@/lib/platform-detect";
 
 type Params = { params: Promise<{ id: string; linkId: string }> };
 
@@ -42,6 +43,11 @@ export async function PUT(request: NextRequest, { params }: Params) {
       { error: { code: "not_found", message: "Page not found" } },
       { status: 404 }
     );
+  }
+
+  // Re-detect platform if URL changed and platform not explicitly set
+  if (parsed.data.url && parsed.data.platform === undefined) {
+    parsed.data.platform = detectPlatform(parsed.data.url);
   }
 
   const { data, error } = await supabase

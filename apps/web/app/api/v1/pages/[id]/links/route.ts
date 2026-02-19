@@ -4,6 +4,7 @@ import { getSupabaseClient } from "@/lib/supabase/api-client";
 import { createLinkSchema } from "@portalo/shared";
 import { checkLinkLimit } from "@/lib/plan-gate";
 import { invalidatePageCache } from "@/lib/cache";
+import { detectPlatform } from "@/lib/platform-detect";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -95,6 +96,11 @@ export async function POST(request: NextRequest, { params }: Params) {
       },
       { status: 403 }
     );
+  }
+
+  // Auto-detect platform if not provided
+  if (parsed.data.platform === undefined) {
+    parsed.data.platform = detectPlatform(parsed.data.url);
   }
 
   // Auto-assign position to end of list
