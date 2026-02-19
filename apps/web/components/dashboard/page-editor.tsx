@@ -19,6 +19,15 @@ interface PageEditorProps {
 export function PageEditor({ pageId }: PageEditorProps) {
   const { page, isLoading, mutate } = usePage(pageId);
   const { links, isLoading: linksLoading, mutate: mutateLinks } = useLinks(pageId);
+  const [title, setTitle] = useState("");
+  const [bio, setBio] = useState("");
+
+  useEffect(() => {
+    if (page) {
+      setTitle(page.title);
+      setBio(page.bio);
+    }
+  }, [page]);
 
   const handleDelete = useCallback(
     async (link: LinkType) => {
@@ -98,8 +107,10 @@ export function PageEditor({ pageId }: PageEditorProps) {
                 {/* Title/bio inline edit */}
                 <InlineFields
                   pageId={pageId}
-                  initialTitle={page.title}
-                  initialBio={page.bio}
+                  title={title}
+                  bio={bio}
+                  onTitleChange={setTitle}
+                  onBioChange={setBio}
                   onSave={() => mutate()}
                 />
 
@@ -137,8 +148,8 @@ export function PageEditor({ pageId }: PageEditorProps) {
         <div className="w-2/5 bg-bg-secondary flex items-start justify-center p-8 overflow-y-auto">
           <PhonePreview>
             <PreviewContent
-              title={page?.title ?? ""}
-              bio={page?.bio ?? ""}
+              title={title}
+              bio={bio}
               links={links}
             />
           </PhonePreview>
@@ -150,17 +161,19 @@ export function PageEditor({ pageId }: PageEditorProps) {
 
 function InlineFields({
   pageId,
-  initialTitle,
-  initialBio,
+  title,
+  bio,
+  onTitleChange,
+  onBioChange,
   onSave,
 }: {
   pageId: string;
-  initialTitle: string;
-  initialBio: string;
+  title: string;
+  bio: string;
+  onTitleChange: (value: string) => void;
+  onBioChange: (value: string) => void;
   onSave: () => void;
 }) {
-  const [title, setTitle] = useState(initialTitle);
-  const [bio, setBio] = useState(initialBio);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   const save = useCallback(
@@ -199,7 +212,7 @@ function InlineFields({
         type="text"
         value={title}
         onChange={(e) => {
-          setTitle(e.target.value);
+          onTitleChange(e.target.value);
           debouncedSave({ title: e.target.value, bio });
         }}
         placeholder="Page title"
@@ -208,7 +221,7 @@ function InlineFields({
       <textarea
         value={bio}
         onChange={(e) => {
-          setBio(e.target.value);
+          onBioChange(e.target.value);
           debouncedSave({ title, bio: e.target.value });
         }}
         placeholder="Write a short bio..."

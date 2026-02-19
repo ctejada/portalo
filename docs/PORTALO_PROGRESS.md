@@ -11,13 +11,13 @@
 
 ```
 Sprint 1: [████████████████████] 38/38  (100%) ✓
-Sprint 2: [████████████████    ] 33/34  (97%)
+Sprint 2: [████████████████████] 34/34  (100%) ✓
 Sprint 3: [                    ] 0/16   (0%)
 Sprint 4: [                    ] 0/22   (0%)
 Sprint 5: [                    ] 0/29   (0%)
 Sprint 6: [                    ] 0/21   (0%)
 ─────────────────────────────────────────
-TOTAL:    [████████            ] 71/160 (44%)
+TOTAL:    [█████████           ] 72/160 (45%)
 ```
 
 ---
@@ -33,7 +33,7 @@ TOTAL:    [████████            ] 71/160 (44%)
 | **M5: Dashboard Shell** | 1 | 32-38 | [x] Complete | Empty dashboard renders, deploys to CF |
 | **M6: Pages CRUD** | 2 | 39-52 | [x] Complete | Can create/edit/delete pages |
 | **M7: Links CRUD** | 2 | 53-69 | [x] Complete | Can add/edit/reorder/delete links |
-| **M8: Live Preview** | 2 | 70-72 | [ ] Not Started | Preview updates as you edit |
+| **M8: Live Preview** | 2 | 70-72 | [x] Complete | Preview updates as you edit |
 | **M9: Public Pages** | 3 | 73-86 | [ ] Not Started | Public pages render with themes |
 | **M10: SEO Ready** | 3 | 87-88 | [ ] Not Started | Meta tags and OG images work |
 | **M11: Analytics** | 4 | 89-96 | [ ] Not Started | Analytics dashboard functional |
@@ -160,13 +160,13 @@ TOTAL:    [████████            ] 71/160 (44%)
 ### Phase 2F: Phone Preview (Commits 70-72)
 - [x] **Commit 70**: Preview frame
 - [x] **Commit 71**: Preview content
-- [ ] **Commit 72**: Live update
+- [x] **Commit 72**: Live update
 
 **Sprint 2 Completion Criteria**:
 - [x] Can create a new page
 - [x] Can add/edit/delete links
 - [x] Can drag-drop reorder links
-- [ ] Preview updates live
+- [x] Preview updates live
 
 ---
 
