@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
-import { createClient } from "@/lib/supabase/server";
+import { getSupabaseClient } from "@/lib/supabase/api-client";
 import { createDomainSchema, PLANS } from "@portalo/shared";
 import type { Plan } from "@portalo/shared";
 
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const auth = await getApiUser(request);
   if (auth.error) return auth.error;
 
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
   const { data, error } = await supabase
     .from("domains")
     .select("*, pages!inner(user_id)")
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const supabase = await createClient();
+  const supabase = await getSupabaseClient(auth.isApiKey);
 
   // Verify page belongs to user
   const { data: page } = await supabase
