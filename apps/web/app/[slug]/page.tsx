@@ -26,7 +26,14 @@ async function getPageBySlug(slug: string) {
     .eq("visible", true)
     .order("position", { ascending: true });
 
-  return { page: page as Page, links: (links ?? []) as Link[] };
+  const now = new Date().toISOString();
+  const activeLinks = ((links ?? []) as Link[]).filter((link) => {
+    if (link.schedule_start && link.schedule_start > now) return false;
+    if (link.schedule_end && link.schedule_end < now) return false;
+    return true;
+  });
+
+  return { page: page as Page, links: activeLinks };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

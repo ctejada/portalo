@@ -34,5 +34,12 @@ export async function GET(_request: NextRequest, { params }: Params) {
     );
   }
 
-  return Response.json({ data: { ...page, links: links ?? [] } });
+  const now = new Date().toISOString();
+  const activeLinks = (links ?? []).filter((link) => {
+    if (link.schedule_start && link.schedule_start > now) return false;
+    if (link.schedule_end && link.schedule_end < now) return false;
+    return true;
+  });
+
+  return Response.json({ data: { ...page, links: activeLinks } });
 }

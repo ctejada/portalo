@@ -15,9 +15,9 @@ Sprint 2: [████████████████████] 34/34  
 Sprint 3: [████████████████████] 16/16  (100%) ✓
 Sprint 4: [████████████████████] 22/22  (100%) ✓
 Sprint 5: [████████████████████] 29/29  (100%) ✓
-Sprint 6: [███                 ] 3/21   (14%)
+Sprint 6: [████                ] 4/21   (19%)
 ─────────────────────────────────────────
-TOTAL:    [█████████████████   ] 142/160 (89%)
+TOTAL:    [█████████████████   ] 143/160 (89%)
 ```
 
 ---
@@ -316,7 +316,7 @@ TOTAL:    [█████████████████   ] 142/160 (89%)
 
 ### Phase 6B: Link Scheduling (Commits 142-143)
 - [x] **Commit 142**: Schedule fields
-- [ ] **Commit 143**: Filter by schedule
+- [x] **Commit 143**: Filter by schedule
 
 ### Phase 6C: Edge Caching (Commits 144-147)
 - [ ] **Commit 144**: CF Worker renderer
