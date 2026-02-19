@@ -8,6 +8,7 @@ Comprehensive test cases for all completed pages and API endpoints.
 - Google OAuth + Magic Link configured in Supabase Auth
 - Stripe test keys set in `.env.local` (for billing tests)
 - At least one test user account
+- Playwright installed (`npx playwright install`) for E2E tests
 
 ---
 
@@ -72,6 +73,10 @@ Comprehensive test cases for all completed pages and API endpoints.
 | 11 | Link limit (Free) | Free user adds 11th link | 403 error: "Your free plan allows 10 links per page" |
 | 12 | Live preview | Make any edit | Preview panel updates in real-time |
 | 13 | Invalid page ID | Visit `/dashboard/pages/nonexistent-id` | 404 or error state shown |
+| 14 | Schedule start | Edit link → set schedule_start to future date → save | "Scheduled" indicator shown on link row, link hidden on public page |
+| 15 | Schedule end | Edit link → set schedule_end to past date → save | "Scheduled" indicator shown, link hidden on public page |
+| 16 | Active schedule | Set schedule_start to past, schedule_end to future | Link visible on public page |
+| 17 | Clear schedule | Edit link → clear schedule dates → save | "Scheduled" indicator removed, link visible normally |
 
 ---
 
@@ -92,6 +97,11 @@ Comprehensive test cases for all completed pages and API endpoints.
 | 9 | Hidden links | Some links marked invisible | Only visible links rendered |
 | 10 | Powered by footer | `show_powered_by: true` | "Powered by Portalo" footer shown |
 | 11 | No branding (paid) | Pro/Business user with `show_powered_by: false` | Footer hidden |
+| 12 | Scheduled link (future) | Link with `schedule_start` in the future | Link not rendered on public page |
+| 13 | Scheduled link (expired) | Link with `schedule_end` in the past | Link not rendered on public page |
+| 14 | Scheduled link (active) | Link within schedule window | Link rendered normally |
+| 15 | JSON-LD structured data | View page source of `/{slug}` | `<script type="application/ld+json">` with ProfilePage schema, sameAs links |
+| 16 | Custom 404 page | Visit `/nonexistent-slug` | Custom 404 page with "This page doesn't exist" and "Go home" link |
 
 ### 3.2 Email Capture
 
@@ -111,6 +121,11 @@ Comprehensive test cases for all completed pages and API endpoints.
 | 2 | OG tags | Check og:title, og:description | Correct page data |
 | 3 | OG image | Fetch `/{slug}/opengraph-image` | 1200x630 PNG with page title/bio |
 | 4 | Twitter card | Check twitter:card meta | `summary_large_image` type |
+| 5 | Sitemap | Visit `/sitemap.xml` | XML with base URL + all published page URLs |
+| 6 | Robots.txt | Visit `/robots.txt` | Allows `/`, disallows `/dashboard` and `/api/`, includes sitemap URL |
+| 7 | JSON-LD | View source of `/{slug}` | `application/ld+json` script with ProfilePage, Person mainEntity, sameAs array |
+| 8 | Auth layout title | Inspect `<head>` of `/login` | `<title>` is "Sign in - Portalo" |
+| 9 | Dashboard layout title | Inspect `<head>` of `/dashboard` | `<title>` is "Dashboard - Portalo" |
 
 ---
 
@@ -230,8 +245,9 @@ Comprehensive test cases for all completed pages and API endpoints.
 
 | # | Endpoint | Method | Test Case | Expected |
 |---|----------|--------|-----------|----------|
-| 1 | `/api/v1/public/page/[slug]` | GET | Published page | 200 + page + links |
+| 1 | `/api/v1/public/page/[slug]` | GET | Published page | 200 + page + links + `Cache-Control: public, s-maxage=60, stale-while-revalidate=300` |
 | 2 | `/api/v1/public/page/[slug]` | GET | Unpublished page | 404 |
+| 2a | `/api/v1/public/page/[slug]` | GET | Page with scheduled links | 200 + only links within active schedule window |
 | 3 | `/api/v1/public/track` | POST | Valid view event | 201 |
 | 4 | `/api/v1/public/track` | POST | Invalid event_type | 400 |
 | 5 | `/api/v1/public/capture` | POST | Valid email + page_id | 201 |
@@ -318,10 +334,14 @@ Comprehensive test cases for all completed pages and API endpoints.
 
 | # | Test Case | Steps | Expected |
 |---|-----------|-------|----------|
-| 1 | Active state | Visit each sidebar link | Active page is highlighted |
+| 1 | Active state (desktop) | Visit each sidebar link on desktop | Active page is highlighted with `bg-bg-active` |
 | 2 | All links work | Click each sidebar item | Navigates to correct page |
 | 3 | Sidebar items | Check all items present | My Pages, Analytics, Contacts, Profile, Billing, Domains, API Keys |
 | 4 | User nav | Check sidebar footer | Avatar/initials, display name, plan badge, sign-out button |
+| 5 | Mobile tab bar | Resize to <768px | Desktop sidebar hidden, bottom tab bar with Pages/Analytics/Contacts/Settings |
+| 6 | Mobile active state | Visit each tab on mobile | Active tab has accent color |
+| 7 | Desktop sidebar | Resize to ≥768px | Bottom tab bar hidden, desktop sidebar visible |
+| 8 | Mobile content padding | Open any page on mobile | Content doesn't overlap with bottom tab bar (`pb-16`) |
 
 ---
 
@@ -351,6 +371,107 @@ Comprehensive test cases for all completed pages and API endpoints.
 
 ---
 
+## 10. PWA
+
+### 10.1 Manifest & Installation
+
+| # | Test Case | Steps | Expected |
+|---|-----------|-------|----------|
+| 1 | Manifest loads | Visit `/manifest.json` | JSON with name "Portalo", theme_color "#4F46E5", display "standalone" |
+| 2 | Icons | Check `/icon-192.png` and `/icon-512.png` | Valid PNG images load |
+| 3 | Install prompt | Open in Chrome → Application tab | "Install" option available |
+| 4 | Theme color | Inspect `<meta name="theme-color">` | Content is "#4F46E5" |
+
+### 10.2 Service Worker
+
+| # | Test Case | Steps | Expected |
+|---|-----------|-------|----------|
+| 1 | SW registration | Open DevTools → Application → Service Workers | `sw.js` registered and active |
+| 2 | Static caching | Load page → go offline → reload | Cached static assets load from cache |
+| 3 | API bypass | Inspect SW logic | API calls (`/api/`) not intercepted by cache |
+
+---
+
+## 11. Landing Page (`/`)
+
+| # | Test Case | Steps | Expected |
+|---|-----------|-------|----------|
+| 1 | Hero section | Visit `/` | "Your link-in-bio, powered by AI" headline visible |
+| 2 | CTA buttons | Check hero buttons | "Get Started Free" links to `/signup`, "Sign In" links to `/login` |
+| 3 | Features section | Scroll down | 3 features: AI-Powered, 3 Themes, Real-Time Analytics |
+| 4 | Pricing section | Scroll to pricing | 3 plan cards: Free, Pro ($7/mo), Business ($19/mo) |
+| 5 | Pro plan highlight | Check plan cards | Pro card has accent border |
+| 6 | Plan details | Check each plan card | Correct page count, link limit, analytics days, features |
+| 7 | Footer | Scroll to bottom | "Portalo" text, Sign in and Sign up links |
+| 8 | Nav bar | Check top nav | "Portalo" logo, "Sign in" and "Get Started" links |
+| 9 | Server component | Check page source | No `"use client"` — renders as server component (no JS bundle overhead) |
+
+---
+
+## 12. Loading States
+
+| # | Test Case | Steps | Expected |
+|---|-----------|-------|----------|
+| 1 | Dashboard loading | Navigate to `/dashboard` (slow network) | Skeleton: title bar + 3 row placeholders |
+| 2 | Page editor loading | Navigate to `/dashboard/pages/[id]` (slow network) | Skeleton: editor panel + preview panel with avatar circle |
+| 3 | Analytics loading | Navigate to `/dashboard/analytics` (slow network) | Skeleton: title + 4 metric cards + chart placeholder |
+| 4 | Settings loading | Navigate to `/dashboard/settings` (slow network) | Skeleton: title + avatar circle + form fields |
+| 5 | No flash | Fast network | Loading skeletons don't flash (shown only during actual load) |
+
+---
+
+## 13. Error Tracking (Sentry)
+
+| # | Test Case | Steps | Expected |
+|---|-----------|-------|----------|
+| 1 | Client init | Check browser console for Sentry | Sentry initialized with DSN (if `NEXT_PUBLIC_SENTRY_DSN` set) |
+| 2 | Global error boundary | Trigger an uncaught error | `global-error.tsx` renders with "Something went wrong" |
+| 3 | Error reporting | Trigger error with Sentry configured | Error appears in Sentry dashboard |
+| 4 | No DSN graceful | Run without `NEXT_PUBLIC_SENTRY_DSN` | App works normally, no errors in console |
+
+---
+
+## 14. Edge Caching
+
+| # | Test Case | Steps | Expected |
+|---|-----------|-------|----------|
+| 1 | Cache headers | `curl -I /api/v1/public/page/{slug}` | `Cache-Control: public, s-maxage=60, stale-while-revalidate=300` + `CDN-Cache-Control: public, max-age=60` |
+| 2 | Cache invalidation on page save | Edit page title → save | `invalidatePageCache(slug)` called (Cloudflare purge API if configured) |
+| 3 | Cache invalidation on link create | Add a link to a page | Cache purged for that page's slug |
+| 4 | Cache invalidation on link update | Edit a link → save | Cache purged for that page's slug |
+| 5 | Cache invalidation on link delete | Delete a link | Cache purged for that page's slug |
+| 6 | No-op without CF keys | Unset `CLOUDFLARE_ZONE_ID` and `CLOUDFLARE_API_TOKEN` | `invalidatePageCache` silently returns without error |
+
+---
+
+## 15. E2E Tests (Playwright)
+
+### Running E2E Tests
+
+```bash
+cd apps/web
+npx playwright test           # run all tests
+npx playwright test --ui      # interactive mode
+npx playwright show-report    # view last report
+```
+
+### Test Files
+
+| File | Coverage |
+|------|----------|
+| `e2e/auth-and-create-page.spec.ts` | Login page renders, dashboard redirects unauthenticated users, page creation structure |
+| `e2e/link-management.spec.ts` | Link editor structure, CRUD scaffolding (requires auth) |
+| `e2e/public-page.spec.ts` | 404 for nonexistent pages, home page renders, click tracking structure |
+
+| # | Test Case | Steps | Expected |
+|---|-----------|-------|----------|
+| 1 | Playwright config | Check `playwright.config.ts` | testDir `./e2e`, baseURL `http://localhost:3000` |
+| 2 | Auth tests run | `npx playwright test e2e/auth-and-create-page.spec.ts` | Login page test passes, auth-dependent tests skipped |
+| 3 | Public page tests | `npx playwright test e2e/public-page.spec.ts` | Home page test passes, auth-dependent tests skipped |
+| 4 | Link tests | `npx playwright test e2e/link-management.spec.ts` | Auth-dependent tests skipped gracefully |
+
+---
+
 ## Quick Smoke Test Checklist
 
 Run through these to verify core functionality:
@@ -358,14 +479,24 @@ Run through these to verify core functionality:
 - [ ] Sign up with Google or Magic Link
 - [ ] Create a page with slug "test-page"
 - [ ] Add 3 links with titles and URLs
+- [ ] Set schedule_start on one link to tomorrow → "Scheduled" indicator shows
 - [ ] Drag to reorder links
 - [ ] Switch theme to "Minimal Dark"
 - [ ] Toggle published → on
-- [ ] Visit `/test-page` in incognito — page renders with correct theme
+- [ ] Visit `/test-page` in incognito — page renders with correct theme, scheduled link hidden
+- [ ] View page source — JSON-LD `<script>` present with ProfilePage schema
 - [ ] Click a link on the public page
 - [ ] Check analytics page — 1 view, 1 click shown
 - [ ] Go to Settings → Profile → update display name
 - [ ] Go to Settings → API Keys → generate key → copy
 - [ ] `curl -H "X-API-Key: <key>" localhost:3000/api/v1/pages` → returns pages
+- [ ] `curl -I localhost:3000/api/v1/public/page/test-page` → Cache-Control headers present
 - [ ] Go to Settings → Billing → verify plan cards render
 - [ ] Sign out → verify redirect to login
+- [ ] Visit `/` → landing page with hero, features, pricing
+- [ ] Visit `/nonexistent` → custom 404 page
+- [ ] Visit `/sitemap.xml` → published pages listed
+- [ ] Visit `/robots.txt` → disallows /dashboard and /api/
+- [ ] Visit `/manifest.json` → PWA manifest loads
+- [ ] Resize browser to mobile → bottom tab bar appears, sidebar hides
+- [ ] Throttle network to Slow 3G → loading skeletons shown on dashboard routes
