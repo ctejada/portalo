@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { Link } from "@portalo/shared";
+import type { Link, DisplayMode } from "@portalo/shared";
+import { DISPLAY_MODES } from "@portalo/shared";
 import { Button } from "@/components/ui";
 import { showToast } from "@/components/ui/toast";
+import { SocialIcon } from "@/components/public/social-icons";
 
 interface LinkRowProps {
   link: Link;
@@ -56,11 +58,23 @@ export function LinkRow({
           ⠿
         </button>
 
+        {/* Platform icon */}
+        {link.platform && (
+          <SocialIcon platform={link.platform} size={16} className="text-text-secondary shrink-0" />
+        )}
+
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <p className="text-body font-medium text-text-primary truncate">
-            {link.title}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-body font-medium text-text-primary truncate">
+              {link.title}
+            </p>
+            {link.display_mode && link.display_mode !== "default" && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg-tertiary text-text-secondary shrink-0">
+                {link.display_mode === "featured" ? "Featured" : "Icon only"}
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-2">
             <p className="text-small text-text-secondary truncate">{link.url}</p>
             {(link.schedule_start || link.schedule_end) && (
@@ -76,6 +90,7 @@ export function LinkRow({
 
         {/* Actions — visible on hover */}
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <DisplayModeToggle link={link} pageId={pageId} onUpdated={onUpdated} />
           <button
             type="button"
             onClick={() => onToggleVisibility?.(link)}
@@ -219,5 +234,45 @@ function InlineEditForm({
         </Button>
       </div>
     </form>
+  );
+}
+
+const DISPLAY_MODE_LABELS: Record<DisplayMode, string> = {
+  default: "Default",
+  featured: "Featured",
+  "icon-only": "Icon only",
+};
+
+function DisplayModeToggle({
+  link, pageId, onUpdated,
+}: {
+  link: Link; pageId: string; onUpdated?: () => void;
+}) {
+  const modes = DISPLAY_MODES;
+  const currentIndex = modes.indexOf(link.display_mode ?? "default");
+  const nextMode = modes[(currentIndex + 1) % modes.length];
+
+  async function handleCycle() {
+    const res = await fetch(`/api/v1/pages/${pageId}/links/${link.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ display_mode: nextMode }),
+    });
+    if (res.ok) {
+      onUpdated?.();
+    } else {
+      showToast("Failed to update display mode", "error");
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleCycle}
+      className="p-1 text-[10px] text-text-tertiary hover:text-text-primary"
+      title={`Display: ${DISPLAY_MODE_LABELS[link.display_mode ?? "default"]} → ${DISPLAY_MODE_LABELS[nextMode]}`}
+    >
+      {link.display_mode === "featured" ? "★" : link.display_mode === "icon-only" ? "◉" : "○"}
+    </button>
   );
 }
