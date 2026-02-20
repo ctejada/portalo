@@ -14,6 +14,23 @@ function getOrCreateVisitorId(): string {
   return id;
 }
 
+function detectDevice(): "mobile" | "tablet" | "desktop" {
+  const ua = navigator.userAgent;
+  if (/tablet|ipad|playbook|silk/i.test(ua)) return "tablet";
+  if (/mobile|iphone|ipod|android.*mobile|windows phone/i.test(ua)) return "mobile";
+  return "desktop";
+}
+
+function detectBrowser(): string {
+  const ua = navigator.userAgent;
+  if (ua.includes("Firefox/")) return "Firefox";
+  if (ua.includes("Edg/")) return "Edge";
+  if (ua.includes("OPR/") || ua.includes("Opera/")) return "Opera";
+  if (ua.includes("Chrome/") && !ua.includes("Edg/")) return "Chrome";
+  if (ua.includes("Safari/") && !ua.includes("Chrome/")) return "Safari";
+  return "Other";
+}
+
 interface ViewTrackerProps {
   pageId: string;
 }
@@ -30,6 +47,8 @@ export function ViewTracker({ pageId }: ViewTrackerProps) {
         event_type: "view",
         referrer: document.referrer || undefined,
         visitor_id: visitorId,
+        device: detectDevice(),
+        browser: detectBrowser(),
       }),
     }).catch(() => {});
   }, [pageId]);
@@ -37,4 +56,4 @@ export function ViewTracker({ pageId }: ViewTrackerProps) {
   return null;
 }
 
-export { getOrCreateVisitorId };
+export { getOrCreateVisitorId, detectDevice, detectBrowser };

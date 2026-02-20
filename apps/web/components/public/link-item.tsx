@@ -3,6 +3,7 @@
 import type { Link } from "@portalo/shared";
 import type { ResolvedTheme } from "@/lib/themes";
 import { SocialIcon } from "@/components/public/social-icons";
+import { getOrCreateVisitorId, detectDevice, detectBrowser } from "@/components/public/view-tracker";
 
 interface LinkItemProps {
   link: Link;
@@ -23,6 +24,9 @@ export function LinkItem({ link, pageId, index, theme }: LinkItemProps) {
         link_id: link.id,
         event_type: "click",
         referrer: document.referrer || undefined,
+        visitor_id: getOrCreateVisitorId(),
+        device: detectDevice(),
+        browser: detectBrowser(),
       }),
     }).catch(() => {});
   }
@@ -43,7 +47,7 @@ export function LinkItem({ link, pageId, index, theme }: LinkItemProps) {
     >
       <span className="inline-flex items-center gap-2">
         {link.platform && <SocialIcon platform={link.platform} size={16} className="opacity-60 shrink-0" />}
-        <span>{isFeatured ? link.title : `${theme.linkPrefix(index)} ${link.title}`}</span>
+        <span>{isFeatured ? link.title : `${theme.linkPrefix === "numbered" ? `${index + 1}.` : "\u2192"} ${link.title}`}</span>
       </span>
     </a>
   );
