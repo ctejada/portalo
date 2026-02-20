@@ -13,6 +13,8 @@ import { ThemePicker } from "@/components/dashboard/theme-picker";
 import { ColorCustomizer } from "@/components/dashboard/color-customizer";
 import { SectionList } from "@/components/dashboard/section-list";
 import { AddBlockMenu } from "@/components/dashboard/add-block-menu";
+import { IntegrationsPanel } from "@/components/dashboard/integrations-panel";
+import { useUser } from "@/hooks/use-user";
 import type { Link as LinkType, ThemeConfig, PageLayout, Section } from "@portalo/shared";
 import { DEFAULT_LAYOUT } from "@portalo/shared";
 
@@ -25,6 +27,8 @@ interface PageEditorProps {
 export function PageEditor({ pageId }: PageEditorProps) {
   const { page, isLoading, mutate } = usePage(pageId);
   const { links, isLoading: linksLoading, mutate: mutateLinks } = useLinks(pageId);
+  const { user } = useUser();
+  const isPro = user?.plan === "pro" || user?.plan === "business";
   const [title, setTitle] = useState("");
   const [bio, setBio] = useState("");
   const [theme, setTheme] = useState<ThemeConfig>({ name: "clean" });
@@ -295,6 +299,16 @@ export function PageEditor({ pageId }: PageEditorProps) {
                     blocks={layout.blocks}
                     onReorder={handleSectionReorder}
                     onRemoveBlock={handleRemoveBlock}
+                  />
+                </CollapsibleSection>
+
+                {/* Integrations section (collapsed by default) */}
+                <CollapsibleSection title="Integrations">
+                  <IntegrationsPanel
+                    pageId={pageId}
+                    integrations={page.integrations ?? null}
+                    isPro={isPro}
+                    onUpdated={() => mutate()}
                   />
                 </CollapsibleSection>
               </>
