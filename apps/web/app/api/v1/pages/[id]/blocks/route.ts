@@ -3,22 +3,31 @@ import { getApiUser } from "@/lib/api-auth";
 import { getSupabaseClient } from "@/lib/supabase/api-client";
 import { DEFAULT_LAYOUT } from "@portalo/shared";
 import { invalidatePageCache } from "@/lib/cache";
-import { z } from "zod";
 
 type Params = { params: Promise<{ id: string }> };
 
-const addBlockSchema = z.object({
-  kind: z.enum(["spacer", "divider", "text"]),
-  props: z.object({
-    height: z.number().int().min(8).max(96).optional(),
-    text: z.string().max(500).optional(),
-  }).optional().default({}),
-  after_section: z.number().int().min(0).optional(),
-});
+const VALID_KINDS = ["spacer", "divider", "text"] as const;
 
-const removeBlockSchema = z.object({
-  block_id: z.string().min(1),
-});
+function parseAddBlock(body: unknown) {
+  if (!body || typeof body !== "object") return null;
+  const b = body as Record<string, unknown>;
+  if (!VALID_KINDS.includes(b.kind as typeof VALID_KINDS[number])) return null;
+  const props: Record<string, unknown> = {};
+  if (b.props && typeof b.props === "object") {
+    const p = b.props as Record<string, unknown>;
+    if (typeof p.height === "number" && p.height >= 8 && p.height <= 96) props.height = p.height;
+    if (typeof p.text === "string" && p.text.length <= 500) props.text = p.text;
+  }
+  const afterSection = typeof b.after_section === "number" ? b.after_section : undefined;
+  return { kind: b.kind as typeof VALID_KINDS[number], props, after_section: afterSection };
+}
+
+function parseRemoveBlock(body: unknown) {
+  if (!body || typeof body !== "object") return null;
+  const b = body as Record<string, unknown>;
+  if (typeof b.block_id !== "string" || !b.block_id) return null;
+  return { block_id: b.block_id };
+}
 
 export async function POST(request: NextRequest, { params }: Params) {
   const auth = await getApiUser(request);
@@ -32,9 +41,12 @@ export async function POST(request: NextRequest, { params }: Params) {
     );
   }
 
-  const parsed = addBlockSchema.safeParse(body);
-  if (!parsed.success) {
-    return Response.json({ error: parsed.error.flatten() }, { status: 400 });
+  const parsed = parseAddBlock(body);
+  if (!parsed) {
+    return Response.json(
+      { error: { code: "validation_error", message: "Invalid block data. kind must be spacer, divider, or text." } },
+      { status: 400 }
+    );
   }
 
   const { id } = await params;
@@ -60,13 +72,13 @@ export async function POST(request: NextRequest, { params }: Params) {
   };
 
   const blockId = crypto.randomUUID().slice(0, 8);
-  const block = { id: blockId, kind: parsed.data.kind, props: parsed.data.props };
+  const block = { id: blockId, kind: parsed.kind, props: parsed.props };
 
   layout.blocks.push(block);
 
   const sectionEntry = { type: "block" as const, id: blockId };
-  if (parsed.data.after_section !== undefined && parsed.data.after_section < layout.sections.length) {
-    layout.sections.splice(parsed.data.after_section + 1, 0, sectionEntry);
+  if (parsed.after_section !== undefined && parsed.after_section < layout.sections.length) {
+    layout.sections.splice(parsed.after_section + 1, 0, sectionEntry);
   } else {
     layout.sections.push(sectionEntry);
   }
@@ -100,9 +112,12 @@ export async function DELETE(request: NextRequest, { params }: Params) {
     );
   }
 
-  const parsed = removeBlockSchema.safeParse(body);
-  if (!parsed.success) {
-    return Response.json({ error: parsed.error.flatten() }, { status: 400 });
+  const parsed = parseRemoveBlock(body);
+  if (!parsed) {
+    return Response.json(
+      { error: { code: "validation_error", message: "block_id is required" } },
+      { status: 400 }
+    );
   }
 
   const { id } = await params;
@@ -127,9 +142,9 @@ export async function DELETE(request: NextRequest, { params }: Params) {
     blocks: [],
   };
 
-  layout.blocks = layout.blocks.filter((b) => b.id !== parsed.data.block_id);
+  layout.blocks = layout.blocks.filter((b) => b.id !== parsed.block_id);
   layout.sections = layout.sections.filter(
-    (s) => !(s.type === "block" && s.id === parsed.data.block_id)
+    (s) => !(s.type === "block" && s.id === parsed.block_id)
   );
 
   const { error } = await supabase

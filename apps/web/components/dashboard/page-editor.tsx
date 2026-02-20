@@ -13,7 +13,7 @@ import { ThemePicker } from "@/components/dashboard/theme-picker";
 import { ColorCustomizer } from "@/components/dashboard/color-customizer";
 import { SectionList } from "@/components/dashboard/section-list";
 import { AddBlockMenu } from "@/components/dashboard/add-block-menu";
-import type { Link as LinkType, ThemeConfig, PageLayout, Section, BlockConfig } from "@portalo/shared";
+import type { Link as LinkType, ThemeConfig, PageLayout, Section } from "@portalo/shared";
 import { DEFAULT_LAYOUT } from "@portalo/shared";
 
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so";
@@ -285,7 +285,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
 
                 {/* Colors section (collapsed by default) */}
                 <CollapsibleSection title="Colors">
-                  <ColorCustomizer pageId={pageId} theme={theme} onSaved={() => mutate()} />
+                  <ColorCustomizer pageId={pageId} theme={theme} onUpdated={() => mutate()} />
                 </CollapsibleSection>
 
                 {/* Layout section (collapsed by default) */}

@@ -16,7 +16,7 @@ export function LinkForm({ pageId, onAdded }: LinkFormProps) {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [detectedPlatform, setDetectedPlatform] = useState<Platform | null>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const detectPlatform = useCallback((inputUrl: string) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
