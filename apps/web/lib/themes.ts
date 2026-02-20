@@ -3,6 +3,9 @@
  * Maps theme names to CSS class/style configurations
  */
 
+import type { ThemeConfig } from "@portalo/shared";
+import type { CSSProperties } from "react";
+
 export interface ThemeStyles {
   bg: string;
   text: string;
@@ -15,6 +18,17 @@ export interface ThemeStyles {
   titleClass: string;
   linkPrefix: (index: number) => string;
   footerText: string;
+}
+
+export interface ResolvedTheme extends ThemeStyles {
+  customStyles: {
+    bg?: CSSProperties;
+    text?: CSSProperties;
+    secondary?: CSSProperties;
+    linkBg?: CSSProperties;
+    linkText?: CSSProperties;
+  };
+  hasCustomColors: boolean;
 }
 
 export const THEMES: Record<string, ThemeStyles> = {
@@ -61,4 +75,22 @@ export const THEMES: Record<string, ThemeStyles> = {
 
 export function getTheme(name: string): ThemeStyles {
   return THEMES[name] ?? THEMES.clean;
+}
+
+export function resolveTheme(config: ThemeConfig): ResolvedTheme {
+  const base = getTheme(config.name);
+  const colors = config.colors ?? {};
+  const customStyles: ResolvedTheme["customStyles"] = {};
+
+  if (colors.bg) customStyles.bg = { backgroundColor: colors.bg };
+  if (colors.text) customStyles.text = { color: colors.text };
+  if (colors.secondary) customStyles.secondary = { color: colors.secondary };
+  if (colors.link_bg) customStyles.linkBg = { backgroundColor: colors.link_bg };
+  if (colors.link_text) customStyles.linkText = { color: colors.link_text };
+
+  return {
+    ...base,
+    customStyles,
+    hasCustomColors: Object.keys(colors).length > 0,
+  };
 }
