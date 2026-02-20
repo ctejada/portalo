@@ -1,0 +1,19 @@
+-- Backfill platform column for existing links based on URL patterns
+UPDATE public.links SET platform = 'youtube'    WHERE platform IS NULL AND url LIKE '%youtube.com%';
+UPDATE public.links SET platform = 'youtube'    WHERE platform IS NULL AND url LIKE '%youtu.be%';
+UPDATE public.links SET platform = 'twitter'    WHERE platform IS NULL AND (url LIKE '%twitter.com%' OR url LIKE '%x.com%');
+UPDATE public.links SET platform = 'instagram'  WHERE platform IS NULL AND url LIKE '%instagram.com%';
+UPDATE public.links SET platform = 'tiktok'     WHERE platform IS NULL AND url LIKE '%tiktok.com%';
+UPDATE public.links SET platform = 'github'     WHERE platform IS NULL AND url LIKE '%github.com%';
+UPDATE public.links SET platform = 'linkedin'   WHERE platform IS NULL AND url LIKE '%linkedin.com%';
+UPDATE public.links SET platform = 'facebook'   WHERE platform IS NULL AND url LIKE '%facebook.com%';
+UPDATE public.links SET platform = 'twitch'     WHERE platform IS NULL AND url LIKE '%twitch.tv%';
+UPDATE public.links SET platform = 'discord'    WHERE platform IS NULL AND (url LIKE '%discord.gg%' OR url LIKE '%discord.com%');
+UPDATE public.links SET platform = 'spotify'    WHERE platform IS NULL AND url LIKE '%spotify.com%';
+UPDATE public.links SET platform = 'soundcloud' WHERE platform IS NULL AND url LIKE '%soundcloud.com%';
+UPDATE public.links SET platform = 'pinterest'  WHERE platform IS NULL AND url LIKE '%pinterest.com%';
+UPDATE public.links SET platform = 'snapchat'   WHERE platform IS NULL AND url LIKE '%snapchat.com%';
+UPDATE public.links SET platform = 'reddit'     WHERE platform IS NULL AND url LIKE '%reddit.com%';
+UPDATE public.links SET platform = 'telegram'   WHERE platform IS NULL AND (url LIKE '%t.me%' OR url LIKE '%telegram.org%');
+UPDATE public.links SET platform = 'whatsapp'   WHERE platform IS NULL AND url LIKE '%wa.me%';
+UPDATE public.links SET platform = 'dribbble'   WHERE platform IS NULL AND url LIKE '%dribbble.com%';
