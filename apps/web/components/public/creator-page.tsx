@@ -14,10 +14,15 @@ interface CreatorPageProps {
 
 export function CreatorPage({ page, links }: CreatorPageProps) {
   const theme = resolveTheme(page.theme ?? { name: "clean" });
-  const layout: PageLayout = (page.layout as PageLayout) ?? DEFAULT_LAYOUT;
+  const rawLayout = page.layout as Partial<PageLayout> | null;
+  const layout: PageLayout = {
+    sections: rawLayout?.sections ?? DEFAULT_LAYOUT.sections,
+    blocks: rawLayout?.blocks ?? [],
+  };
 
   const iconLinks = links.filter((l) => l.display_mode === "icon-only");
   const standardLinks = links.filter((l) => l.display_mode !== "icon-only");
+  const utmEnabled = Boolean(page.integrations?.utm_enabled);
 
   return (
     <div
@@ -51,7 +56,7 @@ export function CreatorPage({ page, links }: CreatorPageProps) {
                   <div className={`border-t mt-8 mb-6 ${theme.divider}`} />
                   <div className="space-y-1">
                     {standardLinks.map((link, index) => (
-                      <LinkItem key={link.id} link={link} pageId={page.id} index={index} theme={theme} />
+                      <LinkItem key={link.id} link={link} pageId={page.id} index={index} theme={theme} utmEnabled={utmEnabled} />
                     ))}
                     {standardLinks.length === 0 && iconLinks.length === 0 && (
                       <p className={`text-center text-xs py-4 ${theme.textSecondary}`}>

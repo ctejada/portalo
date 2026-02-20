@@ -10,9 +10,23 @@ interface LinkItemProps {
   pageId: string;
   index: number;
   theme: ResolvedTheme;
+  utmEnabled?: boolean;
 }
 
-export function LinkItem({ link, pageId, index, theme }: LinkItemProps) {
+function buildUtmUrl(url: string, pageId: string, linkTitle: string): string {
+  try {
+    const u = new URL(url);
+    u.searchParams.set("utm_source", "portalo");
+    u.searchParams.set("utm_medium", "link-in-bio");
+    u.searchParams.set("utm_campaign", pageId.slice(0, 8));
+    u.searchParams.set("utm_content", linkTitle.toLowerCase().replace(/\s+/g, "-").slice(0, 50));
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
+
+export function LinkItem({ link, pageId, index, theme, utmEnabled }: LinkItemProps) {
   const isFeatured = link.display_mode === "featured";
 
   function handleClick() {
@@ -35,7 +49,7 @@ export function LinkItem({ link, pageId, index, theme }: LinkItemProps) {
 
   return (
     <a
-      href={link.url}
+      href={utmEnabled ? buildUtmUrl(link.url, pageId, link.title) : link.url}
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
