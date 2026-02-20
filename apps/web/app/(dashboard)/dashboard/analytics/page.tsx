@@ -54,7 +54,11 @@ export default function AnalyticsPage() {
             <MetricsRow
               views={overview.views}
               clicks={overview.clicks}
+              uniqueViews={overview.unique_views}
+              uniqueClicks={overview.unique_clicks}
               ctr={overview.ctr}
+              bounceRate={overview.bounce_rate}
+              avgTimeToClickMs={overview.avg_time_to_click_ms}
               emailCaptures={overview.email_captures}
             />
           )}

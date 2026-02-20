@@ -5,7 +5,11 @@ import useSWR from "swr";
 interface OverviewData {
   views: number;
   clicks: number;
+  unique_views: number;
+  unique_clicks: number;
   ctr: number;
+  bounce_rate: number;
+  avg_time_to_click_ms: number | null;
   email_captures: number;
   top_referrer: string | null;
   top_country: string | null;
