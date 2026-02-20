@@ -7,6 +7,7 @@ interface TopLink {
   title: string;
   url: string;
   clicks: number;
+  velocity_pct: number;
 }
 
 async function fetcher(url: string): Promise<TopLink[]> {
@@ -19,6 +20,16 @@ async function fetcher(url: string): Promise<TopLink[]> {
 interface TopLinksTableProps {
   pageId?: string;
   period: string;
+}
+
+function VelocityBadge({ pct }: { pct: number }) {
+  if (pct === 0) return <span className="text-text-tertiary">—</span>;
+  const isUp = pct > 0;
+  return (
+    <span className={`text-tiny font-medium ${isUp ? "text-green-600" : "text-red-500"}`}>
+      {isUp ? "\u2191" : "\u2193"} {Math.abs(pct)}%
+    </span>
+  );
 }
 
 export function TopLinksTable({ pageId, period }: TopLinksTableProps) {
@@ -50,6 +61,7 @@ export function TopLinksTable({ pageId, period }: TopLinksTableProps) {
           <tr className="border-b border-border-primary text-text-tertiary text-left">
             <th className="pb-2 font-medium">Link</th>
             <th className="pb-2 font-medium text-right w-20">Clicks</th>
+            <th className="pb-2 font-medium text-right w-20">Trend</th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +73,9 @@ export function TopLinksTable({ pageId, period }: TopLinksTableProps) {
               </td>
               <td className="py-2 text-right text-body-strong">
                 {link.clicks.toLocaleString()}
+              </td>
+              <td className="py-2 text-right">
+                <VelocityBadge pct={link.velocity_pct} />
               </td>
             </tr>
           ))}
