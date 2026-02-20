@@ -1,65 +1,27 @@
 import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
 import { createClient } from "@/lib/supabase/server";
-import { analyticsQuerySchema } from "@portalo/shared";
+import { parseAnalyticsParams } from "@/lib/analytics-params";
 
 export async function GET(request: NextRequest) {
   const auth = await getApiUser(request);
   if (auth.error) return auth.error;
 
-  const url = new URL(request.url);
-  const parsed = analyticsQuerySchema.safeParse({
-    page_id: url.searchParams.get("page_id") || undefined,
-    period: url.searchParams.get("period") ?? "7d",
-  });
-
-  if (!parsed.success) {
-    return Response.json(
-      { error: parsed.error.flatten() },
-      { status: 400 }
-    );
-  }
-
-  const { page_id, period } = parsed.data;
-  const supabase = await createClient();
-
-  // Get page IDs to query
-  let pageIds: string[];
-  if (page_id) {
-    const { data: page } = await supabase
-      .from("pages")
-      .select("id")
-      .eq("id", page_id)
-      .eq("user_id", auth.userId)
-      .single();
-    if (!page) {
-      return Response.json(
-        { error: { code: "not_found", message: "Page not found" } },
-        { status: 404 }
-      );
-    }
-    pageIds = [page_id];
-  } else {
-    const { data: pages } = await supabase
-      .from("pages")
-      .select("id")
-      .eq("user_id", auth.userId);
-    pageIds = (pages ?? []).map((p) => p.id);
-  }
-
-  const days = period === "90d" ? 90 : period === "30d" ? 30 : 7;
-  const since = new Date();
-  since.setDate(since.getDate() - days);
+  const result = await parseAnalyticsParams(request, auth.userId);
+  if (result.error) return result.error;
+  const { pageIds, since, days } = result.params!;
 
   if (pageIds.length === 0) {
     const buckets: { date: string; views: number; clicks: number; email_captures: number }[] = [];
     for (let i = 0; i < days; i++) {
-      const d = new Date();
-      d.setDate(d.getDate() - (days - 1 - i));
+      const d = new Date(since);
+      d.setDate(d.getDate() + i);
       buckets.push({ date: d.toISOString().split("T")[0], views: 0, clicks: 0, email_captures: 0 });
     }
     return Response.json({ data: buckets });
   }
+
+  const supabase = await createClient();
 
   const { data: events } = await supabase
     .from("analytics_events")
@@ -70,8 +32,8 @@ export async function GET(request: NextRequest) {
   // Build day-by-day buckets
   const buckets: Record<string, { views: number; clicks: number; email_captures: number }> = {};
   for (let i = 0; i < days; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() - (days - 1 - i));
+    const d = new Date(since);
+    d.setDate(d.getDate() + i);
     const key = d.toISOString().split("T")[0];
     buckets[key] = { views: 0, clicks: 0, email_captures: 0 };
   }
