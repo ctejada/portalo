@@ -15,12 +15,15 @@ export function IntegrationsPanel({ pageId, integrations, isPro, onUpdated }: In
   const [gaId, setGaId] = useState(integrations?.ga_id ?? "");
   const [pixelId, setPixelId] = useState(integrations?.meta_pixel_id ?? "");
   const [utmEnabled, setUtmEnabled] = useState(integrations?.utm_enabled ?? false);
+  const [shareToken, setShareToken] = useState(integrations?.analytics_share_token ?? null);
+  const [sharingLoading, setSharingLoading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setGaId(integrations?.ga_id ?? "");
     setPixelId(integrations?.meta_pixel_id ?? "");
     setUtmEnabled(integrations?.utm_enabled ?? false);
+    setShareToken(integrations?.analytics_share_token ?? null);
   }, [integrations]);
 
   const save = useCallback(async (updates: Partial<PageIntegrations>) => {
@@ -88,6 +91,57 @@ export function IntegrationsPanel({ pageId, integrations, isPro, onUpdated }: In
           <span className={`absolute top-0.5 left-0.5 block w-4 h-4 rounded-full bg-white transition-transform ${utmEnabled ? "translate-x-5" : ""}`} />
         </button>
         <span className="text-small text-text-primary">Auto-append UTM parameters</span>
+      </div>
+      <div className="pt-2 border-t border-border-primary">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            role="switch"
+            aria-checked={!!shareToken}
+            disabled={sharingLoading}
+            onClick={async () => {
+              setSharingLoading(true);
+              const res = await fetch("/api/v1/analytics/share", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ page_id: pageId, enabled: !shareToken }),
+              });
+              setSharingLoading(false);
+              if (!res.ok) {
+                showToast("Failed to update sharing", "error");
+                return;
+              }
+              const json = await res.json();
+              setShareToken(json.data.token);
+              onUpdated();
+              showToast(json.data.token ? "Share link created" : "Share link removed", "success");
+            }}
+            className={`relative w-10 h-5 rounded-full transition-colors ${shareToken ? "bg-accent" : "bg-bg-tertiary"}`}
+          >
+            <span className={`absolute top-0.5 left-0.5 block w-4 h-4 rounded-full bg-white transition-transform ${shareToken ? "translate-x-5" : ""}`} />
+          </button>
+          <span className="text-small text-text-primary">Share analytics publicly</span>
+        </div>
+        {shareToken && (
+          <div className="mt-2 flex items-center gap-2">
+            <input
+              type="text"
+              readOnly
+              value={`${window.location.origin}/analytics/${shareToken}`}
+              className="flex-1 px-3 py-1.5 text-small border border-border-primary rounded bg-bg-secondary text-text-secondary"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                navigator.clipboard.writeText(`${window.location.origin}/analytics/${shareToken}`);
+                showToast("Link copied!", "success");
+              }}
+              className="px-2 py-1.5 text-small border border-border-primary rounded hover:bg-bg-hover transition-colors"
+            >
+              Copy
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
