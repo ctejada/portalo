@@ -127,6 +127,8 @@ export interface AnalyticsEvent {
   country: string | null;
   device: DeviceType | null;
   browser: string | null;
+  visitor_id: string | null;
+  time_to_click_ms: number | null;
   created_at: string;
 }
 

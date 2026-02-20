@@ -150,6 +150,8 @@ export const trackEventSchema = z.object({
   country: z.string().optional(),
   device: z.enum(["mobile", "tablet", "desktop"]).optional(),
   browser: z.string().optional(),
+  visitor_id: z.string().max(64).optional(),
+  time_to_click_ms: z.number().int().min(0).max(300000).optional(),
 });
 
 // Type exports from schemas
