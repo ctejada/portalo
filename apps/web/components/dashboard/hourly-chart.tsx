@@ -33,11 +33,15 @@ function formatHour(hour: number): string {
 interface HourlyChartProps {
   pageId?: string;
   period: string;
+  startDate?: string;
+  endDate?: string;
 }
 
-export function HourlyChart({ pageId, period }: HourlyChartProps) {
+export function HourlyChart({ pageId, period, startDate, endDate }: HourlyChartProps) {
   const params = new URLSearchParams({ period });
   if (pageId) params.set("page_id", pageId);
+  if (startDate) params.set("start_date", startDate);
+  if (endDate) params.set("end_date", endDate);
 
   const { data } = useSWR(
     `/api/v1/analytics/hourly?${params}`,

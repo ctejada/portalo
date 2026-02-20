@@ -20,6 +20,8 @@ async function fetcher(url: string): Promise<TopLink[]> {
 interface TopLinksTableProps {
   pageId?: string;
   period: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 function VelocityBadge({ pct }: { pct: number }) {
@@ -32,9 +34,11 @@ function VelocityBadge({ pct }: { pct: number }) {
   );
 }
 
-export function TopLinksTable({ pageId, period }: TopLinksTableProps) {
+export function TopLinksTable({ pageId, period, startDate, endDate }: TopLinksTableProps) {
   const params = new URLSearchParams({ period });
   if (pageId) params.set("page_id", pageId);
+  if (startDate) params.set("start_date", startDate);
+  if (endDate) params.set("end_date", endDate);
 
   const { data: links } = useSWR(
     `/api/v1/analytics/top-links?${params}`,

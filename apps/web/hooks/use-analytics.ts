@@ -30,9 +30,16 @@ async function fetcher<T>(url: string): Promise<T> {
   return json.data;
 }
 
-export function useAnalytics(pageId?: string, period: "7d" | "30d" | "90d" = "7d") {
+export function useAnalytics(
+  pageId?: string,
+  period: "7d" | "30d" | "90d" = "7d",
+  startDate?: string,
+  endDate?: string,
+) {
   const params = new URLSearchParams({ period });
   if (pageId) params.set("page_id", pageId);
+  if (startDate) params.set("start_date", startDate);
+  if (endDate) params.set("end_date", endDate);
 
   const { data: overview, isLoading: overviewLoading } = useSWR<OverviewData>(
     `/api/v1/analytics/overview?${params}`,

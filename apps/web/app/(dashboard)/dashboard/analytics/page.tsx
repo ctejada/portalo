@@ -10,6 +10,7 @@ import { AnalyticsChart } from "@/components/dashboard/analytics-chart";
 import { TopLinksTable } from "@/components/dashboard/top-links-table";
 import { BreakdownTables } from "@/components/dashboard/breakdown-tables";
 import { HourlyChart } from "@/components/dashboard/hourly-chart";
+import { DateRangePicker } from "@/components/dashboard/date-range-picker";
 
 const PERIODS = ["7d", "30d", "90d"] as const;
 const PERIOD_LABELS: Record<string, string> = { "7d": "Last 7 days", "30d": "Last 30 days", "90d": "Last 90 days" };
@@ -17,6 +18,7 @@ type Period = (typeof PERIODS)[number];
 
 export default function AnalyticsPage() {
   const [period, setPeriod] = useState<Period>("7d");
+  const [customRange, setCustomRange] = useState<{ start: string; end: string } | null>(null);
   const { user } = useUser();
   const { pages } = usePages();
   const [selectedPageId, setSelectedPageId] = useState<string | undefined>();
@@ -28,12 +30,21 @@ export default function AnalyticsPage() {
     }
   }, [pages, selectedPageId]);
 
-  const { overview, timeseries, isLoading } = useAnalytics(undefined, period);
+  const { overview, timeseries, isLoading } = useAnalytics(
+    undefined,
+    period,
+    customRange?.start,
+    customRange?.end,
+  );
 
   function handleExportCsv() {
     if (!isPro) return;
     if (!selectedPageId) return;
     const params = new URLSearchParams({ period, page_id: selectedPageId });
+    if (customRange) {
+      params.set("start_date", customRange.start);
+      params.set("end_date", customRange.end);
+    }
     window.location.href = `/api/v1/analytics/export?${params}`;
   }
 
@@ -69,17 +80,17 @@ export default function AnalyticsPage() {
           </button>
 
           {/* Period selector */}
-          <div className="flex border border-border-primary rounded-md overflow-hidden" role="radiogroup" aria-label="Time period">
+          <div className={`flex border border-border-primary rounded-md overflow-hidden ${customRange ? "opacity-40" : ""}`} role="radiogroup" aria-label="Time period">
             {PERIODS.map((p) => (
               <button
                 key={p}
                 type="button"
                 role="radio"
-                aria-checked={period === p}
+                aria-checked={period === p && !customRange}
                 aria-label={PERIOD_LABELS[p]}
-                onClick={() => setPeriod(p)}
+                onClick={() => { setPeriod(p); setCustomRange(null); }}
                 className={`px-3 py-1 text-small transition-colors ${
-                  period === p
+                  period === p && !customRange
                     ? "bg-accent text-text-inverse"
                     : "bg-bg-primary text-text-secondary hover:bg-bg-hover"
                 }`}
@@ -89,6 +100,21 @@ export default function AnalyticsPage() {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Custom date range - Pro feature */}
+      <div className="mb-6">
+        {isPro ? (
+          <DateRangePicker
+            onRangeChange={(start, end) => setCustomRange({ start, end })}
+            onClear={() => setCustomRange(null)}
+          />
+        ) : (
+          <span className="text-small text-text-tertiary flex items-center gap-1.5">
+            Custom date range
+            <span className="text-[10px] bg-accent text-text-inverse px-1.5 py-0.5 rounded">Pro</span>
+          </span>
+        )}
       </div>
 
       {isLoading ? (
@@ -113,12 +139,12 @@ export default function AnalyticsPage() {
 
           {timeseries && <AnalyticsChart data={timeseries} />}
 
-          <HourlyChart period={period} />
+          <HourlyChart period={period} startDate={customRange?.start} endDate={customRange?.end} />
 
           {overview && (
             <>
-              <TopLinksTable period={period} />
-              <BreakdownTables period={period} />
+              <TopLinksTable period={period} startDate={customRange?.start} endDate={customRange?.end} />
+              <BreakdownTables period={period} startDate={customRange?.start} endDate={customRange?.end} />
             </>
           )}
         </div>

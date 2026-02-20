@@ -23,11 +23,15 @@ async function fetcher(url: string): Promise<BreakdownData> {
 interface BreakdownTablesProps {
   pageId?: string;
   period: string;
+  startDate?: string;
+  endDate?: string;
 }
 
-export function BreakdownTables({ pageId, period }: BreakdownTablesProps) {
+export function BreakdownTables({ pageId, period, startDate, endDate }: BreakdownTablesProps) {
   const params = new URLSearchParams({ period });
   if (pageId) params.set("page_id", pageId);
+  if (startDate) params.set("start_date", startDate);
+  if (endDate) params.set("end_date", endDate);
 
   const { data } = useSWR(
     `/api/v1/analytics/breakdown?${params}`,
