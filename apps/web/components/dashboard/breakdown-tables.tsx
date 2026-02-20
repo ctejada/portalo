@@ -10,11 +10,12 @@ interface BreakdownItem {
 interface BreakdownData {
   referrers: BreakdownItem[];
   countries: BreakdownItem[];
+  browsers: BreakdownItem[];
 }
 
 async function fetcher(url: string): Promise<BreakdownData> {
   const res = await fetch(url);
-  if (!res.ok) return { referrers: [], countries: [] };
+  if (!res.ok) return { referrers: [], countries: [], browsers: [] };
   const json = await res.json();
   return json.data;
 }
@@ -34,9 +35,11 @@ export function BreakdownTables({ pageId, period }: BreakdownTablesProps) {
     { revalidateOnFocus: false }
   );
 
-  if (!data || (data.referrers.length === 0 && data.countries.length === 0)) {
+  const isEmpty = !data || (data.referrers.length === 0 && data.countries.length === 0 && data.browsers.length === 0);
+
+  if (isEmpty) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
           <h3 className="text-body-strong mb-2">Referrers</h3>
           <p className="text-small text-text-tertiary py-2">No referrer data yet.</p>
@@ -45,14 +48,19 @@ export function BreakdownTables({ pageId, period }: BreakdownTablesProps) {
           <h3 className="text-body-strong mb-2">Countries</h3>
           <p className="text-small text-text-tertiary py-2">No location data yet.</p>
         </div>
+        <div>
+          <h3 className="text-body-strong mb-2">Browsers</h3>
+          <p className="text-small text-text-tertiary py-2">No browser data yet.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <MiniTable title="Referrers" items={data.referrers} />
       <MiniTable title="Countries" items={data.countries} />
+      <MiniTable title="Browsers" items={data.browsers} />
     </div>
   );
 }
