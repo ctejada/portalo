@@ -15,7 +15,7 @@ const getPageByUsername = cache(async function getPageByUsername(username: strin
   // Look up profile by username
   const { data: profile } = await supabaseAdmin
     .from("profiles")
-    .select("id, username")
+    .select("id, username, plan")
     .eq("username", username)
     .single();
 
@@ -47,7 +47,7 @@ const getPageByUsername = cache(async function getPageByUsername(username: strin
     return true;
   });
 
-  return { page: page as Page, links: activeLinks, username: profile.username };
+  return { page: page as Page, links: activeLinks, username: profile.username, plan: (profile.plan ?? "free") as string };
 });
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -109,7 +109,7 @@ export default async function PublicPage({ params }: PageProps) {
       />
       <AnalyticsScripts integrations={result.page.integrations} />
       <ViewTracker pageId={result.page.id} />
-      <CreatorPage page={result.page} links={result.links} />
+      <CreatorPage page={result.page} links={result.links} ownerPlan={result.plan} />
     </>
   );
 }

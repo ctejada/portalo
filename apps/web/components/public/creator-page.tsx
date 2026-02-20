@@ -1,5 +1,5 @@
-import type { Page, Link, PageLayout } from "@portalo/shared";
-import { DEFAULT_LAYOUT } from "@portalo/shared";
+import type { Page, Link, PageLayout, Plan } from "@portalo/shared";
+import { DEFAULT_LAYOUT, PLANS } from "@portalo/shared";
 import { resolveTheme } from "@/lib/themes";
 import { LinkItem } from "@/components/public/link-item";
 import { PoweredBy } from "@/components/public/powered-by";
@@ -10,9 +10,10 @@ import { Block } from "@/components/public/blocks";
 interface CreatorPageProps {
   page: Page;
   links: Link[];
+  ownerPlan?: string;
 }
 
-export function CreatorPage({ page, links }: CreatorPageProps) {
+export function CreatorPage({ page, links, ownerPlan }: CreatorPageProps) {
   const theme = resolveTheme(page.theme ?? { name: "clean" });
   const rawLayout = page.layout as Partial<PageLayout> | null;
   const layout: PageLayout = {
@@ -76,7 +77,7 @@ export function CreatorPage({ page, links }: CreatorPageProps) {
           }
         })}
 
-        {page.settings?.show_email_capture && (
+        {page.settings?.show_email_capture && PLANS[(ownerPlan ?? "free") as Plan]?.limits.email_capture && (
           <div className="mt-8">
             <p className={`text-xs text-center mb-2 ${theme.textSecondary}`} style={theme.customStyles.secondary}>
               Get updates
