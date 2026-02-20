@@ -69,6 +69,14 @@ export interface PageLayout {
   blocks: BlockConfig[];
 }
 
+// Page integrations (Pro features)
+export interface PageIntegrations {
+  ga_id?: string;
+  meta_pixel_id?: string;
+  utm_enabled?: boolean;
+  analytics_share_token?: string;
+}
+
 // Page type
 export interface Page {
   id: string;
@@ -79,6 +87,7 @@ export interface Page {
   theme: ThemeConfig;
   settings: PageSettings;
   layout: PageLayout | null;
+  integrations: PageIntegrations | null;
   published: boolean;
   views_count: number;
   created_at: string;

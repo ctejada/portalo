@@ -43,6 +43,14 @@ export const pageSettingsSchema = z.object({
   show_powered_by: z.boolean().default(true),
 });
 
+// Page integrations schema (Pro feature)
+export const pageIntegrationsSchema = z.object({
+  ga_id: z.string().max(20).regex(/^G-[A-Z0-9]+$/, "Must be a GA4 measurement ID (G-XXXXXXX)").optional(),
+  meta_pixel_id: z.string().max(20).regex(/^\d+$/, "Must be a numeric Pixel ID").optional(),
+  utm_enabled: z.boolean().optional(),
+  analytics_share_token: z.string().uuid().optional(),
+});
+
 // Section schema
 export const sectionSchema = z.object({
   type: z.enum(["header", "icon-bar", "links", "block"]),
@@ -83,6 +91,7 @@ export const updatePageSchema = z.object({
   settings: pageSettingsSchema.partial().optional(),
   layout: pageLayoutSchema.optional(),
   published: z.boolean().optional(),
+  integrations: pageIntegrationsSchema.partial().optional(),
 });
 
 // Create link schema
@@ -171,3 +180,4 @@ export type AnalyticsQueryInput = z.infer<typeof analyticsQuerySchema>;
 export type TrackEventInput = z.infer<typeof trackEventSchema>;
 export type PageLayoutInput = z.infer<typeof pageLayoutSchema>;
 export type BlockConfigInput = z.infer<typeof blockConfigSchema>;
+export type PageIntegrationsInput = z.infer<typeof pageIntegrationsSchema>;
