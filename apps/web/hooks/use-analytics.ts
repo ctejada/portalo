@@ -14,6 +14,8 @@ interface OverviewData {
   top_referrer: string | null;
   top_country: string | null;
   period_days: number;
+  new_visitors: number | null;
+  returning_visitors: number | null;
 }
 
 interface TimeseriesPoint {

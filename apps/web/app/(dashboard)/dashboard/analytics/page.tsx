@@ -11,6 +11,7 @@ import { TopLinksTable } from "@/components/dashboard/top-links-table";
 import { BreakdownTables } from "@/components/dashboard/breakdown-tables";
 import { HourlyChart } from "@/components/dashboard/hourly-chart";
 import { DateRangePicker } from "@/components/dashboard/date-range-picker";
+import { VisitorChart } from "@/components/dashboard/visitor-chart";
 
 const PERIODS = ["7d", "30d", "90d"] as const;
 const PERIOD_LABELS: Record<string, string> = { "7d": "Last 7 days", "30d": "Last 30 days", "90d": "Last 90 days" };
@@ -146,6 +147,24 @@ export default function AnalyticsPage() {
               <TopLinksTable period={period} startDate={customRange?.start} endDate={customRange?.end} />
               <BreakdownTables period={period} startDate={customRange?.start} endDate={customRange?.end} />
             </>
+          )}
+
+          {/* Visitor type breakdown - Pro feature */}
+          {isPro ? (
+            overview && (
+              <div>
+                <h2 className="text-section-title mb-4">Visitor Types</h2>
+                <VisitorChart
+                  newVisitors={overview.new_visitors ?? null}
+                  returningVisitors={overview.returning_visitors ?? null}
+                />
+              </div>
+            )
+          ) : (
+            <div className="flex items-center gap-2 text-small text-text-tertiary">
+              Visitor breakdown
+              <span className="text-[10px] bg-accent text-text-inverse px-1.5 py-0.5 rounded">Pro</span>
+            </div>
           )}
         </div>
       )}
