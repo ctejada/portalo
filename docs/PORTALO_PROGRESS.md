@@ -2,7 +2,7 @@
 
 **Project**: Portalo Link-in-Bio Platform
 **Timeline**: 12 Weeks (6 Sprints) + Ongoing Improvements
-**Total Commits**: 213
+**Total Commits**: 256
 **Status**: In Progress
 
 ---
@@ -20,8 +20,10 @@ Sprint 7:  [████████████████████] 8/8   
 Sprint 8:  [████████████████████] 3/3    (100%) ✓
 Sprint 9:  [████████████████████] 12/12  (100%) ✓
 Sprint 10: [████████████████████] 30/30  (100%) ✓
+Sprint 11: [                    ] 0/20   (0%)
+Sprint 12: [                    ] 0/23   (0%)
 ─────────────────────────────────────────
-TOTAL:     [████████████████████] 213/213 (100%) ✓
+TOTAL:     [████████████████    ] 213/256 (83%)
 ```
 
 ---
@@ -54,6 +56,8 @@ TOTAL:     [████████████████████] 213/21
 | **M22: Copy Link UX** | 8 | 169-171 | [x] Complete | Users can see and copy their public page URL |
 | **M23: Username URLs + Analytics** | 9 | 172-183 | [x] Complete | @username URLs, fixed analytics, simplified dashboard |
 | **M24: Page Customization** | 10 | 184-213 | [x] Complete | Custom colors, icon bar, section reorder, 20 MCP tools |
+| **M25: Free Analytics Upgrade** | 11 | 214-233 | [ ] Pending | Unique visitors, hourly analytics, bounce rate, 28-day free retention |
+| **M26: Pro Analytics** | 12 | 234-256 | [ ] Pending | CSV export, GA/Pixel, custom dates, real-time feed, shareable analytics |
 
 ---
 
@@ -509,6 +513,112 @@ TOTAL:     [████████████████████] 213/21
 - [x] Dashboard GUI for all customization options
 - [x] 18 social platform icons auto-detect
 - [x] pnpm build passes
+
+---
+
+## Sprint 11: Free Tier Analytics Upgrade
+
+**Goal**: Make Portalo Free objectively better than Linktree Starter ($5/mo) — unique visitors, hourly analytics, bounce rate, time-to-click, browser breakdown, link velocity
+
+### Phase 11A: Database + Schemas (Commits 214-216)
+- [ ] **Commit 214**: Migration: add visitor_id, time_to_click_ms to analytics_events
+- [ ] **Commit 215**: Extend trackEventSchema with visitor_id, time_to_click_ms
+- [ ] **Commit 216**: Add analyticsGranularity + enhanced query params to schemas
+
+### Phase 11B: Client-Side Tracking Enhancements (Commits 217-220)
+- [ ] **Commit 217**: Generate anonymous visitor_id cookie in view-tracker
+- [ ] **Commit 218**: Detect and send device + browser from client in track calls
+- [ ] **Commit 219**: Measure time-to-click (page load to first link click)
+- [ ] **Commit 220**: Update free tier analytics_days from 7 to 28
+
+### Phase 11C: Enhanced Analytics API Endpoints (Commits 221-226)
+- [ ] **Commit 221**: Add unique views + unique clicks to overview endpoint
+- [ ] **Commit 222**: Add bounce rate to overview endpoint
+- [ ] **Commit 223**: Add average time-to-click to overview endpoint
+- [ ] **Commit 224**: Add browser breakdown to breakdown endpoint
+- [ ] **Commit 225**: GET /analytics/hourly endpoint for time-of-day data
+- [ ] **Commit 226**: Add link velocity to top-links endpoint
+
+### Phase 11D: Dashboard UI (Commits 227-231)
+- [ ] **Commit 227**: Update metrics-row with unique views, bounce rate, time-to-click
+- [ ] **Commit 228**: Add browser breakdown table to analytics
+- [ ] **Commit 229**: Hourly/time-of-day bar chart component
+- [ ] **Commit 230**: Link velocity indicators in top-links table
+- [ ] **Commit 231**: Integrate new analytics sections into dashboard page
+
+### Phase 11E: MCP + Polish (Commits 232-233)
+- [ ] **Commit 232**: Update get_analytics MCP tool for enhanced metrics
+- [ ] **Commit 233**: Build verification + progress docs
+
+**Sprint 11 Completion Criteria**:
+- [ ] Anonymous visitor_id cookie set on public pages
+- [ ] Device + browser data sent from client
+- [ ] Time-to-click measured and displayed
+- [ ] Free tier retention increased to 28 days
+- [ ] Unique views/clicks, bounce rate in overview
+- [ ] Hourly time-of-day chart functional
+- [ ] Browser breakdown table displayed
+- [ ] Link velocity (trending) indicators shown
+- [ ] MCP tool returns enhanced analytics
+- [ ] pnpm build passes
+
+---
+
+## Sprint 12: Pro Analytics Features
+
+**Goal**: Professional-grade analytics for Pro users — CSV export, custom date ranges, GA/Pixel integrations, UTM params, returning visitors, real-time feed, shareable analytics
+
+### Phase 12A: Database + Schemas (Commits 234-236)
+- [ ] **Commit 234**: Migration: add integrations JSONB to pages
+- [ ] **Commit 235**: Extend page schemas for integrations field
+- [ ] **Commit 236**: Add analytics export + date range schemas
+
+### Phase 12B: Analytics CSV Export (Commits 237-238)
+- [ ] **Commit 237**: GET /analytics/export endpoint (CSV download, Pro-gated)
+- [ ] **Commit 238**: Export CSV button in analytics dashboard
+
+### Phase 12C: Custom Date Range (Commits 239-241)
+- [ ] **Commit 239**: Update analytics APIs for start_date/end_date params
+- [ ] **Commit 240**: Date range picker component
+- [ ] **Commit 241**: Integrate date range picker into analytics page (Pro-gated)
+
+### Phase 12D: Third-Party Integrations (Commits 242-246)
+- [ ] **Commit 242**: PUT /pages/:id/integrations endpoint
+- [ ] **Commit 243**: Inject Google Analytics gtag on public pages
+- [ ] **Commit 244**: Inject Meta Pixel on public pages
+- [ ] **Commit 245**: UTM parameter auto-append on outbound link clicks
+- [ ] **Commit 246**: Integrations settings panel in page editor (Pro-gated)
+
+### Phase 12E: Advanced Visitor Analytics (Commits 247-249)
+- [ ] **Commit 247**: Returning vs. new visitor classification in overview
+- [ ] **Commit 248**: Visitor type breakdown chart component
+- [ ] **Commit 249**: Integrate visitor analytics into dashboard (Pro-gated)
+
+### Phase 12F: Real-Time Analytics (Commits 250-252)
+- [ ] **Commit 250**: GET /analytics/live SSE endpoint (Pro-gated)
+- [ ] **Commit 251**: Live event feed component
+- [ ] **Commit 252**: Integrate live feed into analytics page (Pro-gated)
+
+### Phase 12G: Shareable Analytics (Commits 253-254)
+- [ ] **Commit 253**: Public analytics page route + API
+- [ ] **Commit 254**: Share analytics toggle in page settings
+
+### Phase 12H: MCP + Polish (Commits 255-256)
+- [ ] **Commit 255**: Update MCP tools + add export_analytics, bump to v0.4.0
+- [ ] **Commit 256**: Build verification + progress docs
+
+**Sprint 12 Completion Criteria**:
+- [ ] CSV export downloads analytics data (Pro-gated)
+- [ ] Custom date range picker works for Pro users
+- [ ] Google Analytics tag injected on public pages when configured
+- [ ] Meta Pixel fires on public pages when configured
+- [ ] UTM params auto-appended to outbound links
+- [ ] Integrations settings panel in page editor
+- [ ] Returning vs. new visitors chart (Pro-gated)
+- [ ] Real-time event feed streams live (Pro-gated)
+- [ ] Shareable analytics page with public URL
+- [ ] 22 MCP tools (up from 20)
+- [ ] pnpm build passes
 
 ---
 

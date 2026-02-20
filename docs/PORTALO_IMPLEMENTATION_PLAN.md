@@ -2,7 +2,7 @@
 
 ## Overview
 
-A step-by-step implementation plan for the Portalo link-in-bio MVP with **160 small, reviewable commits** across 6 sprints (12 weeks). Each commit is designed to be reviewable in under 15 minutes and includes relevant tests.
+A step-by-step implementation plan for the Portalo link-in-bio MVP with **256 small, reviewable commits** across 12 sprints. Each commit is designed to be reviewable in under 15 minutes and includes relevant tests.
 
 **Key Architectural Principles:**
 - API-first: Build REST API endpoints before GUI components
@@ -22,6 +22,12 @@ A step-by-step implementation plan for the Portalo link-in-bio MVP with **160 sm
 | 4 | 7-8 | 89-110 | Analytics, email capture, contacts, API keys |
 | 5 | 9-10 | 111-139 | Stripe billing, custom domains, MCP server |
 | 6 | 11-12 | 140-160 | PWA, edge caching, E2E tests, landing page |
+| 7 | - | 161-168 | MCP feature improvements (15 tools) |
+| 8 | - | 169-171 | Copy link UX |
+| 9 | - | 172-183 | Username URLs + analytics overhaul |
+| 10 | - | 184-213 | Page customization (API/MCP-first) |
+| 11 | - | 214-233 | Free tier analytics upgrade (unique visitors, hourly, bounce rate) |
+| 12 | - | 234-256 | Pro analytics (CSV export, GA/Pixel, date ranges, real-time) |
 
 ---
 
@@ -388,6 +394,207 @@ A step-by-step implementation plan for the Portalo link-in-bio MVP with **160 sm
 
 ---
 
+## SPRINT 10: Page Customization (Commits 184-213)
+
+**Goal**: Add comprehensive customization following API/MCP-first principle
+
+### Design Philosophy
+Every customization feature must be:
+1. **API endpoint first** - fully functional via REST
+2. **MCP tool second** - thin wrapper for AI agents (test before GUI!)
+3. **GUI third** - consumes the same API as MCP
+
+### Phase 10A: Database + Schemas (Commits 184-186)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 184 | Migration: add platform, display_mode to links | `010_add_link_customization.sql` | Applies |
+| 185 | Migration: add layout to pages | `011_add_page_layout.sql` | Applies |
+| 186 | Extend Zod schemas for customization | `packages/shared/src/schemas.ts`, `types.ts` | Validates |
+
+### Phase 10B: API Endpoints (Commits 187-192)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 187 | Platform detection utility | `lib/platforms.ts` | Detects 18 platforms |
+| 188 | Extend PUT /pages/:id for layout + colors | `api/v1/pages/[id]/route.ts` | Updates layout/colors |
+| 189 | PUT /pages/:id/layout endpoint | `api/v1/pages/[id]/layout/route.ts` | Reorders sections |
+| 190 | POST/DELETE /pages/:id/blocks endpoints | `api/v1/pages/[id]/blocks/route.ts` | CRUD blocks |
+| 191 | Extend links API for platform + display_mode | `api/v1/pages/[id]/links/route.ts` | Auto-detect |
+| 192 | GET /utils/detect-platform endpoint | `api/v1/utils/detect-platform/route.ts` | Returns platform |
+
+### Phase 10C: MCP Tools (Commits 193-197)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 193 | update_design MCP tool | `mcp-server/tools/design.ts` | Changes colors |
+| 194 | set_layout MCP tool | `mcp-server/tools/layout.ts` | Reorders sections |
+| 195 | add_block + remove_block MCP tools | `mcp-server/tools/layout.ts` | Block CRUD |
+| 196 | set_link_display MCP tool | `mcp-server/tools/links.ts` | Inline/icon-bar |
+| 197 | Update MCP discovery + bump to v0.3.0 | `.well-known/mcp.json`, `package.json` | 19 tools |
+
+### Phase 10D: Public Page Rendering (Commits 198-203)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 198 | Social icons component | `components/icons/social-icons.tsx` | 18 icons render |
+| 199 | Theme system: custom color merge | `lib/themes.ts` | Merges colors |
+| 200 | Icon bar component | `components/public/icon-bar.tsx` | Renders socials |
+| 201 | Block components | `components/public/blocks/` | Spacer/divider/text |
+| 202 | Update creator-page for dynamic sections | `components/public/creator-page.tsx` | Section order |
+| 203 | Update link-item for platform icons | `components/public/link-item.tsx` | Shows icon |
+
+### Phase 10E: Dashboard GUI (Commits 204-210)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 204 | Color picker component | `components/ui/color-picker.tsx` | Native + hex |
+| 205 | Color customizer panel | `components/dashboard/color-customizer.tsx` | 5 color inputs |
+| 206 | Section list + drag-drop | `components/dashboard/section-list.tsx` | Reorders |
+| 207 | Add block dropdown menu | `components/dashboard/add-block-menu.tsx` | Spacer/div/text |
+| 208 | Link form: platform auto-detect | `components/dashboard/link-form.tsx` | Shows icon preview |
+| 209 | Link row: icon + display mode toggle | `components/dashboard/link-row.tsx` | Toggle button |
+| 210 | Integrate into page editor | `components/dashboard/page-editor.tsx` | All panels |
+
+### Phase 10F: Polish (Commits 211-213)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 211 | Progressive disclosure | Various | Collapsed by default |
+| 212 | Backfill migration script | `scripts/backfill-platforms.ts` | Detects existing |
+| 213 | Build verification + docs | Progress docs | pnpm build passes |
+
+---
+
+## SPRINT 11: Free Tier Analytics Upgrade (Commits 214-233)
+
+**Goal**: Make Portalo Free objectively better than Linktree Starter ($5/mo) by adding unique visitors, hourly analytics, bounce rate, time-to-click, browser breakdown, and link velocity — all for free.
+
+**Competitive Context**: Linktree gates device/location/referrer data behind $5/mo. Portalo already gives these free. Sprint 11 extends this advantage with features nobody offers at any price (hourly analytics, link velocity, bounce rate).
+
+### Phase 11A: Database + Schemas (Commits 214-216)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 214 | Migration: add visitor_id, time_to_click_ms to analytics_events | `supabase/migrations/012_enhanced_analytics.sql` | Applies, new columns exist |
+| 215 | Extend trackEventSchema with visitor_id, time_to_click_ms | `packages/shared/src/schemas.ts`, `types.ts` | Validates new fields |
+| 216 | Add analyticsGranularity + enhanced query params to schemas | `packages/shared/src/schemas.ts` | Validates hourly/daily enum |
+
+### Phase 11B: Client-Side Tracking Enhancements (Commits 217-220)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 217 | Generate anonymous visitor_id cookie in view-tracker | `components/public/view-tracker.tsx` | Sets cookie, sends visitor_id |
+| 218 | Detect and send device + browser from client in track calls | `components/public/view-tracker.tsx`, `link-item.tsx` | Sends user-agent data |
+| 219 | Measure time-to-click (page load to first link click) | `components/public/view-tracker.tsx`, `link-item.tsx` | Timing data sent |
+| 220 | Update free tier analytics_days from 7 to 28 | `packages/shared/src/constants.ts` | Free = 28 days |
+
+### Phase 11C: Enhanced Analytics API Endpoints (Commits 221-226)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 221 | Add unique views + unique clicks to overview endpoint | `api/v1/analytics/overview/route.ts` | Returns unique_views, unique_clicks |
+| 222 | Add bounce rate to overview endpoint | `api/v1/analytics/overview/route.ts` | Returns bounce_rate percentage |
+| 223 | Add average time-to-click to overview endpoint | `api/v1/analytics/overview/route.ts` | Returns avg_time_to_click_ms |
+| 224 | Add browser breakdown to breakdown endpoint | `api/v1/analytics/breakdown/route.ts` | Returns browsers array |
+| 225 | GET /analytics/hourly endpoint for time-of-day data | `api/v1/analytics/hourly/route.ts` (new) | Returns 24-hour bucketed data |
+| 226 | Add link velocity to top-links endpoint | `api/v1/analytics/top-links/route.ts` | Returns velocity_pct per link |
+
+### Phase 11D: Dashboard UI (Commits 227-231)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 227 | Update metrics-row with unique views, bounce rate, time-to-click | `components/dashboard/metrics-row.tsx` | Shows 6 metrics |
+| 228 | Add browser breakdown table to analytics | `components/dashboard/breakdown-tables.tsx` | Third table column |
+| 229 | Hourly/time-of-day bar chart component | `components/dashboard/hourly-chart.tsx` (new) | 24-bar chart renders |
+| 230 | Link velocity indicators in top-links table | `components/dashboard/top-links-table.tsx` | Shows trending arrows |
+| 231 | Integrate new analytics sections into dashboard page | `app/(dashboard)/dashboard/analytics/page.tsx` | All sections render |
+
+### Phase 11E: MCP + Polish (Commits 232-233)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 232 | Update get_analytics MCP tool for enhanced metrics | `packages/mcp-server/src/index.ts`, `api-client.ts` | Returns new fields |
+| 233 | Build verification + progress docs | Progress docs | pnpm build passes |
+
+---
+
+## SPRINT 12: Pro Analytics Features (Commits 234-256)
+
+**Goal**: Give Pro users professional-grade analytics worth paying for — CSV export, custom date ranges, GA/Pixel integrations, UTM params, returning visitors, real-time feed, and shareable analytics. All at $5-7/mo vs Linktree's $9/mo.
+
+### Design Philosophy
+Every Pro analytics feature must be:
+1. **API endpoint first** — fully functional via REST, plan-gated
+2. **MCP tool second** — thin wrapper for AI agents
+3. **GUI third** — consumes the same API as MCP
+4. **Gracefully degraded** — Free users see the feature with a Pro upgrade prompt
+
+### Phase 12A: Database + Schemas (Commits 234-236)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 234 | Migration: add integrations JSONB to pages | `supabase/migrations/013_page_integrations.sql` | Applies, column exists |
+| 235 | Extend page schemas for integrations field | `packages/shared/src/schemas.ts`, `types.ts` | Validates ga_id, meta_pixel_id, utm_enabled |
+| 236 | Add analytics export + date range schemas | `packages/shared/src/schemas.ts` | Validates start_date, end_date, format |
+
+### Phase 12B: Analytics CSV Export (Commits 237-238)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 237 | GET /analytics/export endpoint (CSV download) | `api/v1/analytics/export/route.ts` (new) | Returns CSV, Pro-gated |
+| 238 | Export CSV button in analytics dashboard | `app/(dashboard)/dashboard/analytics/page.tsx` | Button renders, Pro badge |
+
+### Phase 12C: Custom Date Range (Commits 239-241)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 239 | Update analytics APIs for start_date/end_date params | `overview/route.ts`, `timeseries/route.ts`, `breakdown/route.ts`, `top-links/route.ts`, `hourly/route.ts` | Custom ranges work |
+| 240 | Date range picker component | `components/dashboard/date-range-picker.tsx` (new) | Calendar UI works |
+| 241 | Integrate date range picker into analytics page | `app/(dashboard)/dashboard/analytics/page.tsx`, `hooks/use-analytics.ts` | Pro-gated, replaces period buttons for Pro |
+
+### Phase 12D: Third-Party Integrations (Commits 242-246)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 242 | PUT /pages/:id/integrations endpoint | `api/v1/pages/[id]/integrations/route.ts` (new) | Updates GA/Pixel/UTM settings |
+| 243 | Inject Google Analytics gtag on public pages | `components/public/analytics-scripts.tsx` (new), update `creator-page.tsx` | GA script loads when configured |
+| 244 | Inject Meta Pixel on public pages | `components/public/analytics-scripts.tsx` | Pixel fires when configured |
+| 245 | UTM parameter auto-append on outbound link clicks | `components/public/link-item.tsx` | UTM params appended to URLs |
+| 246 | Integrations settings panel in page editor | `components/dashboard/integrations-panel.tsx` (new), update `page-editor.tsx` | Pro-gated, GA/Pixel/UTM inputs |
+
+### Phase 12E: Advanced Visitor Analytics (Commits 247-249)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 247 | Returning vs. new visitor classification in overview | `api/v1/analytics/overview/route.ts` | Returns new_visitors, returning_visitors |
+| 248 | Visitor type breakdown chart component | `components/dashboard/visitor-chart.tsx` (new) | Pie/donut chart renders |
+| 249 | Integrate visitor analytics into dashboard | `app/(dashboard)/dashboard/analytics/page.tsx` | Pro-gated section |
+
+### Phase 12F: Real-Time Analytics (Commits 250-252)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 250 | GET /analytics/live SSE endpoint | `api/v1/analytics/live/route.ts` (new) | Streams events, Pro-gated |
+| 251 | Live event feed component | `components/dashboard/live-feed.tsx` (new) | Real-time event list |
+| 252 | Integrate live feed into analytics page | `app/(dashboard)/dashboard/analytics/page.tsx` | Pro-gated tab/section |
+
+### Phase 12G: Shareable Analytics (Commits 253-254)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 253 | Public analytics page route + API | `app/analytics/[token]/page.tsx` (new), `api/v1/analytics/share/route.ts` (new) | Read-only public view |
+| 254 | Share analytics toggle in page settings | `components/dashboard/page-editor.tsx` | Generates/revokes share URL |
+
+### Phase 12H: MCP + Polish (Commits 255-256)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 255 | Update MCP tools + add export_analytics, bump to v0.4.0 | `packages/mcp-server/src/index.ts`, `api-client.ts`, `.well-known/mcp.json` | 22 MCP tools |
+| 256 | Build verification + progress docs | Progress docs | pnpm build passes |
+
+---
+
 ## Critical Files
 
 These files are central to the implementation:
@@ -399,6 +606,15 @@ These files are central to the implementation:
 | `app/api/v1/pages/[id]/route.ts` | Central page CRUD endpoint |
 | `supabase/migrations/007_rls_policies.sql` | Row-level security |
 | `packages/mcp-server/src/server.ts` | MCP server for AI agents |
+| `lib/platforms.ts` | Social platform detection (Sprint 10) |
+| `lib/themes.ts` | Theme system with custom colors (Sprint 10) |
+| `components/public/creator-page.tsx` | Dynamic section rendering (Sprint 10) |
+| `api/v1/analytics/hourly/route.ts` | Hourly time-of-day analytics (Sprint 11) |
+| `components/public/view-tracker.tsx` | Visitor tracking + time-to-click (Sprint 11) |
+| `components/public/analytics-scripts.tsx` | GA + Meta Pixel injection (Sprint 12) |
+| `components/dashboard/date-range-picker.tsx` | Custom date range selection (Sprint 12) |
+| `api/v1/analytics/live/route.ts` | Real-time SSE analytics feed (Sprint 12) |
+| `api/v1/analytics/share/route.ts` | Shareable public analytics (Sprint 12) |
 
 ---
 
