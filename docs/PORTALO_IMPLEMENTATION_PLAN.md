@@ -28,6 +28,7 @@ A step-by-step implementation plan for the Portalo link-in-bio MVP with **256 sm
 | 10 | - | 184-213 | Page customization (API/MCP-first) |
 | 11 | - | 214-233 | Free tier analytics upgrade (unique visitors, hourly, bounce rate) |
 | 12 | - | 234-256 | Pro analytics (CSV export, GA/Pixel, date ranges, real-time) |
+| 13 | - | 257-315 | Advanced customization (backgrounds, fonts, buttons, 28 platforms, blocks, embeds, CSS) |
 
 ---
 
@@ -595,6 +596,94 @@ Every Pro analytics feature must be:
 
 ---
 
+## SPRINT 13: Advanced Customization
+
+### Phase 13A: Infrastructure + Backgrounds + Fonts (Commits 257-270)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 257 | Migration: create pages storage bucket + RLS policies | `supabase/migrations/015_storage_buckets.sql`, `supabase/config.toml` | Migration applies cleanly |
+| 258 | Upload API endpoint (FormData) | `app/api/v1/pages/[id]/upload/route.ts` | Upload returns URL |
+| 259 | Signed upload URL API endpoint (for MCP) | `app/api/v1/pages/[id]/upload-url/route.ts` | Returns signed URL |
+| 260 | BackgroundConfig + GradientConfig types and schemas | `packages/shared/src/types.ts`, `schemas.ts` | Schema validates |
+| 261 | FontConfig type, schema, and FONT_OPTIONS constant | `packages/shared/src/types.ts`, `schemas.ts`, `constants.ts` | Schema validates |
+| 262 | Extend resolveTheme() for backgrounds | `apps/web/lib/themes.ts` | Gradient/image CSS output |
+| 263 | Extend resolveTheme() for custom fonts | `apps/web/lib/themes.ts` | Font family CSS output |
+| 264 | FontLoader component for public page | `components/public/font-loader.tsx` | Google Fonts link injected |
+| 265 | Background rendering in creator-page.tsx | `components/public/creator-page.tsx` | Overlay + blur render |
+| 266 | Background customizer dashboard component | `components/dashboard/background-customizer.tsx` | Solid/gradient/image modes |
+| 267 | Font picker dashboard component | `components/dashboard/font-picker.tsx` | Heading + body selectors |
+| 268 | Editor tab restructure (4-tab model) | `components/dashboard/page-editor.tsx` | Content/Design/Layout/Settings tabs |
+| 269 | MCP: get_upload_url + update_design extensions | `packages/mcp-server/src/index.ts`, `api-client.ts` | MCP tools work |
+| 270 | Preview content updates for backgrounds + fonts | `components/dashboard/preview-content.tsx` | Preview matches public |
+
+### Phase 13B: Buttons + Avatar + Thumbnails (Commits 271-280)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 271 | ButtonStyleConfig type and schema | `packages/shared/src/types.ts`, `schemas.ts` | Schema validates |
+| 272 | AvatarStyleConfig type and schema | `packages/shared/src/types.ts`, `schemas.ts` | Schema validates |
+| 273 | Extend resolveTheme() for button styles | `apps/web/lib/themes.ts` | Border/shadow/radius CSS |
+| 274 | Button style rendering in link-item.tsx | `components/public/link-item.tsx` | Featured links styled |
+| 275 | Avatar style rendering in creator-page.tsx | `components/public/creator-page.tsx` | Shape/border/shadow apply |
+| 276 | Fix preview to show real avatar image | `components/dashboard/preview-content.tsx` | Avatar URL displayed |
+| 277 | Button style picker dashboard component | `components/dashboard/button-style-picker.tsx` | 6 presets + custom |
+| 278 | Avatar style picker dashboard component | `components/dashboard/avatar-style-picker.tsx` | Shape/border/shadow UI |
+| 279 | Link thumbnail rendering in link-item.tsx | `components/public/link-item.tsx` | Thumbnails visible |
+| 280 | Thumbnail upload in link-row.tsx | `components/dashboard/link-row.tsx` | Upload + preview |
+
+### Phase 13C: Platforms + New Blocks (Commits 281-295)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 281 | Extend Platform type with 10 new platforms | `packages/shared/src/types.ts`, `constants.ts` | Type compiles |
+| 282 | Add Threads, Bluesky, Mastodon SVG icons | `components/public/social-icons.tsx` | Icons render |
+| 283 | Add Patreon, Ko-fi, Substack SVG icons | `components/public/social-icons.tsx` | Icons render |
+| 284 | Add OnlyFans, Fansly SVG icons | `components/public/social-icons.tsx` | Icons render |
+| 285 | Add Cash App, Venmo SVG icons | `components/public/social-icons.tsx` | Icons render |
+| 286 | Update detect-platform URL patterns | `app/api/v1/utils/detect-platform/route.ts` | All 28 platforms detected |
+| 287 | Extend BlockKind with image + heading | `packages/shared/src/types.ts`, `schemas.ts` | Schema validates |
+| 288 | Image block rendering in blocks.tsx | `components/public/blocks.tsx` | Image renders |
+| 289 | Heading block rendering in blocks.tsx | `components/public/blocks.tsx` | h2/h3 renders |
+| 290 | Rich text (markdown) in text blocks | `components/public/blocks.tsx`, `package.json` | Markdown renders |
+| 291 | Image block editor dashboard component | `components/dashboard/image-block-editor.tsx` | Upload + width selector |
+| 292 | Updated add-block-menu with Image + Heading | `components/dashboard/add-block-menu.tsx` | New options visible |
+| 293 | Plan gating for image blocks at API level | `app/api/v1/pages/[id]/blocks/route.ts` | Free users blocked |
+| 294 | MCP: extend add_block, set_link_display | `packages/mcp-server/src/index.ts` | MCP tools work |
+| 295 | MCP: extend add_link/update_link with thumbnail_url | `packages/mcp-server/src/index.ts`, `api-client.ts` | Thumbnail via MCP |
+
+### Phase 13D: Embeds + CSS + Effects (Commits 296-310)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 296 | Extend BlockKind with embed type | `packages/shared/src/types.ts`, `schemas.ts` | Schema validates |
+| 297 | Embed resolver utility | `apps/web/lib/embed-resolver.ts` | YouTube/Spotify/SoundCloud |
+| 298 | Embed block rendering with facade pattern | `components/public/blocks.tsx` | Facade + iframe on click |
+| 299 | Embed block editor dashboard component | `components/dashboard/embed-block-editor.tsx` | URL input + preview |
+| 300 | Add custom_css to PageSettings | `packages/shared/src/types.ts`, `schemas.ts` | Schema validates |
+| 301 | CSS sanitizer utility | `apps/web/lib/css-sanitize.ts` | Strips dangerous patterns |
+| 302 | Custom CSS rendering in creator-page.tsx | `components/public/creator-page.tsx` | Scoped style injected |
+| 303 | Custom CSS editor (Pro-gated) | `components/dashboard/custom-css-editor.tsx` | Textarea + reset |
+| 304 | AnimationConfig type and schema | `packages/shared/src/types.ts`, `schemas.ts` | Schema validates |
+| 305 | Animation rendering (keyframes + reduced-motion) | `components/public/link-item.tsx`, `globals.css` | Animations play + respect motion pref |
+| 306 | Animation picker dashboard component | `components/dashboard/animation-picker.tsx` | Entrance + stagger UI |
+| 307 | Background blur/overlay controls | `components/dashboard/background-customizer.tsx` | Blur + overlay sliders |
+| 308 | QR code generation component | `components/dashboard/qr-code.tsx`, `package.json` | QR renders + downloads |
+| 309 | MCP: set_custom_css + animation extensions | `packages/mcp-server/src/index.ts`, `api-client.ts` | MCP tools work |
+| 310 | Plan limit extensions | `packages/shared/src/constants.ts` | Gating enforced |
+
+### Phase 13E: Polish + Integration Testing (Commits 311-315)
+
+| # | Commit | Files | Tests |
+|---|--------|-------|-------|
+| 311 | Mobile-responsive editor | `components/dashboard/page-editor.tsx` | Toggle preview, touch targets |
+| 312 | Accessibility audit | Multiple components | Reduced motion, ARIA, contrast |
+| 313 | Performance audit | Multiple components | Font loading, image opt, CLS |
+| 314 | MCP server version bump + tool testing | `packages/mcp-server/package.json`, `index.ts` | 25 MCP tools, v0.5.0 |
+| 315 | Build verification + progress docs | Progress docs | pnpm build passes |
+
+---
+
 ## Critical Files
 
 These files are central to the implementation:
@@ -615,6 +704,13 @@ These files are central to the implementation:
 | `components/dashboard/date-range-picker.tsx` | Custom date range selection (Sprint 12) |
 | `api/v1/analytics/live/route.ts` | Real-time SSE analytics feed (Sprint 12) |
 | `api/v1/analytics/share/route.ts` | Shareable public analytics (Sprint 12) |
+| `api/v1/pages/[id]/upload/route.ts` | File upload for page assets (Sprint 13) |
+| `lib/embed-resolver.ts` | YouTube/Spotify/SoundCloud embed detection (Sprint 13) |
+| `lib/css-sanitize.ts` | Custom CSS sanitization (Sprint 13) |
+| `components/dashboard/background-customizer.tsx` | Background mode editor (Sprint 13) |
+| `components/dashboard/font-picker.tsx` | Font selection UI (Sprint 13) |
+| `components/dashboard/button-style-picker.tsx` | Button style presets + custom (Sprint 13) |
+| `components/public/font-loader.tsx` | Google Fonts injection (Sprint 13) |
 
 ---
 

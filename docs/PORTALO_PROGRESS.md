@@ -3,7 +3,7 @@
 **Project**: Portalo Link-in-Bio Platform
 **Timeline**: 12 Weeks (6 Sprints) + Ongoing Improvements
 **Total Commits**: 256
-**Status**: Complete
+**Status**: Sprint 13 In Progress
 
 ---
 
@@ -22,8 +22,9 @@ Sprint 9:  [████████████████████] 12/12 
 Sprint 10: [████████████████████] 30/30  (100%) ✓
 Sprint 11: [████████████████████] 20/20  (100%) ✓
 Sprint 12: [████████████████████] 23/23  (100%) ✓
+Sprint 13: [                    ] 0/59   (0%)
 ─────────────────────────────────────────
-TOTAL:     [████████████████████] 256/256 (100%) ✓
+TOTAL:     [████████████████████] 256/315 (81%)
 ```
 
 ---
@@ -58,6 +59,7 @@ TOTAL:     [████████████████████] 256/25
 | **M24: Page Customization** | 10 | 184-213 | [x] Complete | Custom colors, icon bar, section reorder, 20 MCP tools |
 | **M25: Free Analytics Upgrade** | 11 | 214-233 | [x] Complete | Unique visitors, hourly analytics, bounce rate, 28-day free retention |
 | **M26: Pro Analytics** | 12 | 234-256 | [x] Complete | CSV export, GA/Pixel, custom dates, real-time feed, shareable analytics |
+| **M27: Advanced Customization** | 13 | 257-315 | [ ] In Progress | Backgrounds, fonts, buttons, 28 platforms, image/heading/embed blocks, custom CSS, QR codes |
 
 ---
 
@@ -619,6 +621,101 @@ TOTAL:     [████████████████████] 256/25
 - [x] Shareable analytics page with public URL
 - [x] 22 MCP tools (up from 20)
 - [x] pnpm build passes
+
+---
+
+## Sprint 13: Advanced Customization
+
+**Goal**: Full visual customization upgrade — backgrounds (gradient/image), fonts, button styling, avatar enhancement, link thumbnails, 10 new social platforms (incl. OnlyFans/Fansly), image/heading/embed blocks, custom CSS, animations, QR codes. Editor restructured to 4-tab model. All features API/MCP-first.
+
+### Phase 13A: Infrastructure + Backgrounds + Fonts (Commits 257-270)
+- [ ] **Commit 257**: Migration: create pages storage bucket + RLS policies
+- [ ] **Commit 258**: Upload API endpoint (FormData)
+- [ ] **Commit 259**: Signed upload URL API endpoint (for MCP)
+- [ ] **Commit 260**: BackgroundConfig + GradientConfig types and schemas
+- [ ] **Commit 261**: FontConfig type, schema, and FONT_OPTIONS constant
+- [ ] **Commit 262**: Extend resolveTheme() for backgrounds (solid/gradient/image)
+- [ ] **Commit 263**: Extend resolveTheme() for custom fonts
+- [ ] **Commit 264**: FontLoader component for public page
+- [ ] **Commit 265**: Background rendering in creator-page.tsx (overlay, blur)
+- [ ] **Commit 266**: Background customizer dashboard component
+- [ ] **Commit 267**: Font picker dashboard component
+- [ ] **Commit 268**: Editor tab restructure (Content | Design | Layout | Settings)
+- [ ] **Commit 269**: MCP: get_upload_url tool + update_design background/font extensions
+- [ ] **Commit 270**: Preview content updates for backgrounds + fonts
+
+### Phase 13B: Buttons + Avatar + Thumbnails (Commits 271-280)
+- [ ] **Commit 271**: ButtonStyleConfig type and schema
+- [ ] **Commit 272**: AvatarStyleConfig type and schema
+- [ ] **Commit 273**: Extend resolveTheme() for button styles
+- [ ] **Commit 274**: Button style rendering in link-item.tsx
+- [ ] **Commit 275**: Avatar style rendering in creator-page.tsx header
+- [ ] **Commit 276**: Fix preview-content.tsx to show real avatar image
+- [ ] **Commit 277**: Button style picker dashboard component
+- [ ] **Commit 278**: Avatar style picker dashboard component
+- [ ] **Commit 279**: Link thumbnail rendering in link-item.tsx
+- [ ] **Commit 280**: Thumbnail upload in link-row.tsx inline edit form
+
+### Phase 13C: Platforms + New Blocks (Commits 281-295)
+- [ ] **Commit 281**: Extend Platform type with 10 new platforms
+- [ ] **Commit 282**: Add Threads, Bluesky, Mastodon SVG icons
+- [ ] **Commit 283**: Add Patreon, Ko-fi, Substack SVG icons
+- [ ] **Commit 284**: Add OnlyFans, Fansly SVG icons
+- [ ] **Commit 285**: Add Cash App, Venmo SVG icons
+- [ ] **Commit 286**: Update detect-platform URL patterns for new platforms
+- [ ] **Commit 287**: Extend BlockKind with image + heading types
+- [ ] **Commit 288**: Image block rendering in blocks.tsx
+- [ ] **Commit 289**: Heading block rendering in blocks.tsx
+- [ ] **Commit 290**: Rich text (markdown) support in text blocks
+- [ ] **Commit 291**: Image block editor dashboard component
+- [ ] **Commit 292**: Updated add-block-menu with Image (Pro) + Heading
+- [ ] **Commit 293**: Plan gating for image blocks at API level
+- [ ] **Commit 294**: MCP: extend add_block, set_link_display for new blocks/platforms
+- [ ] **Commit 295**: MCP: extend add_link/update_link with thumbnail_url
+
+### Phase 13D: Embeds + CSS + Effects (Commits 296-310)
+- [ ] **Commit 296**: Extend BlockKind with embed type
+- [ ] **Commit 297**: Embed resolver utility (YouTube, Spotify, SoundCloud)
+- [ ] **Commit 298**: Embed block rendering with facade pattern
+- [ ] **Commit 299**: Embed block editor dashboard component
+- [ ] **Commit 300**: Add custom_css to PageSettings type and schema
+- [ ] **Commit 301**: CSS sanitizer utility
+- [ ] **Commit 302**: Custom CSS rendering in creator-page.tsx
+- [ ] **Commit 303**: Custom CSS editor dashboard component (Pro-gated)
+- [ ] **Commit 304**: AnimationConfig type and schema
+- [ ] **Commit 305**: Animation rendering (CSS keyframes + prefers-reduced-motion)
+- [ ] **Commit 306**: Animation picker dashboard component
+- [ ] **Commit 307**: Background blur/overlay controls in background customizer
+- [ ] **Commit 308**: QR code generation component (client-side)
+- [ ] **Commit 309**: MCP: set_custom_css tool + update_design animation extensions
+- [ ] **Commit 310**: Plan limit extensions (image_backgrounds, image_blocks, embed_blocks, custom_css)
+
+### Phase 13E: Polish + Integration Testing (Commits 311-315)
+- [ ] **Commit 311**: Mobile-responsive editor (toggle preview, touch targets, safe areas)
+- [ ] **Commit 312**: Accessibility audit (reduced motion, ARIA, contrast, alt text)
+- [ ] **Commit 313**: Performance audit (font loading, image optimization, CLS)
+- [ ] **Commit 314**: MCP server version bump + comprehensive tool testing
+- [ ] **Commit 315**: Build verification + progress docs update
+
+**Sprint 13 Completion Criteria**:
+- [ ] 3 background modes (solid/gradient/image) working on public page
+- [ ] 10 Google Fonts selectable for heading + body
+- [ ] 4 button shapes + shadow + border width customizable
+- [ ] Avatar shape/border/shadow customizable
+- [ ] Link thumbnails render when set
+- [ ] 28 social platforms (up from 18, including OnlyFans/Fansly)
+- [ ] Image blocks uploadable (Pro-gated)
+- [ ] Heading blocks with size options
+- [ ] Rich text (markdown) in text blocks
+- [ ] YouTube/Spotify/SoundCloud embeds (Pro-gated)
+- [ ] Custom CSS injection (Pro-gated, sanitized)
+- [ ] Entrance animations (fade-in/slide-up) with prefers-reduced-motion
+- [ ] QR code generation (client-side)
+- [ ] Editor restructured to 4-tab model
+- [ ] Mobile-responsive editor with toggle preview
+- [ ] 44px+ touch targets throughout
+- [ ] 25 MCP tools (up from 22)
+- [ ] pnpm build passes
 
 ---
 
