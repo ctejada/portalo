@@ -12,6 +12,7 @@ import { BreakdownTables } from "@/components/dashboard/breakdown-tables";
 import { HourlyChart } from "@/components/dashboard/hourly-chart";
 import { DateRangePicker } from "@/components/dashboard/date-range-picker";
 import { VisitorChart } from "@/components/dashboard/visitor-chart";
+import { LiveFeed } from "@/components/dashboard/live-feed";
 
 const PERIODS = ["7d", "30d", "90d"] as const;
 const PERIOD_LABELS: Record<string, string> = { "7d": "Last 7 days", "30d": "Last 30 days", "90d": "Last 90 days" };
@@ -166,6 +167,19 @@ export default function AnalyticsPage() {
               <span className="text-[10px] bg-accent text-text-inverse px-1.5 py-0.5 rounded">Pro</span>
             </div>
           )}
+
+          {/* Live feed - Pro feature */}
+          {isPro && selectedPageId ? (
+            <div>
+              <h2 className="text-section-title mb-4">Live Feed</h2>
+              <LiveFeed pageId={selectedPageId} />
+            </div>
+          ) : !isPro ? (
+            <div className="flex items-center gap-2 text-small text-text-tertiary">
+              Live event feed
+              <span className="text-[10px] bg-accent text-text-inverse px-1.5 py-0.5 rounded">Pro</span>
+            </div>
+          ) : null}
         </div>
       )}
     </div>
