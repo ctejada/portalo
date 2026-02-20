@@ -278,28 +278,25 @@ export function PageEditor({ pageId }: PageEditorProps) {
                   <LinkForm pageId={pageId} onAdded={() => mutateLinks()} />
                 </div>
 
-                {/* Theme section */}
-                <ThemePicker currentTheme={theme} onChange={handleThemeChange} />
+                {/* Theme section (collapsed by default) */}
+                <CollapsibleSection title="Theme">
+                  <ThemePicker currentTheme={theme} onChange={handleThemeChange} />
+                </CollapsibleSection>
 
-                {/* Colors section */}
-                <div>
-                  <h2 className="text-section-title mb-4">Colors</h2>
+                {/* Colors section (collapsed by default) */}
+                <CollapsibleSection title="Colors">
                   <ColorCustomizer pageId={pageId} theme={theme} onSaved={() => mutate()} />
-                </div>
+                </CollapsibleSection>
 
-                {/* Layout section */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-section-title">Layout</h2>
-                    <AddBlockMenu onAdd={handleAddBlock} />
-                  </div>
+                {/* Layout section (collapsed by default) */}
+                <CollapsibleSection title="Layout" trailing={<AddBlockMenu onAdd={handleAddBlock} />}>
                   <SectionList
                     sections={layout.sections}
                     blocks={layout.blocks}
                     onReorder={handleSectionReorder}
                     onRemoveBlock={handleRemoveBlock}
                   />
-                </div>
+                </CollapsibleSection>
               </>
             ) : (
               <p className="text-body text-text-secondary">Page not found.</p>
@@ -393,6 +390,39 @@ function InlineFields({
         rows={3}
         className="w-full bg-transparent text-body text-text-primary placeholder:text-text-tertiary focus:outline-none resize-none"
       />
+    </div>
+  );
+}
+
+function CollapsibleSection({
+  title,
+  children,
+  defaultOpen = false,
+  trailing,
+}: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+  trailing?: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="flex items-center gap-2 text-section-title hover:text-text-primary transition-colors"
+        >
+          <span className={`text-text-tertiary text-[10px] transition-transform ${open ? "rotate-90" : ""}`}>
+            ▶
+          </span>
+          {title}
+        </button>
+        {trailing && open && trailing}
+      </div>
+      {open && <div className="mt-4">{children}</div>}
     </div>
   );
 }
