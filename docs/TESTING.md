@@ -77,6 +77,24 @@ Comprehensive test cases for all completed pages and API endpoints.
 | 15 | Schedule end | Edit link → set schedule_end to past date → save | "Scheduled" indicator shown, link hidden on public page |
 | 16 | Active schedule | Set schedule_start to past, schedule_end to future | Link visible on public page |
 | 17 | Clear schedule | Edit link → clear schedule dates → save | "Scheduled" indicator removed, link visible normally |
+| 18 | Platform auto-detect | Enter `https://youtube.com/@test` in URL field | Platform icon (YouTube) appears inside input field |
+| 19 | Platform badge clears | Clear URL field or change to non-social URL | Platform icon disappears |
+| 20 | Display mode toggle | Hover a link → click ○ toggle | Cycles through Default → Featured → Icon only, badge shown |
+| 21 | Platform icon in row | Link with detected platform (e.g. GitHub) | Social icon shown next to link title |
+| 22 | Featured badge | Set link to "Featured" display mode | "Featured" badge shown next to title |
+| 23 | Icon only badge | Set link to "Icon only" display mode | "Icon only" badge shown next to title |
+| 24 | Color customizer | Expand Colors section → change Background color | Color picker opens, preview updates |
+| 25 | Reset custom color | Click reset on a custom color | Reverts to theme default |
+| 26 | Debounced color save | Change color rapidly | Only saves after 500ms pause, no rapid API calls |
+| 27 | Layout section list | Expand Layout section | Shows ordered sections (Header, Icon Bar, Links, blocks) |
+| 28 | Drag reorder sections | Drag a section to new position | Sections reorder, layout saved to API |
+| 29 | Add spacer block | Click "+ Add block" → Spacer | Spacer block added to layout list |
+| 30 | Add divider block | Click "+ Add block" → Divider | Divider block added to layout list |
+| 31 | Add text block | Click "+ Add block" → Text | Text block added with default text |
+| 32 | Remove block | Click "Remove" on a block row | Block removed from layout |
+| 33 | Theme section collapse | Click Theme header | Section collapses/expands |
+| 34 | Colors section collapse | Click Colors header | Section collapses/expands |
+| 35 | Layout section collapse | Click Layout header | Section collapses/expands |
 
 ---
 
@@ -102,6 +120,20 @@ Comprehensive test cases for all completed pages and API endpoints.
 | 14 | Scheduled link (active) | Link within schedule window | Link rendered normally |
 | 15 | JSON-LD structured data | View page source of `/{slug}` | `<script type="application/ld+json">` with ProfilePage schema, sameAs links |
 | 16 | Custom 404 page | Visit `/nonexistent-slug` | Custom 404 page with "This page doesn't exist" and "Go home" link |
+| 17 | Custom background color | Page with `theme.colors.bg: "#1a1a2e"` | Page background uses custom color (inline style) |
+| 18 | Custom text colors | Page with custom text + secondary colors | Title uses custom text color, bio uses custom secondary |
+| 19 | Custom link colors | Page with `link_bg` + `link_text` set | Featured links use custom background/text |
+| 20 | Icon bar rendering | Page with icon-only links + icon-bar section | Row of social icons rendered centered |
+| 21 | Icon bar click tracking | Click an icon in icon bar | Analytics click event recorded for that link |
+| 22 | Featured link | Link with `display_mode: "featured"` | Link rendered with background fill, larger padding, rounded |
+| 23 | Platform icon on link | Link with `platform: "github"` | GitHub icon shown before link title |
+| 24 | Spacer block | Layout with spacer block (height: 48) | Vertical space of 48px rendered |
+| 25 | Divider block | Layout with divider block | Horizontal line rendered |
+| 26 | Text block | Layout with text block | Custom text paragraph rendered centered |
+| 27 | Section order | Layout sections = [header, icon-bar, block(text), links] | Components render in specified order |
+| 28 | Default layout fallback | Page with `layout: null` | Default layout used (header + links) |
+| 29 | Icon-only links excluded from links section | Links with `display_mode: "icon-only"` | Not shown in standard links list |
+| 30 | Colors + theme combo | Custom colors on "minimal-dark" theme | Custom colors override theme defaults via inline styles |
 
 ### 3.2 Email Capture
 
@@ -240,6 +272,42 @@ Comprehensive test cases for all completed pages and API endpoints.
 | 5 | `/api/v1/pages/[id]/links/[linkId]` | PUT | Update title | 200 + updated link |
 | 6 | `/api/v1/pages/[id]/links/[linkId]` | DELETE | Valid link | 204 no content |
 | 7 | `/api/v1/pages/[id]/links/reorder` | PATCH | Array of link IDs | 200 + success |
+| 8 | `/api/v1/pages/[id]/links` | POST | URL `https://github.com/test` without platform | 201 + link with `platform: "github"` auto-detected |
+| 9 | `/api/v1/pages/[id]/links/[linkId]` | PUT | Change URL to `https://twitter.com/test` | 200 + `platform` re-detected as "twitter" |
+| 10 | `/api/v1/pages/[id]/links/[linkId]` | PUT | `{ display_mode: "featured" }` | 200 + link updated with display_mode |
+
+### 7.2a Layout API
+
+| # | Endpoint | Method | Test Case | Expected |
+|---|----------|--------|-----------|----------|
+| 1 | `/api/v1/pages/[id]/layout` | GET | Valid page | 200 + current layout (or default) |
+| 2 | `/api/v1/pages/[id]/layout` | PUT | Valid sections + blocks | 200 + updated layout |
+| 3 | `/api/v1/pages/[id]/layout` | PUT | Block section references non-existent block ID | 400 validation error |
+| 4 | `/api/v1/pages/[id]/layout` | PUT | Empty sections array | 400 validation error |
+| 5 | `/api/v1/pages/[id]/blocks` | POST | `{ kind: "spacer", props: { height: 24 } }` | 201 + block created, added to layout |
+| 6 | `/api/v1/pages/[id]/blocks` | POST | `{ kind: "text", props: { text: "Hello" } }` | 201 + text block created |
+| 7 | `/api/v1/pages/[id]/blocks` | POST | `{ kind: "invalid" }` | 400 validation error |
+| 8 | `/api/v1/pages/[id]/blocks` | POST | `{ kind: "spacer", after_section: 0 }` | 201 + block inserted after first section |
+| 9 | `/api/v1/pages/[id]/blocks` | DELETE | `{ block_id: "abc123" }` | 204 + block removed from layout |
+| 10 | `/api/v1/pages/[id]/blocks` | DELETE | `{ block_id: "" }` | 400 validation error |
+
+### 7.2b Utility API
+
+| # | Endpoint | Method | Test Case | Expected |
+|---|----------|--------|-----------|----------|
+| 1 | `/api/v1/utils/detect-platform?url=https://github.com/user` | GET | Valid GitHub URL | 200 + `{ data: { platform: "github" } }` |
+| 2 | `/api/v1/utils/detect-platform?url=https://youtube.com/@ch` | GET | Valid YouTube URL | 200 + `{ data: { platform: "youtube" } }` |
+| 3 | `/api/v1/utils/detect-platform?url=https://example.com` | GET | Non-social URL | 200 + `{ data: { platform: null } }` |
+| 4 | `/api/v1/utils/detect-platform?url=notaurl` | GET | Invalid URL | 200 + `{ data: { platform: null } }` |
+| 5 | `/api/v1/utils/detect-platform` | GET | Missing url param | 200 + `{ data: { platform: null } }` |
+
+### 7.2c Theme Colors API
+
+| # | Endpoint | Method | Test Case | Expected |
+|---|----------|--------|-----------|----------|
+| 1 | `/api/v1/pages/[id]` | PUT | `{ theme: { name: "clean", colors: { bg: "#1a1a2e" } } }` | 200 + theme with merged colors |
+| 2 | `/api/v1/pages/[id]` | PUT | `{ theme: { colors: { text: "#ff0000" } } }` | 200 + existing colors preserved, text color added |
+| 3 | `/api/v1/pages/[id]` | PUT | `{ theme: { name: "minimal-dark" } }` | 200 + theme name changed, existing colors preserved |
 
 ### 7.3 Public API
 
@@ -307,7 +375,7 @@ Comprehensive test cases for all completed pages and API endpoints.
 
 | # | Endpoint | Method | Test Case | Expected |
 |---|----------|--------|-----------|----------|
-| 1 | `/.well-known/mcp.json` | GET | No auth required | 200 + MCP metadata JSON |
+| 1 | `/.well-known/mcp.json` | GET | No auth required | 200 + MCP metadata JSON with 20 tools listed |
 
 ---
 
@@ -359,7 +427,18 @@ Comprehensive test cases for all completed pages and API endpoints.
 | 6 | `reorder_links` | page_id + link_ids array | Positions updated |
 | 7 | `get_analytics` | page_id + period | Analytics overview returned |
 | 8 | `export_contacts` | page_id | Contacts array returned |
-| 9 | `update_theme` | page_id + theme name | Theme changed |
+| 9 | `update_page` | page_id + title/bio/theme/published/settings | Page updated |
+| 10 | `create_page` | slug + optional title/bio/theme | Page created |
+| 11 | `delete_page` | page_id | Page deleted |
+| 12 | `get_account` | No args | Account profile + plan info returned |
+| 13 | `list_domains` | No args | Array of custom domains returned |
+| 14 | `add_domain` | page_id + domain | Domain added |
+| 15 | `remove_domain` | domain_id | Domain removed |
+| 16 | `update_design` | page_id + theme + color params (bg, text, etc.) | Theme and colors updated |
+| 17 | `set_layout` | page_id + sections array + blocks array | Layout updated |
+| 18 | `add_block` | page_id + kind + optional text/height/after_section | Block added to layout |
+| 19 | `remove_block` | page_id + block_id | Block removed from layout |
+| 20 | `set_link_display` | page_id + link_id + display_mode + platform | Link display mode/platform updated |
 
 ### 9.2 Configuration
 
@@ -500,3 +579,11 @@ Run through these to verify core functionality:
 - [ ] Visit `/manifest.json` → PWA manifest loads
 - [ ] Resize browser to mobile → bottom tab bar appears, sidebar hides
 - [ ] Throttle network to Slow 3G → loading skeletons shown on dashboard routes
+- [ ] Add a YouTube link → platform auto-detected, icon shown in URL input
+- [ ] Set a link to "Featured" display mode → badge shown, public page renders with fill
+- [ ] Set a link to "Icon only" → badge shown, link appears in icon bar on public page
+- [ ] Expand Colors section → change background color → preview updates
+- [ ] Expand Layout section → add a Spacer block → preview shows spacing
+- [ ] Drag sections to reorder → preview reflects new order
+- [ ] `curl localhost:3000/api/v1/utils/detect-platform?url=https://github.com/test` → `{ data: { platform: "github" } }`
+- [ ] Visit `/.well-known/mcp.json` → 20 tools listed including update_design, set_layout, add_block
