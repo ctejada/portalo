@@ -1,17 +1,18 @@
 "use client";
 
 import type { Link } from "@portalo/shared";
-import { getTheme } from "@/lib/themes";
+import type { ResolvedTheme } from "@/lib/themes";
+import { SocialIcon } from "@/components/public/social-icons";
 
 interface LinkItemProps {
   link: Link;
   pageId: string;
   index: number;
-  themeName: string;
+  theme: ResolvedTheme;
 }
 
-export function LinkItem({ link, pageId, index, themeName }: LinkItemProps) {
-  const theme = getTheme(themeName);
+export function LinkItem({ link, pageId, index, theme }: LinkItemProps) {
+  const isFeatured = link.display_mode === "featured";
 
   function handleClick() {
     fetch("/api/v1/public/track", {
@@ -32,9 +33,18 @@ export function LinkItem({ link, pageId, index, themeName }: LinkItemProps) {
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      className={`block py-2.5 text-sm transition-colors ${theme.linkText}`}
+      className={`block py-2.5 text-sm transition-colors ${theme.linkText} ${
+        isFeatured ? "px-4 py-3 rounded-lg" : ""
+      }`}
+      style={{
+        ...(isFeatured ? theme.customStyles.linkBg : {}),
+        ...(theme.customStyles.linkText ?? {}),
+      }}
     >
-      <span>{theme.linkPrefix(index)} {link.title}</span>
+      <span className="inline-flex items-center gap-2">
+        {link.platform && <SocialIcon platform={link.platform} size={16} className="opacity-60 shrink-0" />}
+        <span>{isFeatured ? link.title : `${theme.linkPrefix(index)} ${link.title}`}</span>
+      </span>
     </a>
   );
 }
