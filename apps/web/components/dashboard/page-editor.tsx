@@ -10,7 +10,11 @@ import { LinkForm } from "@/components/dashboard/link-form";
 import { PhonePreview } from "@/components/dashboard/phone-preview";
 import { PreviewContent } from "@/components/dashboard/preview-content";
 import { ThemePicker } from "@/components/dashboard/theme-picker";
-import type { Link as LinkType, ThemeConfig } from "@portalo/shared";
+import { ColorCustomizer } from "@/components/dashboard/color-customizer";
+import { SectionList } from "@/components/dashboard/section-list";
+import { AddBlockMenu } from "@/components/dashboard/add-block-menu";
+import type { Link as LinkType, ThemeConfig, PageLayout, Section, BlockConfig } from "@portalo/shared";
+import { DEFAULT_LAYOUT } from "@portalo/shared";
 
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "portalo.so";
 
@@ -24,6 +28,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
   const [title, setTitle] = useState("");
   const [bio, setBio] = useState("");
   const [theme, setTheme] = useState<ThemeConfig>({ name: "clean" });
+  const [layout, setLayout] = useState<PageLayout>({ sections: DEFAULT_LAYOUT.sections as Section[], blocks: [] });
   const [isTogglingPublished, setIsTogglingPublished] = useState(false);
 
   useEffect(() => {
@@ -31,6 +36,7 @@ export function PageEditor({ pageId }: PageEditorProps) {
       setTitle(page.title);
       setBio(page.bio);
       setTheme(page.theme ?? { name: "clean" });
+      setLayout(page.layout ?? { sections: DEFAULT_LAYOUT.sections as Section[], blocks: [] });
     }
   }, [page]);
 
@@ -114,6 +120,61 @@ export function PageEditor({ pageId }: PageEditorProps) {
       mutateLinks();
     },
     [pageId, mutateLinks]
+  );
+
+  const saveLayout = useCallback(
+    async (newLayout: PageLayout) => {
+      setLayout(newLayout);
+      const res = await fetch(`/api/v1/pages/${pageId}/layout`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newLayout),
+      });
+      if (!res.ok) {
+        showToast("Failed to update layout", "error");
+      }
+      mutate();
+    },
+    [pageId, mutate]
+  );
+
+  const handleSectionReorder = useCallback(
+    (sections: Section[]) => {
+      saveLayout({ ...layout, sections });
+    },
+    [layout, saveLayout]
+  );
+
+  const handleAddBlock = useCallback(
+    async (kind: "spacer" | "divider" | "text") => {
+      const res = await fetch(`/api/v1/pages/${pageId}/blocks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kind, props: kind === "text" ? { text: "Your text here" } : {} }),
+      });
+      if (!res.ok) {
+        showToast("Failed to add block", "error");
+        return;
+      }
+      mutate();
+    },
+    [pageId, mutate]
+  );
+
+  const handleRemoveBlock = useCallback(
+    async (blockId: string) => {
+      const res = await fetch(`/api/v1/pages/${pageId}/blocks`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ block_id: blockId }),
+      });
+      if (!res.ok) {
+        showToast("Failed to remove block", "error");
+        return;
+      }
+      mutate();
+    },
+    [pageId, mutate]
   );
 
   return (
@@ -219,6 +280,26 @@ export function PageEditor({ pageId }: PageEditorProps) {
 
                 {/* Theme section */}
                 <ThemePicker currentTheme={theme} onChange={handleThemeChange} />
+
+                {/* Colors section */}
+                <div>
+                  <h2 className="text-section-title mb-4">Colors</h2>
+                  <ColorCustomizer pageId={pageId} theme={theme} onSaved={() => mutate()} />
+                </div>
+
+                {/* Layout section */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-section-title">Layout</h2>
+                    <AddBlockMenu onAdd={handleAddBlock} />
+                  </div>
+                  <SectionList
+                    sections={layout.sections}
+                    blocks={layout.blocks}
+                    onReorder={handleSectionReorder}
+                    onRemoveBlock={handleRemoveBlock}
+                  />
+                </div>
               </>
             ) : (
               <p className="text-body text-text-secondary">Page not found.</p>
@@ -233,7 +314,8 @@ export function PageEditor({ pageId }: PageEditorProps) {
               title={title}
               bio={bio}
               links={links}
-              themeName={theme.name}
+              theme={theme}
+              layout={layout}
             />
           </PhonePreview>
         </div>
