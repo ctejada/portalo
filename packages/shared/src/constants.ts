@@ -31,7 +31,7 @@ export const PLANS: Record<Plan, PlanConfig> = {
       api_calls_per_day: 100,
       custom_domains: 0,
       email_capture: false,
-      analytics_days: 7,
+      analytics_days: 28,
       remove_branding: false,
     },
   },
