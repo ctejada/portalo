@@ -127,44 +127,27 @@ export class PortaloClient {
   }
 
   // Analytics
-  async getAnalytics(
-    pageId: string,
-    period: "7d" | "30d" | "90d" = "7d"
-  ) {
-    return this.request<unknown>(
-      "GET",
-      `/analytics/overview?page_id=${pageId}&period=${period}`
-    );
+  private analyticsQuery(pageId: string, period: string, start?: string, end?: string) {
+    const params = new URLSearchParams({ page_id: pageId, period });
+    if (start) params.set("start_date", start);
+    if (end) params.set("end_date", end);
+    return params.toString();
   }
 
-  async getAnalyticsBreakdown(
-    pageId: string,
-    period: "7d" | "30d" | "90d" = "7d"
-  ) {
-    return this.request<unknown>(
-      "GET",
-      `/analytics/breakdown?page_id=${pageId}&period=${period}`
-    );
+  async getAnalytics(pageId: string, period = "7d", startDate?: string, endDate?: string) {
+    return this.request<unknown>("GET", `/analytics/overview?${this.analyticsQuery(pageId, period, startDate, endDate)}`);
   }
 
-  async getAnalyticsHourly(
-    pageId: string,
-    period: "7d" | "30d" | "90d" = "7d"
-  ) {
-    return this.request<unknown>(
-      "GET",
-      `/analytics/hourly?page_id=${pageId}&period=${period}`
-    );
+  async getAnalyticsBreakdown(pageId: string, period = "7d", startDate?: string, endDate?: string) {
+    return this.request<unknown>("GET", `/analytics/breakdown?${this.analyticsQuery(pageId, period, startDate, endDate)}`);
   }
 
-  async getAnalyticsTopLinks(
-    pageId: string,
-    period: "7d" | "30d" | "90d" = "7d"
-  ) {
-    return this.request<unknown>(
-      "GET",
-      `/analytics/top-links?page_id=${pageId}&period=${period}`
-    );
+  async getAnalyticsHourly(pageId: string, period = "7d", startDate?: string, endDate?: string) {
+    return this.request<unknown>("GET", `/analytics/hourly?${this.analyticsQuery(pageId, period, startDate, endDate)}`);
+  }
+
+  async getAnalyticsTopLinks(pageId: string, period = "7d", startDate?: string, endDate?: string) {
+    return this.request<unknown>("GET", `/analytics/top-links?${this.analyticsQuery(pageId, period, startDate, endDate)}`);
   }
 
   // Contacts
@@ -173,5 +156,37 @@ export class PortaloClient {
       "GET",
       `/contacts?page_id=${pageId}`
     );
+  }
+
+  // Export analytics as CSV
+  async exportAnalytics(
+    pageId: string,
+    opts?: { period?: string; start_date?: string; end_date?: string }
+  ): Promise<string> {
+    const params = new URLSearchParams({ page_id: pageId });
+    if (opts?.period) params.set("period", opts.period);
+    if (opts?.start_date) params.set("start_date", opts.start_date);
+    if (opts?.end_date) params.set("end_date", opts.end_date);
+    const url = `${this.baseUrl}/api/v1/analytics/export?${params}`;
+    const res = await fetch(url, {
+      headers: { "X-API-Key": this.apiKey },
+    });
+    if (!res.ok) {
+      throw new Error(`Export failed: ${res.status} ${res.statusText}`);
+    }
+    return res.text();
+  }
+
+  // Integrations
+  async updateIntegrations(pageId: string, data: Record<string, unknown>) {
+    return this.request<unknown>("PUT", `/pages/${pageId}/integrations`, data);
+  }
+
+  // Share analytics
+  async shareAnalytics(pageId: string, enabled: boolean) {
+    return this.request<unknown>("POST", "/analytics/share", {
+      page_id: pageId,
+      enabled,
+    });
   }
 }

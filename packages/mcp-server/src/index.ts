@@ -17,7 +17,7 @@ const client = new PortaloClient(baseUrl, apiKey);
 
 const server = new McpServer({
   name: "portalo",
-  version: "0.3.0",
+  version: "0.4.0",
 });
 
 // list_pages
@@ -157,17 +157,35 @@ server.tool(
       .enum(["7d", "30d", "90d"])
       .default("7d")
       .describe("Time period"),
+    start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().describe("Custom start date (YYYY-MM-DD, Pro only)"),
+    end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().describe("Custom end date (YYYY-MM-DD, Pro only)"),
   },
-  async ({ page_id, period }) => {
+  async ({ page_id, period, start_date, end_date }) => {
     const [overview, breakdown, hourly, topLinks] = await Promise.all([
-      client.getAnalytics(page_id, period),
-      client.getAnalyticsBreakdown(page_id, period),
-      client.getAnalyticsHourly(page_id, period),
-      client.getAnalyticsTopLinks(page_id, period),
+      client.getAnalytics(page_id, period, start_date, end_date),
+      client.getAnalyticsBreakdown(page_id, period, start_date, end_date),
+      client.getAnalyticsHourly(page_id, period, start_date, end_date),
+      client.getAnalyticsTopLinks(page_id, period, start_date, end_date),
     ]);
     return {
       content: [{ type: "text", text: JSON.stringify({ overview, breakdown, hourly, top_links: topLinks }, null, 2) }],
     };
+  }
+);
+
+// export_analytics
+server.tool(
+  "export_analytics",
+  "Export analytics events as CSV (Pro only). Returns raw event data for a page.",
+  {
+    page_id: z.string().uuid().describe("The page ID"),
+    period: z.enum(["7d", "30d", "90d"]).default("7d").describe("Time period"),
+    start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().describe("Custom start date (YYYY-MM-DD)"),
+    end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().describe("Custom end date (YYYY-MM-DD)"),
+  },
+  async ({ page_id, period, start_date, end_date }) => {
+    const csv = await client.exportAnalytics(page_id, { period, start_date, end_date });
+    return { content: [{ type: "text", text: csv }] };
   }
 );
 
