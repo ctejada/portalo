@@ -135,10 +135,14 @@ export const emailCaptureSchema = z.object({
   page_id: z.string().uuid(),
 });
 
+// Analytics granularity
+export const analyticsGranularitySchema = z.enum(["hourly", "daily"]).default("daily");
+
 // Analytics query schema (page_id optional for aggregate queries)
 export const analyticsQuerySchema = z.object({
   page_id: z.string().uuid().optional(),
   period: z.enum(["7d", "30d", "90d"]).default("7d"),
+  granularity: analyticsGranularitySchema.optional(),
 });
 
 // Track event schema
