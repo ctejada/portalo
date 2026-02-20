@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { getApiUser } from "@/lib/api-auth";
 import { createClient } from "@/lib/supabase/server";
 import { parseAnalyticsParams } from "@/lib/analytics-params";
+import { checkFeature } from "@/lib/plan-gate";
 
 export async function GET(request: NextRequest) {
   const auth = await getApiUser(request);
@@ -13,7 +14,7 @@ export async function GET(request: NextRequest) {
 
   if (pageIds.length === 0) {
     return Response.json({
-      data: { views: 0, clicks: 0, unique_views: 0, unique_clicks: 0, ctr: 0, bounce_rate: 0, avg_time_to_click_ms: null, email_captures: 0, top_referrer: null, top_country: null, period_days: days },
+      data: { views: 0, clicks: 0, unique_views: 0, unique_clicks: 0, ctr: 0, bounce_rate: 0, avg_time_to_click_ms: null, email_captures: 0, top_referrer: null, top_country: null, period_days: days, new_visitors: null, returning_visitors: null },
     });
   }
 
@@ -66,6 +67,26 @@ export async function GET(request: NextRequest) {
   }
   const topCountry = Object.entries(countryCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 
+  // Returning vs new visitor classification (Pro only)
+  let newVisitors: number | null = null;
+  let returningVisitors: number | null = null;
+
+  const { allowed: hasPro } = await checkFeature(auth.userId, "pro_analytics");
+  if (hasPro && viewVisitors.size > 0) {
+    const visitorIds = Array.from(viewVisitors);
+    const { data: priorEvents } = await supabase
+      .from("analytics_events")
+      .select("visitor_id")
+      .in("page_id", pageIds)
+      .in("visitor_id", visitorIds)
+      .lt("created_at", since.toISOString())
+      .eq("event_type", "view");
+
+    const returningSet = new Set((priorEvents ?? []).map((e) => e.visitor_id));
+    returningVisitors = returningSet.size;
+    newVisitors = viewVisitors.size - returningSet.size;
+  }
+
   return Response.json({
     data: {
       views,
@@ -79,6 +100,8 @@ export async function GET(request: NextRequest) {
       top_referrer: topReferrer,
       top_country: topCountry,
       period_days: days,
+      new_visitors: newVisitors,
+      returning_visitors: returningVisitors,
     },
   });
 }
