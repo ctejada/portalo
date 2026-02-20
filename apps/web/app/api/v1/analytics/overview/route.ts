@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
 
   if (pageIds.length === 0) {
     return Response.json({
-      data: { views: 0, clicks: 0, ctr: 0, email_captures: 0, top_referrer: null, top_country: null, period_days: 7 },
+      data: { views: 0, clicks: 0, unique_views: 0, unique_clicks: 0, ctr: 0, email_captures: 0, top_referrer: null, top_country: null, period_days: 7 },
     });
   }
 
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
 
   const { data: events } = await supabase
     .from("analytics_events")
-    .select("event_type, referrer, country")
+    .select("event_type, referrer, country, visitor_id")
     .in("page_id", pageIds)
     .gte("created_at", since.toISOString());
 
@@ -68,6 +68,12 @@ export async function GET(request: NextRequest) {
   const clicks = rows.filter((e) => e.event_type === "click").length;
   const emailCaptures = rows.filter((e) => e.event_type === "email_capture").length;
   const ctr = views > 0 ? Math.round((clicks / views) * 1000) / 10 : 0;
+
+  // Unique views/clicks by distinct visitor_id
+  const viewVisitors = new Set(rows.filter((e) => e.event_type === "view" && e.visitor_id).map((e) => e.visitor_id));
+  const clickVisitors = new Set(rows.filter((e) => e.event_type === "click" && e.visitor_id).map((e) => e.visitor_id));
+  const uniqueViews = viewVisitors.size || views;
+  const uniqueClicks = clickVisitors.size || clicks;
 
   // Top referrer
   const refCounts: Record<string, number> = {};
@@ -87,6 +93,8 @@ export async function GET(request: NextRequest) {
     data: {
       views,
       clicks,
+      unique_views: uniqueViews,
+      unique_clicks: uniqueClicks,
       ctr,
       email_captures: emailCaptures,
       top_referrer: topReferrer,
