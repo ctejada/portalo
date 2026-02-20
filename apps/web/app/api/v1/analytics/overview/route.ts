@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
 
   if (pageIds.length === 0) {
     return Response.json({
-      data: { views: 0, clicks: 0, unique_views: 0, unique_clicks: 0, ctr: 0, bounce_rate: 0, email_captures: 0, top_referrer: null, top_country: null, period_days: 7 },
+      data: { views: 0, clicks: 0, unique_views: 0, unique_clicks: 0, ctr: 0, bounce_rate: 0, avg_time_to_click_ms: null, email_captures: 0, top_referrer: null, top_country: null, period_days: 7 },
     });
   }
 
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
 
   const { data: events } = await supabase
     .from("analytics_events")
-    .select("event_type, referrer, country, visitor_id")
+    .select("event_type, referrer, country, visitor_id, time_to_click_ms")
     .in("page_id", pageIds)
     .gte("created_at", since.toISOString());
 
@@ -81,6 +81,14 @@ export async function GET(request: NextRequest) {
     : views > 0
       ? Math.round(((views - clicks) / views) * 1000) / 10
       : 0;
+
+  // Average time-to-click
+  const timings = rows
+    .filter((e) => e.time_to_click_ms != null)
+    .map((e) => e.time_to_click_ms as number);
+  const avgTimeToClick = timings.length > 0
+    ? Math.round(timings.reduce((sum, t) => sum + t, 0) / timings.length)
+    : null;
 
   // Top referrer
   const refCounts: Record<string, number> = {};
@@ -104,6 +112,7 @@ export async function GET(request: NextRequest) {
       unique_clicks: uniqueClicks,
       ctr,
       bounce_rate: Math.max(0, bounceRate),
+      avg_time_to_click_ms: avgTimeToClick,
       email_captures: emailCaptures,
       top_referrer: topReferrer,
       top_country: topCountry,
