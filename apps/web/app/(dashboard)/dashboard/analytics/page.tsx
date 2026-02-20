@@ -7,6 +7,7 @@ import { MetricsRow } from "@/components/dashboard/metrics-row";
 import { AnalyticsChart } from "@/components/dashboard/analytics-chart";
 import { TopLinksTable } from "@/components/dashboard/top-links-table";
 import { BreakdownTables } from "@/components/dashboard/breakdown-tables";
+import { HourlyChart } from "@/components/dashboard/hourly-chart";
 
 const PERIODS = ["7d", "30d", "90d"] as const;
 const PERIOD_LABELS: Record<string, string> = { "7d": "Last 7 days", "30d": "Last 30 days", "90d": "Last 90 days" };
@@ -64,6 +65,8 @@ export default function AnalyticsPage() {
           )}
 
           {timeseries && <AnalyticsChart data={timeseries} />}
+
+          <HourlyChart period={period} />
 
           {overview && (
             <>
