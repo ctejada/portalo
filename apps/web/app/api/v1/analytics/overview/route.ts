@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
 
   if (pageIds.length === 0) {
     return Response.json({
-      data: { views: 0, clicks: 0, unique_views: 0, unique_clicks: 0, ctr: 0, email_captures: 0, top_referrer: null, top_country: null, period_days: 7 },
+      data: { views: 0, clicks: 0, unique_views: 0, unique_clicks: 0, ctr: 0, bounce_rate: 0, email_captures: 0, top_referrer: null, top_country: null, period_days: 7 },
     });
   }
 
@@ -75,6 +75,13 @@ export async function GET(request: NextRequest) {
   const uniqueViews = viewVisitors.size || views;
   const uniqueClicks = clickVisitors.size || clicks;
 
+  // Bounce rate: viewers who never clicked (using visitor_id when available)
+  const bounceRate = viewVisitors.size > 0
+    ? Math.round(((viewVisitors.size - clickVisitors.size) / viewVisitors.size) * 1000) / 10
+    : views > 0
+      ? Math.round(((views - clicks) / views) * 1000) / 10
+      : 0;
+
   // Top referrer
   const refCounts: Record<string, number> = {};
   for (const e of rows) {
@@ -96,6 +103,7 @@ export async function GET(request: NextRequest) {
       unique_views: uniqueViews,
       unique_clicks: uniqueClicks,
       ctr,
+      bounce_rate: Math.max(0, bounceRate),
       email_captures: emailCaptures,
       top_referrer: topReferrer,
       top_country: topCountry,
