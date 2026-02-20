@@ -150,7 +150,7 @@ server.tool(
 // get_analytics
 server.tool(
   "get_analytics",
-  "Get analytics overview for a page",
+  "Get analytics overview for a page including unique visitors, bounce rate, time-to-click, browser breakdown, hourly activity, and top links with velocity",
   {
     page_id: z.string().uuid().describe("The page ID"),
     period: z
@@ -159,9 +159,14 @@ server.tool(
       .describe("Time period"),
   },
   async ({ page_id, period }) => {
-    const analytics = await client.getAnalytics(page_id, period);
+    const [overview, breakdown, hourly, topLinks] = await Promise.all([
+      client.getAnalytics(page_id, period),
+      client.getAnalyticsBreakdown(page_id, period),
+      client.getAnalyticsHourly(page_id, period),
+      client.getAnalyticsTopLinks(page_id, period),
+    ]);
     return {
-      content: [{ type: "text", text: JSON.stringify(analytics, null, 2) }],
+      content: [{ type: "text", text: JSON.stringify({ overview, breakdown, hourly, top_links: topLinks }, null, 2) }],
     };
   }
 );

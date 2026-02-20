@@ -137,6 +137,36 @@ export class PortaloClient {
     );
   }
 
+  async getAnalyticsBreakdown(
+    pageId: string,
+    period: "7d" | "30d" | "90d" = "7d"
+  ) {
+    return this.request<unknown>(
+      "GET",
+      `/analytics/breakdown?page_id=${pageId}&period=${period}`
+    );
+  }
+
+  async getAnalyticsHourly(
+    pageId: string,
+    period: "7d" | "30d" | "90d" = "7d"
+  ) {
+    return this.request<unknown>(
+      "GET",
+      `/analytics/hourly?page_id=${pageId}&period=${period}`
+    );
+  }
+
+  async getAnalyticsTopLinks(
+    pageId: string,
+    period: "7d" | "30d" | "90d" = "7d"
+  ) {
+    return this.request<unknown>(
+      "GET",
+      `/analytics/top-links?page_id=${pageId}&period=${period}`
+    );
+  }
+
   // Contacts
   async exportContacts(pageId: string) {
     return this.request<unknown[]>(
