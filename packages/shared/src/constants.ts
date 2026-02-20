@@ -18,6 +18,7 @@ export interface PlanConfig {
     email_capture: boolean;
     analytics_days: number;
     remove_branding: boolean;
+    pro_analytics: boolean;
   };
 }
 
@@ -33,6 +34,7 @@ export const PLANS: Record<Plan, PlanConfig> = {
       email_capture: false,
       analytics_days: 28,
       remove_branding: false,
+      pro_analytics: false,
     },
   },
   pro: {
@@ -47,6 +49,7 @@ export const PLANS: Record<Plan, PlanConfig> = {
       email_capture: true,
       analytics_days: 90,
       remove_branding: true,
+      pro_analytics: true,
     },
   },
   business: {
@@ -61,6 +64,7 @@ export const PLANS: Record<Plan, PlanConfig> = {
       email_capture: true,
       analytics_days: 365,
       remove_branding: true,
+      pro_analytics: true,
     },
   },
 };

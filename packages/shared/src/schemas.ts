@@ -154,6 +154,20 @@ export const analyticsQuerySchema = z.object({
   granularity: analyticsGranularitySchema.optional(),
 });
 
+// Extended analytics query with custom date range (Pro feature)
+export const analyticsDateRangeQuerySchema = analyticsQuerySchema.extend({
+  start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD").optional(),
+  end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD").optional(),
+});
+
+// Analytics export schema (Pro feature)
+export const analyticsExportSchema = z.object({
+  page_id: z.string().uuid(),
+  period: z.enum(["7d", "30d", "90d"]).default("7d"),
+  start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD").optional(),
+  end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD").optional(),
+});
+
 // Track event schema
 export const trackEventSchema = z.object({
   page_id: z.string().uuid(),
@@ -181,3 +195,5 @@ export type TrackEventInput = z.infer<typeof trackEventSchema>;
 export type PageLayoutInput = z.infer<typeof pageLayoutSchema>;
 export type BlockConfigInput = z.infer<typeof blockConfigSchema>;
 export type PageIntegrationsInput = z.infer<typeof pageIntegrationsSchema>;
+export type AnalyticsDateRangeQueryInput = z.infer<typeof analyticsDateRangeQuerySchema>;
+export type AnalyticsExportInput = z.infer<typeof analyticsExportSchema>;
