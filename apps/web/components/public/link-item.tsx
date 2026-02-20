@@ -3,7 +3,7 @@
 import type { Link } from "@portalo/shared";
 import type { ResolvedTheme } from "@/lib/themes";
 import { SocialIcon } from "@/components/public/social-icons";
-import { getOrCreateVisitorId, detectDevice, detectBrowser } from "@/components/public/view-tracker";
+import { getOrCreateVisitorId, detectDevice, detectBrowser, getTimeToClick } from "@/components/public/view-tracker";
 
 interface LinkItemProps {
   link: Link;
@@ -16,6 +16,7 @@ export function LinkItem({ link, pageId, index, theme }: LinkItemProps) {
   const isFeatured = link.display_mode === "featured";
 
   function handleClick() {
+    const timeToClick = getTimeToClick();
     fetch("/api/v1/public/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -27,6 +28,7 @@ export function LinkItem({ link, pageId, index, theme }: LinkItemProps) {
         visitor_id: getOrCreateVisitorId(),
         device: detectDevice(),
         browser: detectBrowser(),
+        ...(timeToClick !== undefined && { time_to_click_ms: timeToClick }),
       }),
     }).catch(() => {});
   }

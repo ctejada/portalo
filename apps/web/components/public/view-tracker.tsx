@@ -4,6 +4,10 @@ import { useEffect } from "react";
 
 const VISITOR_COOKIE = "ptl_vid";
 
+// Page load timestamp for time-to-click measurement
+let pageLoadTime: number | null = null;
+let firstClickRecorded = false;
+
 function getOrCreateVisitorId(): string {
   const match = document.cookie.match(new RegExp(`(?:^|; )${VISITOR_COOKIE}=([^;]*)`));
   if (match) return match[1];
@@ -31,12 +35,23 @@ function detectBrowser(): string {
   return "Other";
 }
 
+function getTimeToClick(): number | undefined {
+  if (firstClickRecorded || !pageLoadTime) return undefined;
+  firstClickRecorded = true;
+  const elapsed = Math.round(performance.now() - pageLoadTime);
+  // Cap at 5 minutes (300000ms) to match schema max
+  return Math.min(elapsed, 300000);
+}
+
 interface ViewTrackerProps {
   pageId: string;
 }
 
 export function ViewTracker({ pageId }: ViewTrackerProps) {
   useEffect(() => {
+    pageLoadTime = performance.now();
+    firstClickRecorded = false;
+
     const visitorId = getOrCreateVisitorId();
 
     fetch("/api/v1/public/track", {
@@ -56,4 +71,4 @@ export function ViewTracker({ pageId }: ViewTrackerProps) {
   return null;
 }
 
-export { getOrCreateVisitorId, detectDevice, detectBrowser };
+export { getOrCreateVisitorId, detectDevice, detectBrowser, getTimeToClick };
